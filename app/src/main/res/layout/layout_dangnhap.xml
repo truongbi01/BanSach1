@@ -2,10 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-             android:layout_height="match_parent"
-    android:background="@drawable/background_login"
-
+    android:layout_height="match_parent"
     >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="1500dp"
+            android:layout_height="1000dp"
+            android:src="@drawable/background_login2"
+            android:contentDescription="@string/imgbanhang" />
+    </LinearLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,9 +28,11 @@
             android:textSize="@dimen/size30dp"
             android:text="@string/DangNhap"
             tools:ignore="SpUsage"
+            android:textColor="@color/white"
             android:layout_above="@+id/lnKhungDangNhap"
             android:layout_centerHorizontal="true"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_marginBottom="@dimen/size30dp"/>
 
 
 
@@ -39,18 +50,14 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/TenDangNhap"
                 android:padding="@dimen/size10dp"
-                android:background="@color/white"
+                android:background="@drawable/customer_edittext"
                 android:textColorHint="@color/grey"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/custom_icon_user"
                 android:layout_margin="@dimen/size10dp"
                 android:autofillHints="username"
                 android:textColor="@color/darklv10"
                 />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-            </LinearLayout>
             <EditText
                 android:id="@+id/edtMatKhauDN"
                 android:inputType="text"
@@ -58,9 +65,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/MatKhau"
                 android:padding="@dimen/size10dp"
-                android:background="@color/white"
+                android:background="@drawable/customer_edittext"
                 android:textColorHint="@color/grey"
-                android:drawableStart="@drawable/lock"
+                android:drawableStart="@drawable/custom_icon_lock"
                 android:layout_margin="@dimen/size10dp"
                 android:autofillHints="password"
                 android:textColor="@color/darklv10"
@@ -76,9 +83,12 @@
                 android:text="@string/saveAccount"
                 android:textStyle="bold"
                 android:textSize="@dimen/size15dp"
+                android:textColor="@color/white"
                 android:shadowColor="@color/honglv6"
+                android:buttonTint="@color/white"
                 tools:ignore="SpUsage" />
             <LinearLayout
+                android:layout_marginTop="@dimen/size30dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -90,6 +100,8 @@
                     android:text="@string/DangNhap"
                     android:layout_weight="1"
                     android:layout_margin="@dimen/size10dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/customer_button"
                     style="?android:attr/buttonBarButtonStyle" />
                 <Button
                     android:id="@+id/btDangKyDN"
@@ -98,6 +110,8 @@
                     android:text="@string/DangKy"
                     android:layout_weight="1"
                     android:layout_margin="@dimen/size10dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/customer_button"
                     style="?android:attr/buttonBarButtonStyle" />
             </LinearLayout>
         </LinearLayout>
