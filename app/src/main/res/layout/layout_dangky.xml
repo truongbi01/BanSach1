@@ -29,9 +29,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Login.KhungDangKyActivity"
-    android:background="@color/xanhbienlv7"
-    >
 
+    >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+                <ImageView
+                    android:layout_width="1500dp"
+                    android:layout_height="1000dp"
+                    android:src="@drawable/background_login2"
+                    android:contentDescription="@string/imgbanhang" />
+        </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,12 +50,15 @@
             android:paddingTop="16dp"
             >
                 <TextView
+                    android:layout_marginBottom="@dimen/size30dp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size30dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/DangKy"
                     android:layout_centerHorizontal="true"
                     android:layout_above="@+id/lnKhungDangKy"
-                    >
+                    tools:ignore="SpUsage">
 
                 </TextView>
                 <LinearLayout
@@ -62,7 +74,7 @@
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@drawable/customer_edittext"
                             android:hint="@string/TenDangNhap"
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
@@ -79,7 +91,7 @@
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@drawable/customer_edittext"
                             android:hint="@string/MatKhau"
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
@@ -95,7 +107,7 @@
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@drawable/customer_edittext"
                             android:hint="@string/NhapLaiMatKhau"
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
@@ -112,18 +124,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:padding="@dimen/size10dp"
                             >
                                 <RadioButton
                                     android:id="@+id/rdoNam"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/Nam"
+                                    android:textColor="@color/white"
+                                    android:buttonTint="@color/white"
                                     />
 
                                 <RadioButton
                                     android:id="@+id/rdoNu"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:textColor="@color/white"
+                                    android:buttonTint="@color/white"
                                     android:text="@string/Nu"/>
                         </RadioGroup>
                         <EditText
@@ -131,7 +148,7 @@
                             android:inputType="date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@drawable/customer_edittext"
                             android:hint="@string/NgaySinh"
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
@@ -146,7 +163,7 @@
                             android:inputType="number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/white"
+                            android:background="@drawable/customer_edittext"
                             android:hint="@string/cmnd"
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
@@ -159,7 +176,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/size20dp">
                                 <Button
                                     android:id="@+id/btDongY"
                                     android:layout_width="wrap_content"
@@ -168,7 +186,9 @@
                                     android:layout_weight="1"
                                     android:padding="@dimen/size10dp"
                                     android:layout_margin="@dimen/size10dp"
-                                    android:background="@color/xanhlacaylv4"
+                                    android:textColor="@color/white"
+
+                                    android:background="@drawable/customer_button"
                                     style="?android:attr/buttonBarButtonStyle" />
 
 
@@ -182,7 +202,8 @@
                                     android:layout_weight="1"
                                     android:padding="@dimen/size10dp"
                                     android:layout_margin="@dimen/size10dp"
-                                    android:background="@color/donaucanhgian"
+                                    android:textColor="@color/white"
+                                    android:background="@drawable/customer_button"
                                     style="?android:attr/buttonBarButtonStyle" />
 
                         </LinearLayout>
