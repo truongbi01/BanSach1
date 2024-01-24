@@ -1,2 +1,2 @@
 ## AndroidMobile
-# Project d�nh cho D? �n L?p tr�nh Android (Android Native)
+# Project dành cho Ðồ án Lập trình Android (Android Native)
