@@ -20,11 +20,12 @@ public class CreateDatabase extends SQLiteOpenHelper {
     //Context
 
     // Bảng KhachHang
-    private static final String TB_KHACH_HANG = "KhachHang";
-    private static final String CL_KHACH_HANG_ID = "MaKhachHang";
-    private static final String CL_TEN_KHACH_HANG = "TenKhachHang";
-    private static final String CL_DIA_CHI = "DiaChi";
-    private static final String CL_SO_DIEN_THOAI = "SoDienThoai";
+    public static final String TB_KHACH_HANG = "KhachHang";
+    public static final String CL_KHACH_HANG_ID = "MaKhachHang";
+    public static final String CL_TEN_KHACH_HANG = "TenKhachHang";
+    public static final String CL_DIA_CHI = "DiaChi";
+    public static final String CL_SO_DIEN_THOAI = "SoDienThoai";
+    public static final String CL_email = "email";
 
     // Bảng NhanVien
     private static final String TB_NHAN_VIEN = "NhanVien";
@@ -52,12 +53,19 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private static final String CL_SAN_PHAM_ID = "MaSanPham";
     private static final String CL_TEN_SAN_PHAM = "TenSanPham";
     private static final String CL_GIA_BAN = "GiaBan";
+    private static final String CL_ANH_SAN_PHAM = "AnhSanPham";
+
 
     // Bảng DanhGiaKhachHang
     private static final String TB_DANH_GIA_KHACH_HANG = "DanhGiaKhachHang";
     private static final String  CL_Ma_DANH_GIA = "MADANHGIA";
     private static final String  CL_MA_KHACH_HANG_DANH_GIA = "MaKhachHangDanhGia";
     private static final String CL_DANHGIA_KHACH_HANG_ID = "MaKhachHang";
+    // Bảng YeuThich
+    private static final String TB_YEU_THICH = "YeuThich";
+    private static final String CL_YEU_THICH_ID = "MaYeuThich";
+    private static final String CL_KHACH_HANG_YEU_THICH_ID = "MaKhachHangYeuThich";
+    private static final String CL_SAN_PHAM_YEU_THICH_ID = "MaSanPhamYeuThich";
     // Bảng LoaiSanPham
     private static final String TB_LOAI_SAN_PHAM = "LoaiSanPham";
     private static final String CL_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
@@ -89,6 +97,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
                 + CL_KHACH_HANG_ID + " INTEGER PRIMARY KEY,"
                 + CL_TEN_KHACH_HANG + " TEXT,"
                 + CL_DIA_CHI + " TEXT,"
+                + CL_email + "TEXT,"
                 + CL_SO_DIEN_THOAI + " TEXT"
                 + ")";
         db.execSQL(CREATE_TABLE_KHACH_HANG);
@@ -106,15 +115,26 @@ public class CreateDatabase extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + CL_DANG_NHAP_KHACH_HANG_ID + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_KHACH_HANG_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_DANG_NHAP_KHACH_HANG);
+        // Tạo bảng YeuThich
+        String CREATE_TABLE_YEU_THICH = "CREATE TABLE " + TB_YEU_THICH + "("
+                + CL_YEU_THICH_ID + " INTEGER PRIMARY KEY,"
+                + CL_KHACH_HANG_YEU_THICH_ID + " INTEGER,"
+                + CL_SAN_PHAM_YEU_THICH_ID + " INTEGER,"
+                + "FOREIGN KEY(" + CL_KHACH_HANG_YEU_THICH_ID + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_KHACH_HANG_ID + "),"
+                + "FOREIGN KEY(" + CL_SAN_PHAM_YEU_THICH_ID + ") REFERENCES " + TB_SAN_PHAM + "(" + CL_SAN_PHAM_ID + ")"
+                + ")";
+        db.execSQL(CREATE_TABLE_YEU_THICH);
         // Tạo bảng SanPham
         String CREATE_TABLE_SAN_PHAM = "CREATE TABLE " + TB_SAN_PHAM + "("
                 + CL_SAN_PHAM_ID + " INTEGER PRIMARY KEY,"
                 + CL_TEN_SAN_PHAM + " TEXT,"
                 + CL_GIA_BAN + " REAL,"
                 + CL_NHA_CUNG_CAP_ID + " INTEGER,"
+                + CL_ANH_SAN_PHAM + " TEXT,"  // Thêm cột ảnh sản phẩm
                 + "FOREIGN KEY(" + CL_NHA_CUNG_CAP_ID + ") REFERENCES " + TB_NHA_CUNG_CAP + "(" + CL_NHA_CUNG_CAP_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_SAN_PHAM);
+
 
         // Tạo bảng NhanVien
         String CREATE_TABLE_NHAN_VIEN = "CREATE TABLE " + TB_NHAN_VIEN + "("
@@ -276,4 +296,21 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return vaiTro;
     }
+    //Cập nhật ảnh
+    public void updateAnhSanPham(int maSanPham, String duongDanAnh) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CL_ANH_SAN_PHAM, duongDanAnh);
+
+        db.update(
+                TB_SAN_PHAM,
+                values,
+                CL_SAN_PHAM_ID + " = ?",
+                new String[]{String.valueOf(maSanPham)}
+        );
+
+        db.close();
+    }
+
 }

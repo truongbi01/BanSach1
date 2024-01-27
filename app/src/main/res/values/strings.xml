@@ -41,4 +41,13 @@
     <string name="signup_login_hint">Already have an account? Sign In</string>
     <string name="login_signup_hint">Don\'t have an account? Sign Up</string>
     <string name="imgbanhang">imgBanHang</string>
+    <string name="thongtincancapnhap">Thông tin cần cập nhật *</string>
+    <string name="hovaten">Họ Và Tên</string>
+    <string name="email">Email</string>
+    <string name="sodienthoai">Số Điện thoại</string>
+    <string name="diachi">Địa Chỉ</string>
+    <string name="save_changed">Lưu</string>
+    <string name="chinhsua">Chỉnh sửa</string>
+    <string name="ngaysinh">Ngày sinh : </string>
+    <string name="CCCD">Số Căn Cước :</string>
 </resources>
