@@ -2,6 +2,7 @@ package com.example.banhang.Login;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,11 +14,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.banhang.R;
 import com.example.banhang.database.CreateDatabase;
-
+import com.example.banhang.View.HeaderMenu.*;
 public class KhungDangKyActivity extends AppCompatActivity {
     //Khai Báo Các Biên Giao Diện
     EditText edtTenDangNhap,edtMatKhau,edtNhapLaiMatKhau,edtNgaySinh,edtCMND;
@@ -75,6 +77,11 @@ public class KhungDangKyActivity extends AppCompatActivity {
                     try {
                         DangKyNguoiDung(TenDangNhapDK,MatKhauDK,NgaySinhDK,CMNDK,gioiTinh);
                         Intent intent = new Intent(KhungDangKyActivity.this, KhungDangNhapActivity.class);
+                        // Lưu dữ liệu
+                        SharedPreferences.Editor editor = getSharedPreferences("ShareData", MODE_PRIVATE).edit();
+                        editor.putString("ngaySinh", NgaySinhDK);
+                        editor.putString("cmnd", CMNDK);
+                        editor.apply();
                         startActivity(intent);
                     }catch (Exception e){
                         Toast toast = Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT);toast.show();

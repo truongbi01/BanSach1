@@ -13,6 +13,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.banhang.Login.*;
 import com.example.banhang.R;
+import com.example.banhang.View.HeaderMenu.*;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -43,7 +44,8 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
                 } else if (menuID == R.id.miProfile) {
-                    Toast.makeText(HomeActivity.this, "Profile", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeActivity.this,AboutMenuActivity.class);
+                    startActivity(intent);
                     return true;
 
                 } else if (menuID == R.id.miRecommend) {
@@ -51,7 +53,8 @@ public class HomeActivity extends AppCompatActivity {
                     return true;
 
                 }else if (menuID == R.id.mnAbout) {
-                    Toast.makeText(HomeActivity.this, "mnAbout", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(HomeActivity.this,AboutMenuActivity.class);
+                    startActivity(intent);
                     return true;
 
                 }else if (menuID == R.id.mnLogout) {
