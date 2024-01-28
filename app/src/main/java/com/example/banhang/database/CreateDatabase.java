@@ -15,7 +15,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 1;
+    private final static int VERSION = 7;
 
     //Context
 
@@ -25,7 +25,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String CL_TEN_KHACH_HANG = "TenKhachHang";
     public static final String CL_DIA_CHI = "DiaChi";
     public static final String CL_SO_DIEN_THOAI = "SoDienThoai";
-    public static final String CL_email = "email";
+    public static final String CL_EMAIL = "email";
+    public static final String CL_CMND_KHACH_HANG= "cmnd";
 
     // Bảng NhanVien
     private static final String TB_NHAN_VIEN = "NhanVien";
@@ -35,7 +36,6 @@ public class CreateDatabase extends SQLiteOpenHelper {
     // Bảng DangNhapKhachHang
     public static final String TB_DANG_NHAP_KHACH_HANG = "DangNhapKhachHang";
     public static final String CL_DANG_NHAP_ID = "MaDangNhap";
-    public static final String CL_DANG_NHAP_KHACH_HANG_ID = "MaKhachHang";
     public static final String CL_TEN_DANGNHAP = "TenDangNhap";
     public static final String CL_NGAYSINH= "NGAYSINH";
     public static final String CL_CMND= "CMND";
@@ -94,25 +94,25 @@ public class CreateDatabase extends SQLiteOpenHelper {
         db.execSQL(createTableQuery);
         // Tạo bảng KhachHang
         String CREATE_TABLE_KHACH_HANG = "CREATE TABLE " + TB_KHACH_HANG + "("
-                + CL_KHACH_HANG_ID + " INTEGER PRIMARY KEY,"
+                + CL_KHACH_HANG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + CL_TEN_KHACH_HANG + " TEXT,"
                 + CL_DIA_CHI + " TEXT,"
-                + CL_email + "TEXT,"
-                + CL_SO_DIEN_THOAI + " TEXT"
+                + CL_EMAIL + " TEXT,"
+                + CL_SO_DIEN_THOAI + " TEXT,"
+                + CL_CMND_KHACH_HANG + " INTEGER "  // Thêm cột CMND và đặt là UNIQUE để tránh trùng lặp
                 + ")";
         db.execSQL(CREATE_TABLE_KHACH_HANG);
 
-        // Tạo bảng DangNhapKhachHang
+        // Tạo bảng DangNhapKhachHang với khóa ngoại
         String CREATE_TABLE_DANG_NHAP_KHACH_HANG = "CREATE TABLE " + TB_DANG_NHAP_KHACH_HANG + "("
                 + CL_DANG_NHAP_ID + " INTEGER PRIMARY KEY,"
-                + CL_DANG_NHAP_KHACH_HANG_ID + " INTEGER,"
                 + CL_TEN_DANGNHAP + " TEXT UNIQUE,"
                 + CL_MAT_KHAU + " TEXT,"
                 + CL_NGAYSINH + " DATE,"
-                + CL_CMND + " INTEGER,"
+                + CL_CMND + " INTEGER ,"
                 + CL_GIOITINH + " TEXT,"
                 + CL_VAI_TRO + " TEXT,"
-                + "FOREIGN KEY(" + CL_DANG_NHAP_KHACH_HANG_ID + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_KHACH_HANG_ID + ")"
+                + "FOREIGN KEY(" + CL_CMND + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_CMND_KHACH_HANG + ")"  // Thêm khóa ngoại từ CMND
                 + ")";
         db.execSQL(CREATE_TABLE_DANG_NHAP_KHACH_HANG);
         // Tạo bảng YeuThich
@@ -191,31 +191,34 @@ public class CreateDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_DANH_GIA_KHACH_HANG);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOAI_SAN_PHAM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_NHA_CUNG_CAP);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_YEU_THICH);
         // Tạo lại bảng mới
         onCreate(db);
     }
  //method
     @SuppressLint("Range")
-    public String getMatKhauDatabase(String tenDangNhap) {
+    public String getMatKhauDatabas(String tenDangNhap) {
         String matKhau = null;
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        // Query để lấy mật khẩu từ cơ sở dữ liệu
-        String query = "SELECT " + CreateDatabase.CL_MAT_KHAU + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_TEN_DANGNHAP + " = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{tenDangNhap});
+        try (SQLiteDatabase db = this.getReadableDatabase()) {
+            // Truy vấn để lấy mật khẩu từ cơ sở dữ liệu
+            String query = "SELECT " + CreateDatabase.CL_MAT_KHAU + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                    " WHERE " + CreateDatabase.CL_TEN_DANGNHAP + " = ?";
 
-        // Kiểm tra xem có dữ liệu hay không
-        if (cursor.moveToFirst()) {
-            matKhau = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_MAT_KHAU));
+            try (Cursor cursor = db.rawQuery(query, new String[]{tenDangNhap})) {
+                // Kiểm tra xem có dữ liệu hay không
+                if (cursor.moveToFirst()) {
+                    matKhau = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_MAT_KHAU));
+                }
+            }
+        } catch (Exception e) {
+            // Xử lý ngoại lệ nếu có
+            e.printStackTrace();
         }
-
-        // Đóng cursor và database
-        cursor.close();
-        db.close();
 
         return matKhau;
     }
+
     @SuppressLint("Range")
     public String getClTenDangnhapDatabase(String tenDangNhap) {
         String tendangnhap = null;
@@ -313,4 +316,97 @@ public class CreateDatabase extends SQLiteOpenHelper {
         db.close();
     }
 
+    //getCL
+    @SuppressLint("Range")
+    public String GetCLHoVaTenKhachHang(String cmnd){
+        String hoVaTen = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query để lấy chức vụ từ cơ sở dữ liệu
+        String query = "SELECT " + CreateDatabase. CL_TEN_KHACH_HANG  + " FROM " + CreateDatabase.TB_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cmnd});
+
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            hoVaTen = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_KHACH_HANG ));
+        }
+
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return hoVaTen;
+    }
+    //Get Column Email
+    @SuppressLint("Range")
+    public String GetCLEmailKhachHang(String cmnd){
+        String email = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query để lấy email từ khách hàng
+        String query = "SELECT " + CreateDatabase. CL_EMAIL  + " FROM " + CreateDatabase.TB_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cmnd});
+
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            email = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_EMAIL ));
+        }
+
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return email;
+    }
+    //Get Column SDT
+    @SuppressLint("Range")
+    public String GetCLSDTKhachHang(String cmnd){
+        String soDienThoai = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query để lấy Số điện thoại từ bảng khách hàng
+        String query = "SELECT " + CreateDatabase. CL_SO_DIEN_THOAI  + " FROM " + CreateDatabase.TB_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cmnd});
+
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            soDienThoai = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_SO_DIEN_THOAI ));
+        }
+
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return soDienThoai;
+    }
+    //Get Column Dia Ch
+    @SuppressLint("Range")
+    public String GetCLDiaChiKhachHang(String cmnd){
+        String diaChi = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
+        String query = "SELECT " + CreateDatabase. CL_DIA_CHI  + " FROM " + CreateDatabase.TB_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cmnd});
+
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            diaChi = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_DIA_CHI ));
+        }
+
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return diaChi;
+    }
+
+
+
 }
+
+
