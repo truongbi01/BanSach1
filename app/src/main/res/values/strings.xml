@@ -50,4 +50,8 @@
     <string name="chinhsua">Chỉnh sửa</string>
     <string name="ngaysinh">Ngày sinh : </string>
     <string name="CCCD">Số Căn Cước :</string>
+    <string name="Email">Email :</string>
+    <string name="Hovaten">Họ Và Tên :</string>
+    <string name="phone">Số Điện Thoại :</string>
+    <string name="address">Địa Chỉ</string>
 </resources>

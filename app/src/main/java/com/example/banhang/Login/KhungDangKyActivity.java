@@ -81,11 +81,11 @@ public class KhungDangKyActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = getSharedPreferences("ShareData", MODE_PRIVATE).edit();
                         editor.putString("ngaySinh", NgaySinhDK);
                         editor.putString("cmnd", CMNDK);
+                        editor.putString("hovaten",TenDangNhapDK);
                         editor.apply();
                         startActivity(intent);
                     }catch (Exception e){
                         Toast toast = Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT);toast.show();
-
                     }
 
                 }
@@ -127,24 +127,29 @@ public class KhungDangKyActivity extends AppCompatActivity {
         +Các phương thức put khác cho các kiểu dữ liệu khác nhau như put(String key, Integer value), put(String key, Long value), put(String key, Double value), vv.
         */
         try {
-            if (!isTaiKhoanTonTai(tenDangNhap, cmnd)) {
-                ContentValues values = new ContentValues();
-                values.put(CreateDatabase.CL_TEN_DANGNHAP, tenDangNhap);
-                values.put(CreateDatabase.CL_MAT_KHAU, matKhau);
-                values.put(CreateDatabase.CL_NGAYSINH, ngaysinh);
-                values.put(CreateDatabase.CL_CMND, cmnd);
-                values.put(CreateDatabase.CL_GIOITINH, gioitinh);
+            db.beginTransaction();
 
-                // Chèn dữ liệu vào bảng TB_DANG_NHAP_KHACH_HANG
-                db.insert(CreateDatabase.TB_DANG_NHAP_KHACH_HANG, null, values);
-                Toast toast = Toast.makeText(getApplicationContext(),"Đăng Ký Thành Công Nhé ~~",Toast.LENGTH_SHORT);toast.show();
+            // Thêm dữ liệu vào bảng TB_DANG_NHAP_KHACH_HANG
+            ContentValues valuesDangNhap = new ContentValues();
+            valuesDangNhap.put(CreateDatabase.CL_TEN_DANGNHAP, tenDangNhap);
+            valuesDangNhap.put(CreateDatabase.CL_MAT_KHAU, matKhau);
+            valuesDangNhap.put(CreateDatabase.CL_NGAYSINH, ngaysinh);
+            valuesDangNhap.put(CreateDatabase.CL_CMND, cmnd);
+            valuesDangNhap.put(CreateDatabase.CL_GIOITINH, gioitinh);
+            db.insert(CreateDatabase.TB_DANG_NHAP_KHACH_HANG, null, valuesDangNhap);
 
-            } else {
-                // Xử lý khi tài khoản hoặc số điện thoại đã tồn tại
-                Toast.makeText(this, "Tài Khoản Hoặc CMND Đã Tồn Tại", Toast.LENGTH_SHORT).show();
-            }
+            // Thêm dữ liệu vào bảng TB_KHACH_HANG
+            ContentValues valuesKhachHang = new ContentValues();
+            valuesKhachHang.put(CreateDatabase.CL_CMND_KHACH_HANG, cmnd);
+            db.insert(CreateDatabase.TB_KHACH_HANG, null, valuesKhachHang);
+
+            db.setTransactionSuccessful();
+            Toast toast = Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công Nhé ~~", Toast.LENGTH_SHORT);
+            toast.show();
         } catch (Exception e) {
             Log.e("DangKyNguoiDung", "Error during registration", e);
+        } finally {
+            db.endTransaction();
         }
 
     }
@@ -163,6 +168,9 @@ public class KhungDangKyActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         // Đóng đối tượng SQLiteDatabase khi Activity bị hủy
-
+        if (databaseHelper != null) {
+            databaseHelper.close();
+        }
     }
+
 }

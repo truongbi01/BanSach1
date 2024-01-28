@@ -60,9 +60,10 @@ public class KhungDangNhapActivity extends AppCompatActivity {
                     editor.putString("Username", edtTenDangNhapDN.getText().toString());
                     editor.putString("Password", edtMatKhauDN.getText().toString());
                     editor.putBoolean("Save", cbSaveAccount.isChecked());
+                    editor.putString("hovaten",edtTenDangNhapDN.getText().toString());
                     editor.apply();
                     // Cập nhật tên đăng nhập
-                    String matkhauDatabase = databaseHelper.getMatKhauDatabase(tenDangNhap);
+                    String matkhauDatabase = databaseHelper.getMatKhauDatabas(tenDangNhap);
                     String tenDangNhapDatabase = databaseHelper.getClTenDangnhapDatabase(tenDangNhap);
                     if (matKhauDangNhap.equals(matkhauDatabase) && tenDangNhap.equals(tenDangNhapDatabase) && databaseHelper.GetCLVaitro(tenDangNhap).equals("customer")) {
                         Intent intentDangnhap = new Intent(KhungDangNhapActivity.this, HomeActivity.class);
