@@ -20,6 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.banhang.R;
 import com.example.banhang.database.CreateDatabase;
 import com.example.banhang.View.HeaderMenu.*;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class KhungDangKyActivity extends AppCompatActivity {
     //Khai Báo Các Biên Giao Diện
     EditText edtTenDangNhap,edtMatKhau,edtNhapLaiMatKhau,edtNgaySinh,edtCMND;
@@ -59,8 +63,8 @@ public class KhungDangKyActivity extends AppCompatActivity {
                 if(TenDangNhapDK.equals("")||TenDangNhapDK.length()  < 5){
                     Toast toast = Toast.makeText(getApplicationContext(),"Ten Dang Nhap Dang Rong Va Phai Lon Hon 4 Ký Tự",Toast.LENGTH_SHORT);toast.show();
 
-                } else if (MatKhauDK.equals("") || MatKhauDK.length()  <= 6) {
-                    Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu Không Đươc Rỗng Và Phải Hơn 6 Kí Tự",Toast.LENGTH_SHORT);toast.show();
+                } else if (!isPasswordValid(MatKhauDK)) {
+                    Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu phải hơn 8 ký tự , có chữ hoa và số ",Toast.LENGTH_SHORT);toast.show();
 
                 } else if (NhapLaiMatKhauDK.equals("")) {
                     Toast toast = Toast.makeText(getApplicationContext(),"Bạn Chưa Nhập Lại Mật Khẩu",Toast.LENGTH_SHORT);toast.show();
@@ -71,8 +75,8 @@ public class KhungDangKyActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(),"Hãy Chọn Giới Tính Của Bạn",Toast.LENGTH_SHORT);toast.show();
                 } else if(NgaySinhDK.equals("")){
                     Toast toast = Toast.makeText(getApplicationContext(),"bạn Chưa Nhập Ngày Sinh",Toast.LENGTH_SHORT);toast.show();
-                }else if(CMNDK.equals("") || CMNDK.length() != 12 ){
-                    Toast toast = Toast.makeText(getApplicationContext(),"bạn Chưa Nhập CMND Và là  12 số",Toast.LENGTH_SHORT);toast.show();
+                }else if(!isValidCMND(CMNDK) ){
+                    Toast toast = Toast.makeText(getApplicationContext(),"CMND không hợp lệ",Toast.LENGTH_SHORT);toast.show();
                 }else {
                     try {
                         DangKyNguoiDung(TenDangNhapDK,MatKhauDK,NgaySinhDK,CMNDK,gioiTinh);
@@ -171,6 +175,22 @@ public class KhungDangKyActivity extends AppCompatActivity {
         if (databaseHelper != null) {
             databaseHelper.close();
         }
+    }
+    public static boolean isValidCMND(String cmnd) {
+        String cmndRegex = "^[0-9]{12}$";
+        Pattern pattern = Pattern.compile(cmndRegex);
+        Matcher matcher = pattern.matcher(cmnd);
+        return matcher.matches();
+    }
+    public static boolean isPasswordValid(String password) {
+        // Ít nhất 8 ký tự
+        // Ít nhất một chữ cái viết hoa
+        // Ít nhất một chữ cái viết thường
+        // Ít nhất một số
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+
+        // Kiểm tra mật khẩu với biểu thức chính quy
+        return password.matches(passwordRegex);
     }
 
 }
