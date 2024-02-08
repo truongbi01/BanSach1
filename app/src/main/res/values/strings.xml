@@ -54,4 +54,7 @@
     <string name="Hovaten">Họ Và Tên :</string>
     <string name="phone">Số Điện Thoại :</string>
     <string name="address">Địa Chỉ</string>
+    <string name="hovatenH">Họ Và Tên :</string>
+    <string name="emailH">Email :</string>
+    <string name="deleted_account">Deleted Account</string>
 </resources>

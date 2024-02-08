@@ -404,9 +404,52 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return diaChi;
     }
+    //Get CLNgaySinh
+    @SuppressLint("Range")
+    public String GetCLNgaySinh(String cmnd){
+        String birthDay = null;
+        SQLiteDatabase db = this.getReadableDatabase();
 
+        // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
+        String query = "SELECT " + CreateDatabase. CL_NGAYSINH  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            birthDay = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_NGAYSINH ));
+        }
 
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return birthDay;
+    }
+
+    //Get CMND
+
+    @SuppressLint("Range")
+    public String GetCLCMND(String cmnd){
+        String birthDay = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
+        String query = "SELECT " + CreateDatabase. CL_CMND  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{cmnd});
+
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            birthDay = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_CMND ));
+        }
+
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return birthDay;
+    }
 }
 
 

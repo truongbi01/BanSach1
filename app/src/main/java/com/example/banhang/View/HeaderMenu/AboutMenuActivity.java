@@ -59,15 +59,13 @@ public class AboutMenuActivity extends AppCompatActivity {
 
 
 
-        //Lấy dữ diệu từ DB
+        // Lấy dữ liệu từ DB
         String hoVaTendb = databaseHelper.GetCLHoVaTenKhachHang(cmnd);
         String emaildb = databaseHelper.GetCLEmailKhachHang(cmnd);
         String soDienThoaidb = databaseHelper.GetCLSDTKhachHang(cmnd);
         String diaChidb = databaseHelper.GetCLDiaChiKhachHang(cmnd);
 
-
-
-        updateUI(hoVaTendb,emaildb,soDienThoaidb,diaChidb);
+        updateUI(hoVaTendb, emaildb, soDienThoaidb, diaChidb);
         //Tạo thông tin khách hàng nếu còn null
         if(hoVaTendb== null || emaildb == null||soDienThoaidb == null||diaChidb == null){
             Toast.makeText(getApplicationContext(),"Cập Nhật lần đầu",Toast.LENGTH_SHORT).show();
