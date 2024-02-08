@@ -5,19 +5,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout">
+    android:id="@+id/drawer_layout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+   <androidx.constraintlayout.widget.ConstraintLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+      tools:context=".View.HomeActivity">
+      <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/app_bar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:theme="@style/ThemeOverlay.AppCompat.Dark"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:ignore="MissingConstraints">
+
+      </com.google.android.material.appbar.AppBarLayout>
+     
+   </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
+
+   <FrameLayout
+       android:id="@+id/mainFragment"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintBottom_toBottomOf="parent"/>
    <com.google.android.material.navigation.NavigationView
        android:id="@+id/nav_view"
-      app:headerLayout="@layout/layout_header"
+       app:headerLayout="@layout/layout_header"
        android:layout_width="match_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="match_parent"
        tools:ignore="MissingConstraints"
        app:menu="@menu/main_menu"
        android:layout_gravity="start">
 
    </com.google.android.material.navigation.NavigationView>
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

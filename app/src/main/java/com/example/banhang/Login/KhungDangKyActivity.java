@@ -131,25 +131,32 @@ public class KhungDangKyActivity extends AppCompatActivity {
         +Các phương thức put khác cho các kiểu dữ liệu khác nhau như put(String key, Integer value), put(String key, Long value), put(String key, Double value), vv.
         */
         try {
-            db.beginTransaction();
+            if(!isTaiKhoanTonTai(tenDangNhap, cmnd)){
+                db.beginTransaction();
 
-            // Thêm dữ liệu vào bảng TB_DANG_NHAP_KHACH_HANG
-            ContentValues valuesDangNhap = new ContentValues();
-            valuesDangNhap.put(CreateDatabase.CL_TEN_DANGNHAP, tenDangNhap);
-            valuesDangNhap.put(CreateDatabase.CL_MAT_KHAU, matKhau);
-            valuesDangNhap.put(CreateDatabase.CL_NGAYSINH, ngaysinh);
-            valuesDangNhap.put(CreateDatabase.CL_CMND, cmnd);
-            valuesDangNhap.put(CreateDatabase.CL_GIOITINH, gioitinh);
-            db.insert(CreateDatabase.TB_DANG_NHAP_KHACH_HANG, null, valuesDangNhap);
+                // Thêm dữ liệu vào bảng TB_DANG_NHAP_KHACH_HANG
+                ContentValues valuesDangNhap = new ContentValues();
+                valuesDangNhap.put(CreateDatabase.CL_TEN_DANGNHAP, tenDangNhap);
+                valuesDangNhap.put(CreateDatabase.CL_MAT_KHAU, matKhau);
+                valuesDangNhap.put(CreateDatabase.CL_NGAYSINH, ngaysinh);
+                valuesDangNhap.put(CreateDatabase.CL_CMND, cmnd);
+                valuesDangNhap.put(CreateDatabase.CL_GIOITINH, gioitinh);
+                db.insert(CreateDatabase.TB_DANG_NHAP_KHACH_HANG, null, valuesDangNhap);
 
-            // Thêm dữ liệu vào bảng TB_KHACH_HANG
-            ContentValues valuesKhachHang = new ContentValues();
-            valuesKhachHang.put(CreateDatabase.CL_CMND_KHACH_HANG, cmnd);
-            db.insert(CreateDatabase.TB_KHACH_HANG, null, valuesKhachHang);
+                // Thêm dữ liệu vào bảng TB_KHACH_HANG
+                ContentValues valuesKhachHang = new ContentValues();
+                valuesKhachHang.put(CreateDatabase.CL_CMND_KHACH_HANG, cmnd);
+                db.insert(CreateDatabase.TB_KHACH_HANG, null, valuesKhachHang);
 
-            db.setTransactionSuccessful();
-            Toast toast = Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công Nhé ~~", Toast.LENGTH_SHORT);
-            toast.show();
+                db.setTransactionSuccessful();
+                Toast toast = Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công Nhé ~~", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else {
+                Toast toast = Toast.makeText(getApplicationContext(), "Tên Đăng Nhặp hoặc CMND đã tồn tại", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
         } catch (Exception e) {
             Log.e("DangKyNguoiDung", "Error during registration", e);
         } finally {

@@ -41,6 +41,7 @@
             <group android:checkableBehavior="single">
                 <item android:title="@string/Share" android:id="@+id/mnShare" android:icon="@drawable/share_black"/>
                 <item android:title="@string/Rate_us" android:id="@+id/mnRateUs" android:icon="@drawable/rate_black"/>
+                <item android:title="@string/deleted_account" android:id="@+id/mnDLTAccount" android:icon="@drawable/icons_remove2_black" />
 
             </group>
         </menu>
