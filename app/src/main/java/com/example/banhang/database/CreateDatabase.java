@@ -12,41 +12,39 @@ import androidx.annotation.Nullable;
 public class CreateDatabase extends SQLiteOpenHelper {
     //*****Cơ Sở Dữ Liệu*****
     //Tên Database
-    private final static String DATABASE_NAME = "ShoppingSouvenir";
+    private final static String DATABASE_NAME = "BanHangLuuNiem";
 
     //Version
-    private final static int VERSION = 7;
+    private final static int VERSION = 10;
+    //Contex
+    Context mContext;
 
-    //Context
 
-    // Bảng KhachHang
-    public static final String TB_KHACH_HANG = "KhachHang";
-    public static final String CL_KHACH_HANG_ID = "MaKhachHang";
+    // Bảng Người dùng
+    public static final String TB_DANG_NHAP_KHACH_HANG = "DangNhapKhachHang";
+    public static final String CL_TEN_DANGNHAP = "TenDangNhap";
+    public static final String CL_MAT_KHAU = "MatKhau";
+
+    public static final String CL_NGAYSINH= "NGAYSINH";
+    public static final String CL_CMND= "CMND";
+    public static final String CL_GIOITINH= "GIOITINH";
+    public static final String CL_VAI_TRO = "VaiTro";
     public static final String CL_TEN_KHACH_HANG = "TenKhachHang";
     public static final String CL_DIA_CHI = "DiaChi";
     public static final String CL_SO_DIEN_THOAI = "SoDienThoai";
     public static final String CL_EMAIL = "email";
-    public static final String CL_CMND_KHACH_HANG= "cmnd";
-
-    // Bảng NhanVien
-    private static final String TB_NHAN_VIEN = "NhanVien";
-    private static final String CL_NHAN_VIEN_ID = "MaNhanVien";
-    private static final String CL_TEN_NHAN_VIEN = "TenNhanVien";
-    private static final String CL_CHUC_VU = "ChucVu";
-    // Bảng DangNhapKhachHang
-    public static final String TB_DANG_NHAP_KHACH_HANG = "DangNhapKhachHang";
-    public static final String CL_DANG_NHAP_ID = "MaDangNhap";
-    public static final String CL_TEN_DANGNHAP = "TenDangNhap";
-    public static final String CL_NGAYSINH= "NGAYSINH";
-    public static final String CL_CMND= "CMND";
-    public static final String CL_GIOITINH= "GIOITINH";
-    public static final String CL_MAT_KHAU = "MatKhau";
-    public static final String CL_VAI_TRO = "VaiTro";
 
     // Bảng DonHang
     private static final String TB_DON_HANG = "DonHang";
     private static final String CL_DON_HANG_ID = "MaDonHang";
+
     private static final String CL_NGAY_DAT_HANG = "NgayDatHang";
+    private static final String CL_TEN_NGUOI_DUNG = "TenDangNhap";
+
+    private static final String CL_TOTAL = "TongTien";
+    private static final String CL_TRANG_THAI = "TrangThai";
+
+
 
     // Bảng SanPham
     private static final String TB_SAN_PHAM = "SanPham";
@@ -54,6 +52,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private static final String CL_TEN_SAN_PHAM = "TenSanPham";
     private static final String CL_GIA_BAN = "GiaBan";
     private static final String CL_ANH_SAN_PHAM = "AnhSanPham";
+    private static final String CL_MO_TA = "MoTa";
+    private static final String CL_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
 
 
     // Bảng DanhGiaKhachHang
@@ -68,59 +68,41 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private static final String CL_SAN_PHAM_YEU_THICH_ID = "MaSanPhamYeuThich";
     // Bảng LoaiSanPham
     private static final String TB_LOAI_SAN_PHAM = "LoaiSanPham";
-    private static final String CL_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
+    private static final String CL_THE_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
     private static  final String CL_TEN_LOAI_SAN_PHAM= "TENLOAISANPHAM";
 
-    // Bảng NhaCungCap
-    private static final String TB_NHA_CUNG_CAP = "NhaCungCap";
-    private static final String CL_NHA_CUNG_CAP_ID = "MaNhaCungCap";
-    private static final String CL_TEN_NHA_CUNG_CAP = "TENNHACUNGCAP";
-    private static final String CL_SO_DIEN_THOAI_NCC = "SODIENTHOAINCC";
-    private static final String CL_DIA_CHI_NCC = "DIACHINCC";
 
-    // Bảng SanPhamCungCap
-    private static final String TB_SAN_PHAM_CUNG_CAP = "SanPhamCungCap";
     public CreateDatabase(@Nullable Context context) {
         super(context, DATABASE_NAME, null, VERSION);
+        //Context
+        this.mContext = context;
     }
-
-
 
     //Tạo Bảng
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Tạo bảng và các cột
-        String createTableQuery = "CREATE TABLE IF NOT EXISTS mytable (id INTEGER PRIMARY KEY, name TEXT)";
-        db.execSQL(createTableQuery);
-        // Tạo bảng KhachHang
-        String CREATE_TABLE_KHACH_HANG = "CREATE TABLE " + TB_KHACH_HANG + "("
-                + CL_KHACH_HANG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + CL_TEN_KHACH_HANG + " TEXT,"
-                + CL_DIA_CHI + " TEXT,"
-                + CL_EMAIL + " TEXT,"
-                + CL_SO_DIEN_THOAI + " TEXT,"
-                + CL_CMND_KHACH_HANG + " INTEGER "  // Thêm cột CMND và đặt là UNIQUE để tránh trùng lặp
-                + ")";
-        db.execSQL(CREATE_TABLE_KHACH_HANG);
 
-        // Tạo bảng DangNhapKhachHang với khóa ngoại
+
+        // Tạo bảng DangNhapKhachHang với username là khóa chính
         String CREATE_TABLE_DANG_NHAP_KHACH_HANG = "CREATE TABLE " + TB_DANG_NHAP_KHACH_HANG + "("
-                + CL_DANG_NHAP_ID + " INTEGER PRIMARY KEY,"
-                + CL_TEN_DANGNHAP + " TEXT UNIQUE,"
+                + CL_TEN_DANGNHAP + " TEXT PRIMARY KEY,"
                 + CL_MAT_KHAU + " TEXT,"
                 + CL_NGAYSINH + " DATE,"
                 + CL_CMND + " INTEGER ,"
                 + CL_GIOITINH + " TEXT,"
                 + CL_VAI_TRO + " TEXT,"
-                + "FOREIGN KEY(" + CL_CMND + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_CMND_KHACH_HANG + ")"  // Thêm khóa ngoại từ CMND
+                + CL_TEN_KHACH_HANG + " TEXT,"
+                + CL_DIA_CHI + " TEXT,"
+                + CL_SO_DIEN_THOAI + " TEXT,"
+                + CL_EMAIL + " TEXT"
                 + ")";
         db.execSQL(CREATE_TABLE_DANG_NHAP_KHACH_HANG);
         // Tạo bảng YeuThich
         String CREATE_TABLE_YEU_THICH = "CREATE TABLE " + TB_YEU_THICH + "("
                 + CL_YEU_THICH_ID + " INTEGER PRIMARY KEY,"
-                + CL_KHACH_HANG_YEU_THICH_ID + " INTEGER,"
+                + CL_KHACH_HANG_YEU_THICH_ID + " TEXT," // Change to TEXT, as it references CL_TEN_DANGNHAP
                 + CL_SAN_PHAM_YEU_THICH_ID + " INTEGER,"
-                + "FOREIGN KEY(" + CL_KHACH_HANG_YEU_THICH_ID + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_KHACH_HANG_ID + "),"
+                + "FOREIGN KEY(" + CL_KHACH_HANG_YEU_THICH_ID + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP + "),"
                 + "FOREIGN KEY(" + CL_SAN_PHAM_YEU_THICH_ID + ") REFERENCES " + TB_SAN_PHAM + "(" + CL_SAN_PHAM_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_YEU_THICH);
@@ -129,27 +111,22 @@ public class CreateDatabase extends SQLiteOpenHelper {
                 + CL_SAN_PHAM_ID + " INTEGER PRIMARY KEY,"
                 + CL_TEN_SAN_PHAM + " TEXT,"
                 + CL_GIA_BAN + " REAL,"
-                + CL_NHA_CUNG_CAP_ID + " INTEGER,"
+                + CL_LOAI_SAN_PHAM_ID + " INTEGER,"
+                + CL_MO_TA + " TEXT,"
                 + CL_ANH_SAN_PHAM + " TEXT,"  // Thêm cột ảnh sản phẩm
-                + "FOREIGN KEY(" + CL_NHA_CUNG_CAP_ID + ") REFERENCES " + TB_NHA_CUNG_CAP + "(" + CL_NHA_CUNG_CAP_ID + ")"
+                + "FOREIGN KEY(" + CL_LOAI_SAN_PHAM_ID + ") REFERENCES " + TB_LOAI_SAN_PHAM + "(" + CL_THE_LOAI_SAN_PHAM_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_SAN_PHAM);
 
 
-        // Tạo bảng NhanVien
-        String CREATE_TABLE_NHAN_VIEN = "CREATE TABLE " + TB_NHAN_VIEN + "("
-                + CL_NHAN_VIEN_ID + " INTEGER PRIMARY KEY,"
-                + CL_TEN_NHAN_VIEN + " TEXT,"
-                + CL_CHUC_VU + " TEXT"
-                + ")";
-        db.execSQL(CREATE_TABLE_NHAN_VIEN);
+
 
         // Tạo bảng DanhGiaKhachHang
         String CREATE_TABLE_DANH_GIA_KHACH_HANG = "CREATE TABLE " + TB_DANH_GIA_KHACH_HANG + "("
                 + CL_Ma_DANH_GIA + " INTEGER PRIMARY KEY,"
                 + CL_MA_KHACH_HANG_DANH_GIA + " INTEGER,"
                 + CL_DANHGIA_KHACH_HANG_ID + " INTEGER,"
-                + "FOREIGN KEY(" + CL_MA_KHACH_HANG_DANH_GIA + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_KHACH_HANG_ID + ")"
+                + "FOREIGN KEY(" + CL_MA_KHACH_HANG_DANH_GIA + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_DANH_GIA_KHACH_HANG);
 
@@ -164,33 +141,24 @@ public class CreateDatabase extends SQLiteOpenHelper {
         String CREATE_TABLE_DON_HANG = "CREATE TABLE " + TB_DON_HANG + "("
                 + CL_DON_HANG_ID + " INTEGER PRIMARY KEY,"
                 + CL_NGAY_DAT_HANG + " TEXT,"
-                + CL_KHACH_HANG_ID + " INTEGER,"
-                + "FOREIGN KEY(" + CL_KHACH_HANG_ID + ") REFERENCES " + TB_KHACH_HANG + "(" + CL_KHACH_HANG_ID + ")"
+                + CL_TEN_NGUOI_DUNG + " TEXT," // Giả sử TenDangNhap là tên người dùng đặt hàng
+                + CL_TOTAL + " REAL,"
+                + CL_TRANG_THAI + " INTEGER,"
+                + "FOREIGN KEY(" + CL_TEN_NGUOI_DUNG + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP +")"
                 + ")";
         db.execSQL(CREATE_TABLE_DON_HANG);
 
-        // Tạo bảng NhaCungCap
-         String CREATE_TABLE_NHA_CUNG_CAP = "CREATE TABLE " + TB_NHA_CUNG_CAP + "("
-                + CL_NHA_CUNG_CAP_ID + " INTEGER PRIMARY KEY,"
-                + CL_TEN_NHA_CUNG_CAP + " TEXT,"
-                + CL_DIA_CHI_NCC + " TEXT,"
-                + CL_SO_DIEN_THOAI_NCC + " TEXT"
-                + ")";
-        db.execSQL(CREATE_TABLE_NHA_CUNG_CAP);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Xóa và tạo lại bảng nếu có bất kỳ thay đổi cấu trúc nào
-        db.execSQL("DROP TABLE IF EXISTS " + TB_KHACH_HANG);
         db.execSQL("DROP TABLE IF EXISTS " + TB_DANG_NHAP_KHACH_HANG);
         db.execSQL("DROP TABLE IF EXISTS " + TB_DON_HANG);
         db.execSQL("DROP TABLE IF EXISTS " + TB_SAN_PHAM);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_NHAN_VIEN);
         db.execSQL("DROP TABLE IF EXISTS " + TB_DANH_GIA_KHACH_HANG);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOAI_SAN_PHAM);
-        db.execSQL("DROP TABLE IF EXISTS " + TB_NHA_CUNG_CAP);
         db.execSQL("DROP TABLE IF EXISTS " + TB_YEU_THICH);
         // Tạo lại bảng mới
         onCreate(db);
@@ -323,8 +291,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query để lấy chức vụ từ cơ sở dữ liệu
-        String query = "SELECT " + CreateDatabase. CL_TEN_KHACH_HANG  + " FROM " + CreateDatabase.TB_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        String query = "SELECT " + CreateDatabase. CL_TEN_KHACH_HANG  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
         // Kiểm tra xem có dữ liệu hay không
@@ -345,8 +313,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query để lấy email từ khách hàng
-        String query = "SELECT " + CreateDatabase. CL_EMAIL  + " FROM " + CreateDatabase.TB_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        String query = "SELECT " + CreateDatabase. CL_EMAIL  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
         // Kiểm tra xem có dữ liệu hay không
@@ -367,8 +335,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query để lấy Số điện thoại từ bảng khách hàng
-        String query = "SELECT " + CreateDatabase. CL_SO_DIEN_THOAI  + " FROM " + CreateDatabase.TB_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        String query = "SELECT " + CreateDatabase. CL_SO_DIEN_THOAI  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
         // Kiểm tra xem có dữ liệu hay không
@@ -389,8 +357,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
-        String query = "SELECT " + CreateDatabase. CL_DIA_CHI  + " FROM " + CreateDatabase.TB_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+        String query = "SELECT " + CreateDatabase. CL_DIA_CHI  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
         // Kiểm tra xem có dữ liệu hay không
@@ -412,7 +380,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
         String query = "SELECT " + CreateDatabase. CL_NGAYSINH  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + " = ?";
+                " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
         // Kiểm tra xem có dữ liệu hay không

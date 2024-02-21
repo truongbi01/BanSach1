@@ -163,9 +163,9 @@ public class AboutMenuActivity extends AppCompatActivity {
         values.put(CreateDatabase.CL_DIA_CHI, diaChi);
 
         int rowsAffected = db.update(
-                CreateDatabase.TB_KHACH_HANG,
+                CreateDatabase.TB_DANG_NHAP_KHACH_HANG,
                 values,
-                CreateDatabase.CL_CMND_KHACH_HANG + "=?",
+                CreateDatabase.CL_CMND + "=?",
                 new String[]{edtCMND.getText().toString()}
         );
 
@@ -207,8 +207,8 @@ public class AboutMenuActivity extends AppCompatActivity {
 
     private boolean isThongTinKhachHang(String cmnd){
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
-        String query = "SELECT * FROM " + CreateDatabase.TB_KHACH_HANG +
-                " WHERE " + CreateDatabase.CL_CMND_KHACH_HANG + "=?";
+        String query = "SELECT * FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_CMND + "=?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
         boolean result = cursor.getCount() > 0;
         cursor.close();

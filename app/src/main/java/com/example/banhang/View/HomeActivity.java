@@ -151,12 +151,7 @@ public class HomeActivity extends AppCompatActivity {
                     new String[]{cmnd}
             );
 
-            // Xóa từ bảng TB_KHACH_HANG
-            db.delete(
-                    CreateDatabase.TB_KHACH_HANG,
-                    CreateDatabase.CL_CMND_KHACH_HANG + "=?",
-                    new String[]{cmnd}
-            );
+
 
             // Gọi setTransactionSuccessful() để đánh dấu rằng giao dịch thành công
             db.setTransactionSuccessful();
