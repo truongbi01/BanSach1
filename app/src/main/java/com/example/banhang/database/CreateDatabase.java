@@ -12,12 +12,10 @@ import androidx.annotation.Nullable;
 public class CreateDatabase extends SQLiteOpenHelper {
     //*****Cơ Sở Dữ Liệu*****
     //Tên Database
-    private final static String DATABASE_NAME = "BanHangLuuNiem";
+    private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 10;
-    //Contex
-    Context mContext;
+    private final static int VERSION = 11;
 
 
     // Bảng Người dùng
@@ -74,8 +72,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
     public CreateDatabase(@Nullable Context context) {
         super(context, DATABASE_NAME, null, VERSION);
-        //Context
-        this.mContext = context;
+
     }
 
     //Tạo Bảng
@@ -117,10 +114,6 @@ public class CreateDatabase extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + CL_LOAI_SAN_PHAM_ID + ") REFERENCES " + TB_LOAI_SAN_PHAM + "(" + CL_THE_LOAI_SAN_PHAM_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_SAN_PHAM);
-
-
-
-
         // Tạo bảng DanhGiaKhachHang
         String CREATE_TABLE_DANH_GIA_KHACH_HANG = "CREATE TABLE " + TB_DANH_GIA_KHACH_HANG + "("
                 + CL_Ma_DANH_GIA + " INTEGER PRIMARY KEY,"
@@ -147,8 +140,6 @@ public class CreateDatabase extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + CL_TEN_NGUOI_DUNG + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP +")"
                 + ")";
         db.execSQL(CREATE_TABLE_DON_HANG);
-
-
     }
 
     @Override
