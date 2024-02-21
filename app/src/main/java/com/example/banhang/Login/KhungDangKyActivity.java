@@ -36,70 +36,70 @@ public class KhungDangKyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_dangky);
-        databaseHelper = new CreateDatabase(this);
-        db = databaseHelper.getWritableDatabase();
-        AnhXa();
+            databaseHelper = new CreateDatabase(this);
+            db = databaseHelper.getWritableDatabase();
+            AnhXa();
+            btDongY.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String TenDangNhapDK = edtTenDangNhap.getText().toString();
+                    String MatKhauDK = edtMatKhau.getText().toString();
+                    String NhapLaiMatKhauDK = edtNhapLaiMatKhau.getText().toString();
+                    String NgaySinhDK = edtNgaySinh.getText().toString();
+                    String CMNDK = edtCMND.getText().toString();
+                    int selectedRadioButtonId = rdogrGioiTinh.getCheckedRadioButtonId();
+                    String gioiTinh;
+                    if (selectedRadioButtonId != -1) {
+                        // Tìm RadioButton dựa trên ID
+                        RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
 
-        btDongY.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String TenDangNhapDK = edtTenDangNhap.getText().toString();
-                String MatKhauDK = edtMatKhau.getText().toString();
-                String NhapLaiMatKhauDK = edtNhapLaiMatKhau.getText().toString();
-                String NgaySinhDK = edtNgaySinh.getText().toString();
-                String CMNDK = edtCMND.getText().toString();
-                int selectedRadioButtonId = rdogrGioiTinh.getCheckedRadioButtonId();
-                String gioiTinh;
-                if (selectedRadioButtonId != -1) {
-                    // Tìm RadioButton dựa trên ID
-                    RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
+                        // Lấy văn bản của RadioButton
+                        gioiTinh = selectedRadioButton.getText().toString();
 
-                    // Lấy văn bản của RadioButton
-                     gioiTinh = selectedRadioButton.getText().toString();
+                    } else {
+                        gioiTinh = "";
+                    }
+                    if(TenDangNhapDK.equals("")||TenDangNhapDK.length()  < 5){
+                        Toast toast = Toast.makeText(getApplicationContext(),"Ten Dang Nhap Dang Rong Va Phai Lon Hon 4 Ký Tự",Toast.LENGTH_SHORT);toast.show();
 
-                } else {
-                    gioiTinh = "";
-                }
-                if(TenDangNhapDK.equals("")||TenDangNhapDK.length()  < 5){
-                    Toast toast = Toast.makeText(getApplicationContext(),"Ten Dang Nhap Dang Rong Va Phai Lon Hon 4 Ký Tự",Toast.LENGTH_SHORT);toast.show();
+                    } else if (!isPasswordValid(MatKhauDK)) {
+                        Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu phải hơn 8 ký tự , có chữ hoa và số ",Toast.LENGTH_SHORT);toast.show();
 
-                } else if (!isPasswordValid(MatKhauDK)) {
-                    Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu phải hơn 8 ký tự , có chữ hoa và số ",Toast.LENGTH_SHORT);toast.show();
+                    } else if (NhapLaiMatKhauDK.equals("")) {
+                        Toast toast = Toast.makeText(getApplicationContext(),"Bạn Chưa Nhập Lại Mật Khẩu",Toast.LENGTH_SHORT);toast.show();
 
-                } else if (NhapLaiMatKhauDK.equals("")) {
-                    Toast toast = Toast.makeText(getApplicationContext(),"Bạn Chưa Nhập Lại Mật Khẩu",Toast.LENGTH_SHORT);toast.show();
+                    } else if (!NhapLaiMatKhauDK.equals(edtMatKhau.getText().toString())) {
+                        Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu Bạn Nhập Không Trùng Khớp",Toast.LENGTH_SHORT);toast.show();
+                    } else if (rdogrGioiTinh.getCheckedRadioButtonId() == -1) {
+                        Toast toast = Toast.makeText(getApplicationContext(),"Hãy Chọn Giới Tính Của Bạn",Toast.LENGTH_SHORT);toast.show();
+                    } else if(NgaySinhDK.equals("")){
+                        Toast toast = Toast.makeText(getApplicationContext(),"bạn Chưa Nhập Ngày Sinh",Toast.LENGTH_SHORT);toast.show();
+                    }else if(!isValidCMND(CMNDK) ){
+                        Toast toast = Toast.makeText(getApplicationContext(),"CMND không hợp lệ",Toast.LENGTH_SHORT);toast.show();
+                    }else {
+                        try {
+                            DangKyNguoiDung(TenDangNhapDK,MatKhauDK,NgaySinhDK,CMNDK,gioiTinh);
+                            Intent intent = new Intent(KhungDangKyActivity.this, KhungDangNhapActivity.class);
+                            // Lưu dữ liệu
+                            SharedPreferences.Editor editor = getSharedPreferences("ShareData", MODE_PRIVATE).edit();
+                            editor.putString("ngaySinh", NgaySinhDK);
+                            editor.putString("cmnd", CMNDK);
+                            editor.putString("hovaten",TenDangNhapDK);
+                            editor.apply();
+                            startActivity(intent);
+                        }catch (Exception e){
+                            Toast toast = Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT);toast.show();
+                        }
 
-                } else if (!NhapLaiMatKhauDK.equals(edtMatKhau.getText().toString())) {
-                    Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu Bạn Nhập Không Trùng Khớp",Toast.LENGTH_SHORT);toast.show();
-                } else if (rdogrGioiTinh.getCheckedRadioButtonId() == -1) {
-                    Toast toast = Toast.makeText(getApplicationContext(),"Hãy Chọn Giới Tính Của Bạn",Toast.LENGTH_SHORT);toast.show();
-                } else if(NgaySinhDK.equals("")){
-                    Toast toast = Toast.makeText(getApplicationContext(),"bạn Chưa Nhập Ngày Sinh",Toast.LENGTH_SHORT);toast.show();
-                }else if(!isValidCMND(CMNDK) ){
-                    Toast toast = Toast.makeText(getApplicationContext(),"CMND không hợp lệ",Toast.LENGTH_SHORT);toast.show();
-                }else {
-                    try {
-                        DangKyNguoiDung(TenDangNhapDK,MatKhauDK,NgaySinhDK,CMNDK,gioiTinh);
-                        Intent intent = new Intent(KhungDangKyActivity.this, KhungDangNhapActivity.class);
-                        // Lưu dữ liệu
-                        SharedPreferences.Editor editor = getSharedPreferences("ShareData", MODE_PRIVATE).edit();
-                        editor.putString("ngaySinh", NgaySinhDK);
-                        editor.putString("cmnd", CMNDK);
-                        editor.putString("hovaten",TenDangNhapDK);
-                        editor.apply();
-                        startActivity(intent);
-                    }catch (Exception e){
-                        Toast toast = Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT);toast.show();
                     }
 
                 }
+            });
+            findViewById(R.id.btThoat).setOnClickListener(v -> {
+                Intent intent  = new Intent(KhungDangKyActivity.this,KhungDangNhapActivity.class);
+                startActivity(intent);
+            });
 
-            }
-        });
-        findViewById(R.id.btThoat).setOnClickListener(v -> {
-            Intent intent  = new Intent(KhungDangKyActivity.this,KhungDangNhapActivity.class);
-            startActivity(intent);
-        });
     }
     public  void AnhXa(){
         edtTenDangNhap = findViewById(R.id.edtTenDangNhap);
@@ -131,7 +131,7 @@ public class KhungDangKyActivity extends AppCompatActivity {
         +Các phương thức put khác cho các kiểu dữ liệu khác nhau như put(String key, Integer value), put(String key, Long value), put(String key, Double value), vv.
         */
         try {
-            if(!isTaiKhoanTonTai(tenDangNhap, cmnd)){
+            if(!isTaiKhoanTonTai(tenDangNhap, cmnd) && db != null && db.isOpen()){
                 db.beginTransaction();
 
                 // Thêm dữ liệu vào bảng TB_DANG_NHAP_KHACH_HANG
@@ -142,9 +142,6 @@ public class KhungDangKyActivity extends AppCompatActivity {
                 valuesDangNhap.put(CreateDatabase.CL_CMND, cmnd);
                 valuesDangNhap.put(CreateDatabase.CL_GIOITINH, gioitinh);
                 db.insert(CreateDatabase.TB_DANG_NHAP_KHACH_HANG, null, valuesDangNhap);
-
-
-
                 db.setTransactionSuccessful();
                 Toast toast = Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công Nhé ~~", Toast.LENGTH_SHORT);
                 toast.show();
@@ -157,7 +154,10 @@ public class KhungDangKyActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("DangKyNguoiDung", "Error during registration", e);
         } finally {
-            db.endTransaction();
+            if(db != null && db.isOpen()){
+                db.endTransaction();
+                db.close();
+            }
         }
 
     }
@@ -169,13 +169,17 @@ public class KhungDangKyActivity extends AppCompatActivity {
         Cursor cursor = db.rawQuery(query, new String[]{tenDangNhap, cmnd});
         boolean result = cursor.getCount() > 0;
         cursor.close();
-
         return result;
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Đóng đối tượng SQLiteDatabase khi Activity bị hủy
+        // Đảm bảo kiểm tra null trước khi đóng
+        if (db != null && db.isOpen()) {
+            db.close();
+        }
+
+        // Đóng đối tượng SQLiteDatabase khi không cần sử dụng nữa
         if (databaseHelper != null) {
             databaseHelper.close();
         }
