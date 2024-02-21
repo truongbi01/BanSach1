@@ -115,8 +115,7 @@ public class AboutFragment extends Fragment {
                         if (validateInput(hoVaTenL, emailL, sodienThoaiL, diaChiL) && validateInput(ngaySinhP, cmnd)) {
                             try {
                                 database = databaseHelper.getWritableDatabase();
-                                CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL);
-                                CapNhatNgaySinhVaCMND(ngaysinhU, cmndU);
+                                CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL,ngaysinhU,cmndU);
                                 tvThongBao.setText("");
 
                             } catch (Exception e) {
@@ -147,8 +146,7 @@ public class AboutFragment extends Fragment {
                     if (validateInput(hoVaTenL, emailL, sodienThoaiL, diaChiL) && validateInput(ngaySinhP, cmnd)) {
                         try {
                             database = databaseHelper.getWritableDatabase();
-                            CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL);
-                            CapNhatNgaySinhVaCMND(ngaysinhU, cmndU);
+                            CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL,ngaysinhU,cmndU);
                             tvThongBao.setText("");
 
                         } catch (Exception e) {
@@ -182,18 +180,20 @@ public class AboutFragment extends Fragment {
 
 
 
-    private void CapNhatThongTinKhachHang(String hoVaTen, String email, String soDienThoai, String diaChi) {
+    private void CapNhatThongTinKhachHang(String hoVaTen, String email, String soDienThoai, String diaChi,String ngaySinh, String cmnd) {
         ContentValues values = new ContentValues();
         values.put(CreateDatabase.CL_TEN_KHACH_HANG, hoVaTen);
         values.put(CreateDatabase.CL_EMAIL, email);
         values.put(CreateDatabase.CL_SO_DIEN_THOAI, soDienThoai);
         values.put(CreateDatabase.CL_DIA_CHI, diaChi);
+        values.put(CreateDatabase.CL_NGAYSINH, ngaySinh);
+        values.put(CreateDatabase.CL_CMND, cmnd);
 
-        int rowsAffected = database.update(
-                CreateDatabase.TB_KHACH_HANG,
+        int rowsAffected =    database.update(
+                CreateDatabase.TB_DANG_NHAP_KHACH_HANG,
                 values,
-                CreateDatabase.CL_CMND_KHACH_HANG + "=?",
-                new String[]{edtCMND.getText().toString()}
+                CreateDatabase.CL_CMND + "=?",
+                new String[]{cmnd}
         );
 
         if (rowsAffected > 0) {
@@ -297,20 +297,7 @@ public class AboutFragment extends Fragment {
         return matcher.matches();
     }
 
-    private void CapNhatNgaySinhVaCMND(String ngaySinh, String cmnd) {
-        ContentValues values = new ContentValues();
-        values.put(CreateDatabase.CL_NGAYSINH, ngaySinh);
-        values.put(CreateDatabase.CL_CMND, cmnd);
 
-        database.update(
-                CreateDatabase.TB_DANG_NHAP_KHACH_HANG,
-                values,
-                CreateDatabase.CL_CMND + "=?",
-                new String[]{cmnd}
-        );
-
-        Toast.makeText(getActivity(), "Cập Nhật Ngày Sinh và CMND Thành Công", Toast.LENGTH_SHORT).show();
-    }
     @SuppressLint("SetTextI18n")
     private void updateUI(String hoVaTen, String email, String soDienThoai, String diaChi,String ngaysinh, String cmnd) {
         edtHoVaTen.setText(hoVaTen);

@@ -143,10 +143,7 @@ public class KhungDangKyActivity extends AppCompatActivity {
                 valuesDangNhap.put(CreateDatabase.CL_GIOITINH, gioitinh);
                 db.insert(CreateDatabase.TB_DANG_NHAP_KHACH_HANG, null, valuesDangNhap);
 
-                // Thêm dữ liệu vào bảng TB_KHACH_HANG
-                ContentValues valuesKhachHang = new ContentValues();
-                valuesKhachHang.put(CreateDatabase.CL_CMND_KHACH_HANG, cmnd);
-                db.insert(CreateDatabase.TB_KHACH_HANG, null, valuesKhachHang);
+
 
                 db.setTransactionSuccessful();
                 Toast toast = Toast.makeText(getApplicationContext(), "Đăng Ký Thành Công Nhé ~~", Toast.LENGTH_SHORT);
