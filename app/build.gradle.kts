@@ -26,6 +26,7 @@ android {
         }
     }
     compileOptions {
+        encoding = "UTF-8"
     }
     buildToolsVersion = "34.0.0"
 }

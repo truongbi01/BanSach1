@@ -65,13 +65,14 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private static final String CL_KHACH_HANG_YEU_THICH_ID = "MaKhachHangYeuThich";
     private static final String CL_SAN_PHAM_YEU_THICH_ID = "MaSanPhamYeuThich";
     // Bảng LoaiSanPham
-    private static final String TB_LOAI_SAN_PHAM = "LoaiSanPham";
-    private static final String CL_THE_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
-    private static  final String CL_TEN_LOAI_SAN_PHAM= "TENLOAISANPHAM";
+    public static final String TB_LOAI_SAN_PHAM = "LoaiSanPham";
+    public static final String CL_THE_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
+    public static  final String CL_TEN_LOAI_SAN_PHAM= "TENLOAISANPHAM";
 
 
     public CreateDatabase(@Nullable Context context) {
         super(context, DATABASE_NAME, null, VERSION);
+        setWriteAheadLoggingEnabled(true); // Đảm bảo hỗ trợ UTF-8
 
     }
 
