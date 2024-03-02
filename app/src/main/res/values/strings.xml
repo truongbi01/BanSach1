@@ -57,4 +57,31 @@
     <string name="hovatenH">Họ Và Tên :</string>
     <string name="emailH">Email :</string>
     <string name="deleted_account">Deleted Account</string>
+
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">GOT IT</string>
+
+    <string name="slide_1_title">Hello Everyone</string>
+    <string name="slide_1_desc">
+    Chào mừng mọi người đến với trang web mua sắm của nhóm mình
+    </string>
+
+    <string name="slide_2_title">Discount</string>
+    <string name="slide_2_desc">Mua Sắm với các mã khuyến mãi vô cùng hấp dẫn !!</string>
+
+    <string name="slide_3_title">Shipping</string>
+    <string name="slide_3_desc">Giao hàng nhanh chóng!</string>
+
+    <string name="slide_4_title">World Travel</string>
+    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">Play Again</string>
+    <string name="themanh">Thêm Ảnh</string>
+    <string name="themsanpham">Thêm Sản Phẩm</string>
+    <string name="quanly">Quản lý</string>
+    <string name="nhaptentheloai">Nhập tên thể loại</string>
+    <string name="themtheloai">Thêm </string>
 </resources>

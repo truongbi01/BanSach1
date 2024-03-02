@@ -3,7 +3,6 @@ package com.example.banhang.View.fragment;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -21,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.banhang.R;
-import com.example.banhang.View.HeaderMenu.AboutMenuActivity;
-import com.example.banhang.View.HomeActivity;
 import com.example.banhang.database.CreateDatabase;
 
 import java.text.ParseException;
@@ -242,7 +239,6 @@ public class AboutFragment extends Fragment {
         edtCMND = view.findViewById(R.id.edtCMND);
         btnSave = view.findViewById(R.id.btnSave);
         databaseHelper = new CreateDatabase(getActivity());
-        lnThongTinDangNhap = view.findViewById(R.id.lnThongTinDangNhap);
         lnCapNhatThongTinKhachHang = view.findViewById(R.id.lnCapNhatThongTinKhachHang);
     }
 
