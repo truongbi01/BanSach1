@@ -81,7 +81,7 @@
                             android:layout_margin="@dimen/size10dp"
                             android:drawableStart="@drawable/user"
                             android:drawablePadding="@dimen/size10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
                             android:autofillHints="username"
                             >
 
@@ -100,7 +100,8 @@
                             android:drawableStart="@drawable/lock"
                             android:drawablePadding="@dimen/size10dp"
                             android:autofillHints="password"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
+
                             />
                         <EditText
                             android:id="@+id/edtNhapLaiMatKhau"
@@ -116,7 +117,7 @@
                             android:drawableStart="@drawable/lock"
                             android:drawablePadding="@dimen/size10dp"
                             android:autofillHints="password"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
 
                             />
                         <RadioGroup
@@ -153,7 +154,8 @@
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
                             android:layout_margin="@dimen/size10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
+
                             android:drawableStart="@drawable/calender"
                             android:drawablePadding="@dimen/size10dp"
                             android:autofillHints="creditCardExpirationDate"
@@ -168,7 +170,8 @@
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
                             android:layout_margin="@dimen/size10dp"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/black"
+
                             android:drawableStart="@drawable/cmnd2"
                             android:drawablePadding="@dimen/size10dp"
                             android:autofillHints="creditCardNumber"
