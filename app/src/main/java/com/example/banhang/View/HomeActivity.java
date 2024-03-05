@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_customer);
         AnhXa();
@@ -45,11 +46,19 @@ public class HomeActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Main");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        if (savedInstanceState == null) { // Đảm bảo fragment chỉ được thêm khi Activity được tạo lần đầu tiên
+            Fragment fmNew = new HomeFragment();
+            loadFragment(fmNew);
+            actionBar.setTitle("Home");
+
+        }
+
+
 
         //Load fragment
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {  Fragment fmNew;
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {      Fragment fmNew;
                 int menuID = item.getItemId();
                 if (menuID == R.id.miHome) {
                     getSupportActionBar().setTitle(item.getTitle());
