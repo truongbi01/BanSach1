@@ -1,14 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-    <!-- TODO: Update blank fragment layout -->
+    android:layout_height="match_parent">
+<LinearLayout
+    android:id="@+id/lnSrcAnh"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <TextView
+        android:id="@+id/tvNhapAnh"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.6"
+        android:padding="16dp"
+        android:text="Nhập Src Ảnh :"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+    <EditText
+        android:id="@+id/edtNhapSrcAnh"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:hint="link ảnh"
+        />
+
+</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnTenSanPham"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/lnSrcAnh">
+        <TextView
+            android:id="@+id/tvTenSanPham"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_below="@id/edtNhapSrcAnh"
+            android:padding="16dp"
+            android:text="Tên Sản Phẩm:"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/edtTenSanPham"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Tên Sản Phẩm"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnGiaTien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/lnTenSanPham"
+        >
+
+        <TextView
+            android:id="@+id/tvGiaTien"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:text="Giá Tiền  :"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/edtGiaTien"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="10000"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lnMoTa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/lnGiaTien">
+        <TextView
+            android:id="@+id/tvMoTa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_below="@id/lnGiaTien"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="Mô tả :"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/edtMoTa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Product Description. This is a placeholder description for the product. You can provide more details here."
+            android:textSize="20sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lnLoaiSanPham"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/lnMoTa">
+        <TextView
+            android:id="@+id/tvLoaiSanPham"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.9"
+            android:layout_below="@id/lnGiaTien"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:text="Id loại sản phẩm :"
+            android:textSize="20sp" />
+        <EditText
+            android:id="@+id/edtLoaiSanPham"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Mã loại"
+            android:inputType="number"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnThemSanPham"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lnLoaiSanPham"
+        android:background="@color/colorPrimary"
+        android:text="Thêm Sản phẩm"
+        android:textColor="@android:color/white"
+        android:padding="16dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/btnThemSanPham"
+        android:id="@+id/rvListCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        />
+</RelativeLayout>

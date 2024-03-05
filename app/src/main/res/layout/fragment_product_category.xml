@@ -25,8 +25,8 @@
         android:layout_gravity="center"
         android:background="@color/dolv3"/>
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rvList"
         />
 </LinearLayout>

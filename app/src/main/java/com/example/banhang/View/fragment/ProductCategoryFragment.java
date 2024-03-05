@@ -79,7 +79,7 @@ public class ProductCategoryFragment extends Fragment {
     }
      EditText edtTenTheLoai;
     Button btnThem,btnDeleted;
-    private CreateDatabase databaseHelper;
+     CreateDatabase databaseHelper;
     RecyclerView rvListC;
     ArrayList<ProductsCategory> lstCategory;
     CategoryAdapter categoryAdapter;

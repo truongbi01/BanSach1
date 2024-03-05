@@ -14,46 +14,40 @@ import java.util.ArrayList;
 
 import com.example.banhang.View.RecyclerViewCategory.*;
 import com.example.banhang.database.*;
+
 public class Utils {
 
-    public static Bitmap convertToBitmapFromAssets(Context context, String nameImage)  {
+    public static Bitmap convertToBitmapFromAssets(Context context, String nameImage) {
         AssetManager assetManager = context.getAssets();
-        try{
-            InputStream inputStream = assetManager.open("image/"+ nameImage);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-            return  bitmap;
-
-        }catch (IOException e){
+        try {
+            InputStream inputStream = assetManager.open("images/" + nameImage);
+            return BitmapFactory.decodeStream(inputStream);
+        } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
+
     public static ArrayList<ProductsCategory> loadCategoriesFromDatabase(Context context) {
-        // Thực hiện truy vấn cơ sở dữ liệu ở đây và trả về danh sách thể loại
         CreateDatabase createDatabase = new CreateDatabase(context);
-
-        // Ví dụ sử dụng CreateDatabase từ mã nguồn của bạn
-
         ArrayList<ProductsCategory> categoryList = new ArrayList<>();
         SQLiteDatabase db = createDatabase.getReadableDatabase();
 
-        // Thực hiện truy vấn và đọc dữ liệu từ cơ sở dữ liệu
         String query = "SELECT " + CreateDatabase.CL_THE_LOAI_SAN_PHAM_ID + ", " + CreateDatabase.CL_TEN_LOAI_SAN_PHAM +
                 " FROM " + CreateDatabase.TB_LOAI_SAN_PHAM;
+
         Cursor cursor = db.rawQuery(query, null);
 
         if (cursor.moveToFirst()) {
             do {
                 @SuppressLint("Range") String categoryId = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_THE_LOAI_SAN_PHAM_ID));
-                @SuppressLint("Range") String categoryName = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_LOAI_SAN_PHAM));
+                @SuppressLint("Range")String categoryName = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_LOAI_SAN_PHAM));
 
-                // Tạo đối tượng Category từ dữ liệu cơ sở dữ liệu và thêm vào danh sách
                 ProductsCategory category = new ProductsCategory(categoryId, categoryName);
                 categoryList.add(category);
             } while (cursor.moveToNext());
         }
 
-        // Đóng cursor và database
         cursor.close();
         db.close();
 
@@ -62,7 +56,6 @@ public class Utils {
 
     public static ArrayList<ProductsCategory> LoadDataCategory(Context context) {
         ArrayList<ProductsCategory> lstUser = new ArrayList<>();
-        // Sử dụng dữ liệu từ cơ sở dữ liệu thay vì dữ liệu mẫu cứng
         ArrayList<ProductsCategory> categoryList = Utils.loadCategoriesFromDatabase(context);
 
         for (ProductsCategory category : categoryList) {
@@ -70,5 +63,46 @@ public class Utils {
         }
 
         return lstUser;
+    }
+
+    public static ArrayList<Products> LoadProductsFromDatabase(Context context) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<Products> listProducts = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
+
+        String query = "SELECT * FROM " + CreateDatabase.TB_SAN_PHAM;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String tenSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_SAN_PHAM));
+                @SuppressLint("Range") String giaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_GIA_BAN));
+                @SuppressLint("Range") String moTaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_MO_TA));
+                @SuppressLint("Range") String anhSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_ANH_SAN_PHAM));
+                @SuppressLint("Range")  String idTheLoaiSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_LOAI_SAN_PHAM_ID));
+
+                Products newProducts1 = new Products(context, tenSanPham, giaSanPham, moTaSanPham, anhSanPham, idTheLoaiSanPham);
+                listProducts.add(newProducts1);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listProducts;
+    }
+
+    public static ArrayList<Products> LoadDaTaProducts(Context context) {
+        ArrayList<Products> lstProducts = new ArrayList<>();
+        ArrayList<Products> productsArrayList = Utils.LoadProductsFromDatabase(context);
+
+        for (Products products : productsArrayList) {
+            if (products != null) {
+                lstProducts.add(new Products(context, products.getName(), products.getPrice(), products.getDes(), products.getImage(), products.getCategoryId()));
+            }
+        }
+
+        return lstProducts;
     }
 }

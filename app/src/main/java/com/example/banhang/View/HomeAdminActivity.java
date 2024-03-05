@@ -42,6 +42,12 @@ public class HomeAdminActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Main");
         actionBar.setDisplayHomeAsUpEnabled(true);
+        if (savedInstanceState == null) { // Đảm bảo fragment chỉ được thêm khi Activity được tạo lần đầu tiên
+            Fragment fmNew = new HomeFragment();
+            loadFragment(fmNew);
+            actionBar.setTitle("Home");
+
+        }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -49,8 +55,9 @@ public class HomeAdminActivity extends AppCompatActivity {
                 Fragment fmNew;
                 int menuID = item.getItemId();
                 if (menuID == R.id.miHome) {
-                    Intent intent = new Intent(HomeAdminActivity.this, HomeAdminActivity.class);
-                    startActivity(intent);
+                    getSupportActionBar().setTitle(item.getTitle());
+                    fmNew = new HomeFragment();
+                    loadFragment(fmNew);
                     return true;
 
                 } else if (menuID == R.id.miProfile) {
