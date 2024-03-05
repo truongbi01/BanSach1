@@ -64,113 +64,116 @@
             </ViewFlipper>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 >
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/category"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    >
-                    <TextView
-                        android:id="@+id/category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Category"
-                        android:textColor="@color/black"
-                        android:gravity="start"
-                        android:layout_weight="1"
-                        android:paddingLeft="20dp"
-                        android:textSize="@dimen/size30dp"
-                        android:textStyle="bold"
-                        />
-                    <TextView
-                        android:id="@+id/showmore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="View all"
-                        android:textColor="#64D3E1"
-                        android:layout_weight="1"
-                        android:gravity="end"
-                        android:paddingRight="20dp"
-                        android:textSize="@dimen/size20dp"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:text="Category"
+                    android:textColor="@color/black"
+                    android:gravity="start"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp"
+                    android:textSize="@dimen/size30dp"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/showmore"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="4"
-                    android:padding="10dp"
-
-                    >
-                    <Button
-                        android:id="@+id/keychain"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Keychain"
-                        android:layout_weight="1"
-                       android:background="@drawable/custom_loaihang"
-                        android:layout_margin="5dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        />
-                    <Button
-                        android:id="@+id/jewelry"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Jewelry"
-                        android:layout_weight="1"
-                        android:background="@drawable/custom_loaihang2"
-                        android:layout_margin="5dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        />
-                    <Button
-                        android:id="@+id/shirt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Shirt"
-                        android:layout_weight="1"
-                        android:background="@drawable/custom_loaihang3"
-                        android:layout_margin="5dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        />
-                    <Button
-                        android:id="@+id/trouser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="trousers"
-                        android:layout_weight="1"
-                        android:background="@drawable/custom_loaihang4"
-                        android:layout_margin="5dp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        />
-                </LinearLayout>
-
-
+                    android:text="View all"
+                    android:textColor="#64D3E1"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:paddingRight="20dp"
+                    android:textSize="@dimen/size20dp"
+                    android:textStyle="bold"
+                    />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                >
+
+                <Button
+                    android:id="@+id/keychain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_loaihang"
+                    android:text="Keychain"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    tools:ignore="NestedWeights" />
+
+                <Button
+                    android:id="@+id/jewelry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_loaihang2"
+                    android:text="Jewelry"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/shirt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_loaihang3"
+                    android:text="Shirt"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/trouser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_loaihang4"
+                    android:text="trousers"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+
+
+                   <androidx.recyclerview.widget.RecyclerView
+                       android:id="@+id/rvListProduct"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       />
 
             </LinearLayout>
+
+
         </LinearLayout>
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationview"
             android:layout_gravity="start"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ListView
-                android:id="@+id/listviewmanhinhchinh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+
 
         </com.google.android.material.navigation.NavigationView>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </FrameLayout>

@@ -20,8 +20,8 @@ import java.util.ArrayList;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.UserViewHolder> {
     Context context;
     ArrayList<ProductsCategory> lstCategory;
-    private OnItemClickListener mListener;
-    private CreateDatabase databaseHelper;
+     OnItemClickListener mListener;
+     CreateDatabase databaseHelper;
     public CategoryAdapter(ArrayList<ProductsCategory> lstCategory,CreateDatabase  database) {
         this.lstCategory = lstCategory;
         this.databaseHelper = database;
@@ -37,7 +37,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.UserVi
         UserViewHolder viewHolder = new UserViewHolder(userView);
         return viewHolder;
     }
-    Context context1;
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         //Lấy từng item của dữ liệu

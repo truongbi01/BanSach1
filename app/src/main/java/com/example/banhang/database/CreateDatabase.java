@@ -45,13 +45,13 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
 
     // Bảng SanPham
-    private static final String TB_SAN_PHAM = "SanPham";
-    private static final String CL_SAN_PHAM_ID = "MaSanPham";
-    private static final String CL_TEN_SAN_PHAM = "TenSanPham";
-    private static final String CL_GIA_BAN = "GiaBan";
-    private static final String CL_ANH_SAN_PHAM = "AnhSanPham";
-    private static final String CL_MO_TA = "MoTa";
-    private static final String CL_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
+    public static final String TB_SAN_PHAM = "SanPham";
+    public static final String CL_SAN_PHAM_ID = "MaSanPham";
+    public static final String CL_TEN_SAN_PHAM = "TenSanPham";
+    public static final String CL_GIA_BAN = "GiaBan";
+    public static final String CL_ANH_SAN_PHAM = "AnhSanPham";
+    public static final String CL_MO_TA = "MoTa";
+    public static final String CL_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
 
 
     // Bảng DanhGiaKhachHang
@@ -410,6 +410,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return birthDay;
     }
+
+    //Get
 }
 
 
