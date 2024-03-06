@@ -30,6 +30,8 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
     CategoryAdapter.OnItemClickListener mListener;
     CreateDatabase databaseHelper;
     Context context;
+    public ProductAdapterAdmin(){};
+
     public ProductAdapterAdmin(ArrayList<Products> listProducts , CreateDatabase  database){
         this.listProducts = listProducts;
         this.databaseHelper = database;
