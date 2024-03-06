@@ -55,6 +55,7 @@ public class KhungDangNhapActivity extends AppCompatActivity {
                     }
                     // Lưu Thông Tin Đăng Nhập
                     SharedPreferences sharedPreferences = getSharedPreferences(thongtinluu, MODE_PRIVATE);
+
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     // Lưu Theo Dạng Phân rả
                     editor.putString("Username", edtTenDangNhapDN.getText().toString());

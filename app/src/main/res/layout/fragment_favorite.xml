@@ -11,5 +11,9 @@
         android:layout_height="wrap_content"
         android:text="Sản Phẩm yêu thích"
         android:gravity="center"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvYeuThich"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </FrameLayout>
