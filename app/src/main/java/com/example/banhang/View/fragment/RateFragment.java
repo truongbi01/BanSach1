@@ -1,5 +1,7 @@
 package com.example.banhang.View.fragment;
 
+import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.example.banhang.R;
 
@@ -16,7 +22,10 @@ import com.example.banhang.R;
  * create an instance of this fragment.
  */
 public class RateFragment extends Fragment {
-
+    TextView titlerate, resultrate;
+    Button btnfeedback;
+    ImageView charPlace, icSprite;
+    RatingBar rateStarts;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -55,12 +64,27 @@ public class RateFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view =inflater.inflate(R.layout.fragment_rate, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rate, container, false);
+        //anh xa
+        titlerate = view.findViewById(R.id.titlerate);
+        resultrate= view.findViewById(R.id.resultrate);
+        btnfeedback=view.findViewById(R.id.btnfeedback);
+        charPlace= view.findViewById(R.id.charPlace);
+        rateStarts=view.findViewById(R.id.rateStarts);
+        Typeface MRegular =Typeface. createFromAsset(getActivity().getAssets(),"fonts/MR.ttf" );
+        Typeface MMedium= Typeface.createFromAsset(requireActivity().getAssets(),"fonts/MM.ttf" );
+        titlerate.setTypeface(MRegular);
+        resultrate.setTypeface(MMedium);
+        btnfeedback.setTypeface(MMedium);
+        return view;
+
     }
+
 }

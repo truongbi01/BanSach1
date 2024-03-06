@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +9,8 @@
         android:id="@+id/drawlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        tools:layout_editor_absoluteX="366dp"
+        tools:layout_editor_absoluteY="-63dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,75 +23,79 @@
                 android:layout_height="?attr/actionBarSize"
 
                 >
+
                 <Button
                     android:id="@+id/search_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:textAlignment="viewStart"
-                    android:text="Search..."
-                    android:drawableEnd="@drawable/baseline_search_24"
                     android:layout_margin="10dp"
-                    android:textColor="@color/white"
                     android:background="@drawable/custom_search_bar"
+                    android:drawableEnd="@drawable/baseline_search_24"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
+                    android:text="Search..."
+                    android:textAlignment="viewStart"
                     android:textAllCaps="false"
-                    />
+                    android:textColor="@color/white" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_notifications_24"
-                    />
+                    android:src="@drawable/baseline_notifications_24" />
 
 
             </androidx.appcompat.widget.Toolbar>
+
             <ViewFlipper
                 android:id="@+id/viewlipper"
                 android:layout_width="410dp"
                 android:layout_height="200dp">
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pic1_h200"/>
+                    android:src="@drawable/pic1_h200" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pic2_h200"/>
+                    android:src="@drawable/pic2_h200" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pic3_h200"/>
+                    android:src="@drawable/pic3_h200" />
 
             </ViewFlipper>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:orientation="horizontal">
+
                 <TextView
                     android:id="@+id/category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:paddingLeft="20dp"
                     android:text="Category"
                     android:textColor="@color/black"
-                    android:gravity="start"
-                    android:layout_weight="1"
-                    android:paddingLeft="20dp"
                     android:textSize="@dimen/size30dp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/showmore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="View all"
-                    android:textColor="#64D3E1"
                     android:layout_weight="1"
                     android:gravity="end"
                     android:paddingRight="20dp"
+                    android:text="View all"
+                    android:textColor="#64D3E1"
                     android:textSize="@dimen/size20dp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -98,8 +103,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="4"
                 android:orientation="horizontal"
-                android:padding="10dp"
-                >
+                android:padding="10dp">
 
                 <Button
                     android:id="@+id/keychain"
@@ -150,30 +154,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
 
-
-                   <androidx.recyclerview.widget.RecyclerView
-                       android:id="@+id/rvListProduct"
-                       android:layout_width="match_parent"
-                       android:layout_height="match_parent"
-                       />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvListProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
             </LinearLayout>
 
 
         </LinearLayout>
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationview"
-            android:layout_gravity="start"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="start">
 
 
         </com.google.android.material.navigation.NavigationView>
 
     </androidx.drawerlayout.widget.DrawerLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-</FrameLayout>
+
+
+
