@@ -458,6 +458,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return isFavorite;
     }
+
 }
 
 

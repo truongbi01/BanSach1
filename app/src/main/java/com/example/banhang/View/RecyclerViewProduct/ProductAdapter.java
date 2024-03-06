@@ -28,6 +28,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     CategoryAdapter.OnItemClickListener mListener;
     CreateDatabase databaseHelper;
     Context context;
+    public ProductAdapter(){};
     public ProductAdapter(ArrayList<Products> listProducts , CreateDatabase  database){
         this.listProducts = listProducts;
         this.databaseHelper = database;

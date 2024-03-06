@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.fragment.FavoriteFragment">
+    tools:context=".View.fragment.FavoriteFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sản Phẩm yêu thích"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="Sản Phẩm yêu thích" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvYeuThich"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnXoaTatCaSanPhamyeuThich"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/xanhbienlv4"
+        android:text="Xoá Tất Cả"
+        android:layout_gravity="center"/>
 
-</FrameLayout>
+</LinearLayout>
