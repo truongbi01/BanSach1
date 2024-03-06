@@ -1,8 +1,11 @@
 package com.example.banhang.View.fragment;
 
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.banhang.R;
@@ -35,6 +40,7 @@ public class HomeFragment extends Fragment {
     RecyclerView rvListProduct;
     ArrayList<Products> listProducts;
      ProductAdapter productAdapter;
+     ProductAdapterAdmin productAdapterAdmin;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -88,12 +94,29 @@ public class HomeFragment extends Fragment {
         AnhXa(view);
         flipHandler.sendEmptyMessageDelayed(0, FLIP_INTERVAL);
         databaseHelper = new CreateDatabase(getActivity());
-        LoadDataProducts(getActivity());
-        productAdapter = new ProductAdapter(listProducts,databaseHelper);
-        rvListProduct.setAdapter(productAdapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        rvListProduct.setLayoutManager(gridLayoutManager);
+        String thongtinluu = "tk_mk login";
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(thongtinluu, MODE_PRIVATE);
+        String tenDangNhap =  sharedPreferences.getString("Username","");
+
+        String role  = databaseHelper.GetCLVaitro(tenDangNhap);
+        if(role.equals("admin")){
+            Toast.makeText(getContext(),"Product Admin",Toast.LENGTH_SHORT).show();
+
+            LoadDataProducts(getActivity());
+            productAdapterAdmin = new ProductAdapterAdmin(listProducts,databaseHelper);
+            rvListProduct.setAdapter(productAdapterAdmin);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            rvListProduct.setLayoutManager(gridLayoutManager);
+        }
+        else {
+            LoadDataProducts(getActivity());
+            productAdapter = new ProductAdapter(listProducts,databaseHelper);
+            rvListProduct.setAdapter(productAdapter);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            rvListProduct.setLayoutManager(gridLayoutManager);
+        }
         return view;
+
     }
     void AnhXa(View view){
         rvListProduct = view.findViewById(R.id.rvListProduct);
