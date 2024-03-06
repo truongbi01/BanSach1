@@ -61,7 +61,8 @@ android:orientation="vertical">
         android:button="@drawable/heart_checkbox_selector"
         android:layout_gravity="center_vertical"
         android:scaleX="0.5"
-        android:scaleY="0.5" />
+        android:scaleY="0.5"
+        android:background="@drawable/heart_checkbox_selector"/>
 </LinearLayout>
 </LinearLayout>
     </androidx.cardview.widget.CardView>

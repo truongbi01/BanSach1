@@ -13,9 +13,9 @@
             android:title="@string/action_home"/>
 
         <item
-            android:id="@+id/miProfile"
-            android:icon="@drawable/gallery_black"
-            android:title="@string/Gallery"
+            android:id="@+id/miFavorite"
+            android:icon="@drawable/icon_heart"
+            android:title="Favorite"
             />
     </group>
     <item
@@ -36,7 +36,6 @@
         <menu>
             <item android:title="Thêm Loại Sản Phẩm" android:id="@+id/mnThemLoaiSanPham" android:icon="@drawable/icon_product_category"/>
             <item android:title="@string/themsanpham" android:id="@+id/mnAddProduct" android:icon="@drawable/icon_add_product"/>
-            <item android:title="@string/themanh" android:id="@+id/mnAddimage" android:icon="@drawable/icons_add_image"/>
             <item android:title="@string/deleted_account" android:id="@+id/mnDLTAccount" android:icon="@drawable/icons_remove2_black" />
 
         </menu>

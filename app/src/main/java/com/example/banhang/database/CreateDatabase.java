@@ -15,7 +15,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 11;
+    private final static int VERSION = 12;
 
 
     // Bảng Người dùng
@@ -60,10 +60,10 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private static final String  CL_MA_KHACH_HANG_DANH_GIA = "MaKhachHangDanhGia";
     private static final String CL_DANHGIA_KHACH_HANG_ID = "MaKhachHang";
     // Bảng YeuThich
-    private static final String TB_YEU_THICH = "YeuThich";
-    private static final String CL_YEU_THICH_ID = "MaYeuThich";
-    private static final String CL_KHACH_HANG_YEU_THICH_ID = "MaKhachHangYeuThich";
-    private static final String CL_SAN_PHAM_YEU_THICH_ID = "MaSanPhamYeuThich";
+    public static final String TB_YEU_THICH = "YeuThich";
+    public static final String CL_YEU_THICH_ID = "MaYeuThich";
+    public static final String CL_TEN_KHACH_HANG_YEU_THICH = "TenKhachHangYeuThich";
+    public static final String CL_SAN_PHAM_YEU_THICH_ID = "MaSanPhamYeuThich";
     // Bảng LoaiSanPham
     public static final String TB_LOAI_SAN_PHAM = "LoaiSanPham";
     public static final String CL_THE_LOAI_SAN_PHAM_ID = "MaLoaiSanPham";
@@ -98,9 +98,9 @@ public class CreateDatabase extends SQLiteOpenHelper {
         // Tạo bảng YeuThich
         String CREATE_TABLE_YEU_THICH = "CREATE TABLE " + TB_YEU_THICH + "("
                 + CL_YEU_THICH_ID + " INTEGER PRIMARY KEY,"
-                + CL_KHACH_HANG_YEU_THICH_ID + " TEXT," // Change to TEXT, as it references CL_TEN_DANGNHAP
+                + CL_TEN_KHACH_HANG_YEU_THICH + " TEXT," // Change to TEXT, as it references CL_TEN_DANGNHAP
                 + CL_SAN_PHAM_YEU_THICH_ID + " INTEGER,"
-                + "FOREIGN KEY(" + CL_KHACH_HANG_YEU_THICH_ID + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP + "),"
+                + "FOREIGN KEY(" + CL_TEN_KHACH_HANG_YEU_THICH + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP + "),"
                 + "FOREIGN KEY(" + CL_SAN_PHAM_YEU_THICH_ID + ") REFERENCES " + TB_SAN_PHAM + "(" + CL_SAN_PHAM_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_YEU_THICH);
@@ -395,7 +395,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
-        String query = "SELECT " + CreateDatabase. CL_CMND  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+        String query = "SELECT " + CreateDatabase. CL_CMND  +
+                " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
                 " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
@@ -410,8 +411,53 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return birthDay;
     }
+    //Get id Sản Phẩm
 
-    //Get
+    @SuppressLint("Range")
+    public String GetIdSanPham(String name){
+        String idSanPham = null;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        //Query để lấy dữ liệu từ sản phẩm
+        String query = "SELECT " + CL_SAN_PHAM_ID +
+                " FROM " + TB_SAN_PHAM +
+                " WHERE " + CreateDatabase.CL_TEN_SAN_PHAM + " = ?";
+
+        Cursor cursor = sqLiteDatabase.rawQuery(query,new String[]{name});
+
+        //Kiểm tra xem có dữ liệu hay không
+        if(cursor.moveToFirst()){
+            idSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_SAN_PHAM_ID));
+        }
+        // Đóng cursor và database
+        cursor.close();
+        sqLiteDatabase.close();
+
+        return idSanPham;
+    }
+    public boolean isFavorite(String tenSanPham, String idSanPham) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        boolean isFavorite = false;
+
+        try {
+            String query = "SELECT * FROM " + TB_YEU_THICH +
+                    " WHERE " + CL_TEN_KHACH_HANG_YEU_THICH + " = ?" +
+                    " AND " + CL_SAN_PHAM_YEU_THICH_ID + " = ?";
+            cursor = db.rawQuery(query, new String[]{tenSanPham, idSanPham});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                isFavorite = true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return isFavorite;
+    }
 }
 
 
