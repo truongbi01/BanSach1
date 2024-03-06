@@ -60,9 +60,10 @@ public class HomeAdminActivity extends AppCompatActivity {
                     loadFragment(fmNew);
                     return true;
 
-                } else if (menuID == R.id.miProfile) {
-                    Intent intent = new Intent(HomeAdminActivity.this, HomeAdminActivity.class);
-                    startActivity(intent);
+                } else if (menuID == R.id.miFavorite) {
+                  getSupportActionBar().setTitle(item.getTitle());
+                  fmNew = new FavoriteFragment();
+                  loadFragment(fmNew);
                     return true;
                 } else if (menuID == R.id.miRecommend) {
                     Toast.makeText(HomeAdminActivity.this, "Recommend", Toast.LENGTH_SHORT).show();
@@ -88,12 +89,6 @@ public class HomeAdminActivity extends AppCompatActivity {
                 }else if (menuID == R.id.mnThemLoaiSanPham) {
                     getSupportActionBar().setTitle(item.getTitle());
                     fmNew = new ProductCategoryFragment();
-                    loadFragment(fmNew);
-                    return true;
-
-                }else if (menuID == R.id.mnAddimage) {
-                    getSupportActionBar().setTitle(item.getTitle());
-                    fmNew = new ImageFragment();
                     loadFragment(fmNew);
                     return true;
 

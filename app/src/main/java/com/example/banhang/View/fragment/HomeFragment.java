@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,12 +78,15 @@ public class HomeFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    ViewFlipper viewFlipper;
+    private int currentImage = 0;
+    private static final int FLIP_INTERVAL = 3000;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         AnhXa(view);
+        flipHandler.sendEmptyMessageDelayed(0, FLIP_INTERVAL);
         databaseHelper = new CreateDatabase(getActivity());
         LoadDataProducts(getActivity());
         productAdapter = new ProductAdapter(listProducts,databaseHelper);
@@ -92,8 +97,26 @@ public class HomeFragment extends Fragment {
     }
     void AnhXa(View view){
         rvListProduct = view.findViewById(R.id.rvListProduct);
+        viewFlipper = view.findViewById(R.id.viewlipper);
     }
     void LoadDataProducts(Context context){
         listProducts = Utils.LoadDaTaProducts(context);
     }
+    @SuppressLint("HandlerLeak")
+    private final Handler flipHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 0) {
+                if (currentImage < viewFlipper.getChildCount() - 1) {
+                    currentImage++;
+                } else {
+                    currentImage = 0;
+                }
+                viewFlipper.setDisplayedChild(currentImage);
+                sendEmptyMessageDelayed(0, FLIP_INTERVAL);
+            }
+        }
+    };
+
+
 }
