@@ -64,13 +64,15 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
         holder.cbYeuThich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                ProductAdapter productAdapter = new ProductAdapter();
+
                 String tenSanPham = item.getName();
                 String idSanPham = createDatabase.GetIdSanPham(tenSanPham);
                 if(isChecked){
-                    ThemSanPhamYeuThich(tenSanPham,idSanPham,context);
+                    productAdapter.ThemSanPhamYeuThich(tenSanPham,idSanPham,context);
                 }
                 else {
-                    XoaSanPhamYeuThich(tenSanPham,idSanPham,context);
+                    productAdapter.XoaSanPhamYeuThich(tenSanPham,idSanPham,context);
                 }
             }
         });
@@ -118,57 +120,7 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
 
     }
     //insert value thông tin sản phẩm yêu thích
-    public void ThemSanPhamYeuThich(String tenSanPham,String idSanPham,Context context){
-        CreateDatabase createDatabase = new CreateDatabase(context);
 
-        SQLiteDatabase sqLiteDatabase = createDatabase.getReadableDatabase();
-        try{
-            if(!isProductExists(tenSanPham)){
-
-                ContentValues cv = new ContentValues();
-
-                cv.put(CreateDatabase.CL_TEN_KHACH_HANG_YEU_THICH,tenSanPham);
-                cv.put(CreateDatabase.CL_SAN_PHAM_YEU_THICH_ID,idSanPham);
-
-                sqLiteDatabase.insert(CreateDatabase.TB_YEU_THICH,null,cv);
-                Toast.makeText(context, "Sản phẩm đã được thêm vao danh sách yêu thích", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(context, "Sản phẩm đã tồn tại", Toast.LENGTH_SHORT).show();
-
-            }
-        }catch (Exception e)
-        {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-        }finally {
-            sqLiteDatabase.close();
-
-        }
-
-
-
-
-    }
-    public void XoaSanPhamYeuThich(String tenSanPham, String idSanPham, Context context) {
-        CreateDatabase createDatabase = new CreateDatabase(context);
-
-        SQLiteDatabase sqLiteDatabase = createDatabase.getWritableDatabase();
-
-        // Xác định điều kiện xóa - dựa trên tên sản phẩm và ID sản phẩm
-        String selection = CreateDatabase.CL_TEN_KHACH_HANG_YEU_THICH + "=? AND " +
-                CreateDatabase.CL_SAN_PHAM_YEU_THICH_ID + "=?";
-        String[] selectionArgs = {tenSanPham, idSanPham};
-
-        // Thực hiện xóa
-        int deletedRows = sqLiteDatabase.delete(CreateDatabase.TB_YEU_THICH, selection, selectionArgs);
-
-        if (deletedRows > 0) {
-            Toast.makeText(context, "Sản phẩm đã được xóa khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Không thể xóa sản phẩm khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-        }
-        sqLiteDatabase.close();
-    }
     public void ChinhSuaSanPham(String tenSanPham, String giaMoi, String moTaMoi, String anhSanPham,Context context) {
         CreateDatabase createDatabase = new CreateDatabase(context);
 

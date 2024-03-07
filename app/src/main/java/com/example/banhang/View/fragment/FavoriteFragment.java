@@ -80,10 +80,11 @@ public class FavoriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
         AnhXa(view);
         LoadDataProducts(getActivity());
+        databaseHelper = new CreateDatabase(getContext());
         database  = databaseHelper.getWritableDatabase();
         productsFavoriteAdapter = new ProductsFavoriteAdapter(listProducts,databaseHelper);
         recyclerView.setAdapter(productsFavoriteAdapter);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
         btnXoaTatCaSanPhamYeuThich.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +99,7 @@ public class FavoriteFragment extends Fragment {
         btnXoaTatCaSanPhamYeuThich = view.findViewById(R.id.btnXoaTatCaSanPhamyeuThich);
     }
     void LoadDataProducts(Context context){
-        listProducts = Utils.LoadDaTaProducts(context);
+        listProducts = Utils.LoadProductsFavoriteFromDatabase(context);
     }
     void DeletedAllProductsFavorite(){
         database.execSQL("DELETE FROM favorite_products");
