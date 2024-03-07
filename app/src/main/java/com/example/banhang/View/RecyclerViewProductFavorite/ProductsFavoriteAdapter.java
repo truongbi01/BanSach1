@@ -1,5 +1,6 @@
 package com.example.banhang.View.RecyclerViewProductFavorite;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
     ArrayList<Products> listProducts;
     CreateDatabase databaseHelper;
     Context context;
+    private ProductsFavoriteAdapter favoriteAdapter;
     public ProductsFavoriteAdapter(ArrayList<Products> listProducts, CreateDatabase createDatabase){
         this.listProducts = listProducts;
         this.databaseHelper =  createDatabase;
@@ -35,7 +37,7 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
         context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         // Tạo View
-        View view = layoutInflater.inflate(R.layout.layout_item_product,parent,false);
+        View view = layoutInflater.inflate(R.layout.layout_item_product_favorite,parent,false);
         ProductsFavoriteAdapter.ProductsFavoriteViewHolder viewHolder = new ProductsFavoriteAdapter.ProductsFavoriteViewHolder(view);
         return viewHolder ;
     }
@@ -51,21 +53,19 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
         holder.tvGia.setText(products.getPrice());
         holder.imgAnhSanPham.setImageBitmap(Utils.convertToBitmapFromAssets(context,products.getImage()));
         String idSanPham = createDatabase.GetIdSanPham(products.getName());
-        //Nếu item đã được yêu thích cho trái tim màu đỏ
-        if(createDatabase.isFavorite(products.getName(),idSanPham)){
-            holder.cbYeuThich.setChecked(true);
-        }
+        holder.cbYeuThich.setChecked(true);
         holder.cbYeuThich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked){
-                    ProductAdapterAdmin productAdapterAdmin = new ProductAdapterAdmin();
-                    productAdapterAdmin.XoaSanPhamYeuThich(products.getName(),idSanPham,context);
-                    productAdapterAdmin.LoadData(context);
-                    productAdapterAdmin.setData(listProducts);
+                    ProductAdapter productAdapter = new ProductAdapter();
+                    productAdapter.XoaSanPhamYeuThich(products.getName(),idSanPham,context);
+
                 }
             }
         });
+
+
     }
 
     @Override
@@ -79,10 +79,12 @@ public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavori
         CheckBox cbYeuThich;
         public ProductsFavoriteViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvName = itemView.findViewById(R.id.tvTenProducts);
-            tvGia = itemView.findViewById(R.id.tvGiaSanPham);
-            cbYeuThich = itemView.findViewById(R.id.cbYeuThich);
-            imgAnhSanPham = itemView.findViewById(R.id.imgAnhSanPham);
+            tvName = itemView.findViewById(R.id.tvTenProducts_favorite);
+            tvGia = itemView.findViewById(R.id.tvGiaSanPham_favorite);
+            cbYeuThich = itemView.findViewById(R.id.cbYeuThich_favorite);
+            imgAnhSanPham = itemView.findViewById(R.id.imgAnhSanPham_favorite);
         }
     }
+
+
 }

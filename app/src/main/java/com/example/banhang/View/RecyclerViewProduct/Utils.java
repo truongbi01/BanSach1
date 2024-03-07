@@ -105,4 +105,37 @@ public class Utils {
 
         return lstProducts;
     }
+    public static ArrayList<Products> LoadProductsFavoriteFromDatabase(Context context) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<Products> listProducts = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
+
+        String query = "SELECT " + CreateDatabase.CL_TEN_SAN_PHAM + ", " + CreateDatabase.CL_GIA_BAN + ", " + CreateDatabase.CL_ANH_SAN_PHAM + ", " + CreateDatabase.CL_MO_TA + ", " + CreateDatabase.CL_THE_LOAI_SAN_PHAM_ID +
+                " From " + CreateDatabase.TB_YEU_THICH +
+                " inner  join " + CreateDatabase.TB_SAN_PHAM +
+                " on " + CreateDatabase.TB_YEU_THICH + "." + CreateDatabase.CL_SAN_PHAM_YEU_THICH_ID +
+                " = " + CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_SAN_PHAM_ID;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String tenSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_SAN_PHAM));
+                @SuppressLint("Range") String giaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_GIA_BAN));
+                @SuppressLint("Range") String moTaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_MO_TA));
+                @SuppressLint("Range") String anhSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_ANH_SAN_PHAM));
+                @SuppressLint("Range")  String idTheLoaiSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_LOAI_SAN_PHAM_ID));
+
+                Products newProducts1 = new Products(context, tenSanPham, giaSanPham, moTaSanPham, anhSanPham, idTheLoaiSanPham);
+                listProducts.add(newProducts1);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listProducts;
+    }
+
+
 }
