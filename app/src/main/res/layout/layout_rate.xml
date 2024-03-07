@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bgapp"
-    tools:context=".View.fragment.RateFragment">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bgapp">
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/anhsang"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
 
     <ImageView
         android:id="@+id/charPlace"
@@ -24,7 +23,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:src="@drawable/rate2"
-        tools:ignore="MissingConstraints" />
+       tools:ignore="MissingConstraints" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -56,7 +55,7 @@
             android:layout_marginBottom="10dp"
             android:rating="3"
             android:numStars="5"
-
+            android:theme="@style/RatingBar"
             android:stepSize="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -78,7 +77,7 @@
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-         android:layout_marginStart="16dp"
+        android:layout_marginStart="16dp"
         android:text="Give Feedback"
         android:textAllCaps="false"
         android:textColor="#8E7324"
