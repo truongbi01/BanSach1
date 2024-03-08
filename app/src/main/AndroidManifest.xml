@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,38 +15,47 @@
         android:theme="@style/Theme.BanHang"
         tools:replace="android:icon"
         tools:targetApi="31">
-        <activity android:name=".Login.KhungDangNhapActivity"
-            android:exported="false">
 
+        <activity
+            android:name=".Login.KhungDangNhapActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".View.HomeAdminActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:label="Admin">
+        <activity
+            android:name=".View.HomeAdminActivity"
+            android:label="Admin"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
         </activity>
         <activity
             android:name=".View.HomeActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
             <!-- Các thuộc tính khác -->
         </activity>
+        <activity android:name=".Login.KhungDangKyActivity">
 
+        </activity>
         <activity
-            android:name=".Login.KhungDangKyActivity"
-            >
+            android:name=".View.WelcomeActivity"
+            android:exported="false">
 
         </activity>
+        <activity
+            android:name=".View.fragment.HomeFragment"
+            android:exported="false">
 
-        <activity android:name=".View.WelcomeActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".View.fragment.HomeFragment" />
+        <activity
+            android:name=".View.fragment.Rate"
+            android:exported="false"
+           >
 
+        </activity>
     </application>
 
 </manifest>
