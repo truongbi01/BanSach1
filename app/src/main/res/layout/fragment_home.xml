@@ -48,46 +48,12 @@
 
             <ViewFlipper
                 android:id="@+id/viewlipper"
-                android:layout_width="match_parent"
+                android:layout_width="410dp"
                 android:layout_height="200dp">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-<<<<<<< HEAD
-                    android:src="@drawable/pic1_h200"
-                    android:scaleType="centerCrop"
-                    />
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/pic2_h200"
-                    android:scaleType="centerCrop"/>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/pic3_h200"
-                    android:scaleType="centerCrop"/>
-
-            </ViewFlipper>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:text="Sản Phẩm"
-                android:textColor="@color/black"
-                android:textStyle="bold"/>
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:orientation="vertical"
-                >
-                <androidx.core.widget.NestedScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-=======
                     android:src="@drawable/pic1_h200" />
 
                 <ImageView
@@ -114,7 +80,7 @@
                     android:layout_weight="1"
                     android:gravity="start"
                     android:paddingLeft="20dp"
-                    android:text="Category"
+                    android:text="Products"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size30dp"
                     android:textStyle="bold" />
@@ -132,82 +98,20 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="4"
-                android:orientation="horizontal"
-                android:padding="10dp">
 
-                <Button
-                    android:id="@+id/keychain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_loaihang"
-                    android:text="Keychain"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    tools:ignore="NestedWeights" />
-
-                <Button
-                    android:id="@+id/jewelry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_loaihang2"
-                    android:text="Jewelry"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/shirt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_loaihang3"
-                    android:text="Shirt"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
-
-                <Button
-                    android:id="@+id/trouser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/custom_loaihang4"
-                    android:text="trousers"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
->>>>>>> d91d2282c6b1f3fdc8abcd7994ed92ada82e43dc
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvListProduct"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
 
-<<<<<<< HEAD
-                </androidx.core.widget.NestedScrollView>
-
-            </ScrollView>
-=======
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvListProduct"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
             </LinearLayout>
->>>>>>> d91d2282c6b1f3fdc8abcd7994ed92ada82e43dc
 
 
         </LinearLayout>
@@ -223,7 +127,3 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
