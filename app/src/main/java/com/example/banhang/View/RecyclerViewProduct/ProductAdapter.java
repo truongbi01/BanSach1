@@ -1,8 +1,11 @@
 package com.example.banhang.View.RecyclerViewProduct;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.banhang.R;
+import com.example.banhang.View.DetailActivity;
 import com.example.banhang.View.RecyclerViewCategory.CategoryAdapter;
 import com.example.banhang.database.CreateDatabase;
 
@@ -28,10 +32,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     CategoryAdapter.OnItemClickListener mListener;
     CreateDatabase databaseHelper;
     Context context;
+    UserCallBack userCallBack;
     public ProductAdapter(){};
-    public ProductAdapter(ArrayList<Products> listProducts , CreateDatabase  database){
+    public ProductAdapter(ArrayList<Products> listProducts , CreateDatabase  database , UserCallBack userCallBack){
         this.listProducts = listProducts;
         this.databaseHelper = database;
+        this.userCallBack = userCallBack;
     }
     @NonNull
     @Override
@@ -71,6 +77,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 }
             }
         });
+
+        //Lấy sự kiện
+        holder.itemView.setOnClickListener(view -> userCallBack.onItemClick(item.getName(),item.getPrice(),item.getDes(),item.getImage()));
     }
 
     @Override
@@ -125,6 +134,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             Toast.makeText(context, "Không thể xóa sản phẩm khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
         }
         sqLiteDatabase.close();
+    }
+    public interface UserCallBack{
+        void onItemClick(String tenSanPham , String GiaTien, String moTa , String srcAnh);
     }
 
 }

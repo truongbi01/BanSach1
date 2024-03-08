@@ -56,6 +56,10 @@
            >
 
         </activity>
+        <activity android:name=".View.DetailActivity"
+            android:exported="false">
+
+        </activity>
     </application>
 
 </manifest>
