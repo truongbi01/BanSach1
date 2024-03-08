@@ -28,20 +28,28 @@
         <activity
             android:name=".View.HomeAdminActivity"
             android:label="Admin"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+
+        </activity>
         <activity
             android:name=".View.HomeActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
 
             <!-- Các thuộc tính khác -->
         </activity>
-        <activity android:name=".Login.KhungDangKyActivity"></activity>
+        <activity android:name=".Login.KhungDangKyActivity">
+
+        </activity>
         <activity
             android:name=".View.WelcomeActivity"
-            android:exported="false"></activity>
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".View.fragment.HomeFragment"
-            android:exported="false"></activity>
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".View.fragment.Rate"
             android:exported="false"
