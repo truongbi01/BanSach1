@@ -54,17 +54,20 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pic1_h200" />
+                    android:src="@drawable/pic1_h200"
+                    android:scaleType="centerCrop"/>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pic2_h200" />
+                    android:src="@drawable/pic2_h200"
+                    android:scaleType="centerCrop"/>
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/pic3_h200" />
+                    android:src="@drawable/pic3_h200"
+                    android:scaleType="centerCrop"/>
 
             </ViewFlipper>
 

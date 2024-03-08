@@ -34,6 +34,7 @@ android:orientation="vertical">
     android:maxLines="2"
     android:ellipsize="end"/>
     <View
+        android:id="@+id/viewGachNgang"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/black"/>

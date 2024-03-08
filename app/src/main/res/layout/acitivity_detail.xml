@@ -1,20 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-             android:layout_height="match_parent">
-<LinearLayout
-    android:id="@+id/lnAnhSanPham"
-    android:layout_width="100dp"
-    android:layout_height="150dp"
-    android:orientation="vertical"
-    tools:ignore="MissingConstraints"
-    >
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher"
-        />
-</LinearLayout>
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Layout for Image and Product Details -->
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/icon_back"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        />
+    <LinearLayout
+        android:id="@+id/lnAnhSanPham"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <!-- Image -->
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            tools:ignore="NestedWeights">
+
+            <ImageView
+                android:id="@+id/imgAnhSanPham_Detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
+                 />
+        </LinearLayout>
+
+        <!-- Product Details -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTenSanPham_Detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên Sản Phẩm"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="25sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="@dimen/size15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Giá Sản Phẩm :"
+                    android:textSize="20sp"
+                    android:textColor="@color/dolv6" />
+
+                <TextView
+                    android:id="@+id/tvGiaTien_Detail"
+                    android:layout_marginTop="@dimen/size15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="10000đ"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_marginTop="@dimen/size15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Số lượng :"
+                    android:textSize="20sp"
+                    android:textColor="@color/dolv6" />
+
+                <EditText
+                    android:id="@+id/edtSoLuong_Detail"
+                    android:layout_marginTop="@dimen/size15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="1"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="5dp" />
+                <Button
+                    android:id="@+id/btnPlus"
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="13dp"
+                    android:scaleX="0.5"
+
+                    android:background="@drawable/icon_plus"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Layout for Description -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01"
+            android:text="Mô Tả :"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvNoiDung_Detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nội dung"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <!-- Buy Product Button -->
+    <Button
+        android:id="@+id/btnMuaSanPham_Detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mua Sản Phẩm"
+        android:background="@color/dolv6"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+</LinearLayout>

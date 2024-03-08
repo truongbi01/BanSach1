@@ -3,8 +3,11 @@ package com.example.banhang.View.fragment;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -24,6 +27,7 @@ import android.widget.ViewFlipper;
 import com.example.banhang.R;
 import com.example.banhang.View.RecyclerViewCategory.CategoryAdapter;
 import com.example.banhang.View.RecyclerViewCategory.ProductsCategory;
+import com.example.banhang.View.*;
 import com.example.banhang.database.CreateDatabase;
 import com.example.banhang.View.RecyclerViewProduct.*;
 import java.util.ArrayList;
@@ -35,12 +39,13 @@ import java.util.ArrayList;
  *
  */
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ProductAdapter.UserCallBack{
     CreateDatabase databaseHelper;
     RecyclerView rvListProduct;
     ArrayList<Products> listProducts;
      ProductAdapter productAdapter;
      ProductAdapterAdmin productAdapterAdmin;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -110,7 +115,7 @@ public class HomeFragment extends Fragment {
         }
         else {
             LoadDataProducts(getActivity());
-            productAdapter = new ProductAdapter(listProducts,databaseHelper);
+            productAdapter = new ProductAdapter(listProducts,databaseHelper, this);
             rvListProduct.setAdapter(productAdapter);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             rvListProduct.setLayoutManager(gridLayoutManager);
@@ -141,5 +146,13 @@ public class HomeFragment extends Fragment {
         }
     };
 
-
+    @Override
+    public void onItemClick(String tenSanPham, String GiaTien, String moTa, String srcAnh) {
+        Intent i = new Intent(getActivity(), DetailActivity.class);
+        i.putExtra("tenSanPham", tenSanPham);
+        i.putExtra("giaTien", GiaTien);
+        i.putExtra("mota", moTa);
+        i.putExtra("srcAnh", srcAnh);
+        startActivity(i);
+    }
 }

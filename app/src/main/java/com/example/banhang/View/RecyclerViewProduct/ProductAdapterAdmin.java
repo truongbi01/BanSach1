@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.banhang.R;
@@ -48,6 +50,7 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
         return viewHolder;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolderAdmin holder, int position) {
         CreateDatabase createDatabase = new CreateDatabase(context);
@@ -80,6 +83,11 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
             @Override
             public void onClick(View v) {
 
+                ProductAdapter productAdapter = new ProductAdapter();
+                String idSanPham = createDatabase.GetIdSanPham(item.getName());
+
+                productAdapter.XoaSanPhamYeuThich(item.getName(),idSanPham,context);
+                showEditDialog(item,context);
             }
         });
         holder.btnXoa.setOnClickListener(new View.OnClickListener() {
@@ -121,15 +129,16 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
     }
     //insert value thông tin sản phẩm yêu thích
 
-    public void ChinhSuaSanPham(String tenSanPham, String giaMoi, String moTaMoi, String anhSanPham,Context context) {
+    public void ChinhSuaSanPham(String tenSanPham,String tenSanPhamMoi, String giaMoi, String theloaimoi, String anhSanPhammoi,Context context) {
         CreateDatabase createDatabase = new CreateDatabase(context);
 
         SQLiteDatabase sqLiteDatabase = createDatabase.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(CreateDatabase.CL_TEN_SAN_PHAM,tenSanPham);
+        values.put(CreateDatabase.CL_TEN_SAN_PHAM,tenSanPhamMoi);
         values.put(CreateDatabase.CL_GIA_BAN, giaMoi);
-        values.put(CreateDatabase.CL_ANH_SAN_PHAM,anhSanPham);
+        values.put(CreateDatabase.CL_ANH_SAN_PHAM,anhSanPhammoi);
+        values.put(CreateDatabase.CL_THE_LOAI_SAN_PHAM_ID,theloaimoi);
         String selection = CreateDatabase.CL_TEN_SAN_PHAM + "=?";
         String[] selectionArgs = {tenSanPham};
 
@@ -181,5 +190,51 @@ public class ProductAdapterAdmin extends RecyclerView.Adapter<ProductAdapterAdmi
     public void setData(ArrayList<Products> newList) {
         this.listProducts = newList;
         notifyDataSetChanged();
+    }
+    public void showEditDialog(Products products , Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.dialog_edit_products, null); // Tạo layout cho dialog
+
+        // Ánh xạ các thành phần trong dialog
+        EditText edtTenSanPhamMoi = view.findViewById(R.id.edtTenSanPhamMoi);
+        EditText edtSrcAnhSanPhamMoi = view.findViewById(R.id.edtSrcSanPhamMoi);
+        EditText edtGiaTienMoi = view.findViewById(R.id.edtGiaTienMoi);
+        EditText edtTheLoaiMoi = view.findViewById(R.id.edtTheLoaiMoi);
+        // Thêm các thành phần khác nếu cần
+
+        builder.setView(view);
+        builder.setTitle("Chỉnh sửa thông tin sản phẩm");
+
+        builder.setPositiveButton("Lưu", (dialog, which) -> {
+
+            // Xử lý khi người dùng nhấn nút Lưu
+            String tenSanPhamMoi = edtTenSanPhamMoi.getText().toString();
+            String srcAnhMoi = edtSrcAnhSanPhamMoi.getText().toString();
+            String giaMoi = edtGiaTienMoi.getText().toString();
+            String theLoaiMoi = edtTheLoaiMoi.getText().toString();
+            if(tenSanPhamMoi.equals("")){
+                ThongBao(context,"Tên Sản Phẩm Đang Trống12");
+            } else if (srcAnhMoi.equals("")) {
+                ThongBao(context,"Src Ảnh Đang Trống");
+            }else if(giaMoi.equals("")){
+                ThongBao(context,"Gia tiền đang trống");
+            }
+            else if (theLoaiMoi.equals("") || !products.isCategoryValid(theLoaiMoi)) {
+              Toast.makeText(context,"Loại sản phẩm không hợp lệ!",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // Lưu thông tin mới vào cơ sở dữ liệu hoặc thực hiện các bước cần thiết
+                ChinhSuaSanPham(products.getName(),tenSanPhamMoi,giaMoi, theLoaiMoi, srcAnhMoi, context);
+            }
+
+        });
+
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
+
+        builder.create().show();
+    }
+    void ThongBao(Context context, String noidung){
+        Toast.makeText(context,noidung,Toast.LENGTH_SHORT).show();
     }
 }
