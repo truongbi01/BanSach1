@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.content.ContentValues;
@@ -66,14 +67,10 @@ public class HomeActivity extends AppCompatActivity {
                     loadFragment(fmNew);
                     return true;
 
-                } else if (menuID == R.id.miProfile) {
+                } else if (menuID == R.id.miFavorite_customer) {
                     getSupportActionBar().setTitle(item.getTitle());
-                    fmNew = new HomeFragment();
+                    fmNew = new FavoriteFragment();
                     loadFragment(fmNew);
-                    return true;
-
-                } else if (menuID == R.id.miRecommend) {
-                    Toast.makeText(HomeActivity.this, "Recommend", Toast.LENGTH_SHORT).show();
                     return true;
 
                 }else if (menuID == R.id.mnAbout) {
@@ -87,11 +84,9 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
 
-                }else if (menuID == R.id.mnShare) {
-                    Toast.makeText(HomeActivity.this, "mnShare", Toast.LENGTH_SHORT).show();
-                    return true;
-
-                }else if (menuID == R.id.mnRateUs) {
+                }
+                else if (menuID == R.id.mnRateUs) {
+                    ChuyenTrang(HomeActivity.this, Rate.class);
                     Toast.makeText(HomeActivity.this, "mnRateUs", Toast.LENGTH_SHORT).show();
                     return true;
 
@@ -107,7 +102,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
+    void ChuyenTrang(Context context,Class lop){
+        Intent i = new Intent(context,lop);
+        startActivity(i);
+    }
     void AnhXa() {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);

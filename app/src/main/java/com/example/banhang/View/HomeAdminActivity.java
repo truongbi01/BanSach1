@@ -65,11 +65,7 @@ public class HomeAdminActivity extends AppCompatActivity {
                   fmNew = new FavoriteFragment();
                   loadFragment(fmNew);
                     return true;
-                } else if (menuID == R.id.miRecommend) {
-                    Toast.makeText(HomeAdminActivity.this, "Recommend", Toast.LENGTH_SHORT).show();
-                    return true;
-
-                }else if (menuID == R.id.mnAbout) {
+                } else if (menuID == R.id.mnAbout) {
                     getSupportActionBar().setTitle(item.getTitle());
                     fmNew = new AboutFragment();
                     loadFragment(fmNew);

@@ -3,6 +3,7 @@ package com.example.banhang.View.fragment;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -58,6 +59,14 @@ public class Rate extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(),"No point",Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        btnfeedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Cảm Ơn Bạn Rất Nhiều ~~",Toast.LENGTH_SHORT).show();
+
+                finish();
             }
         });
     }

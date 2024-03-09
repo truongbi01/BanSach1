@@ -79,7 +79,10 @@ public class AboutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         AnhXa(view);
         databaseHelper = new CreateDatabase(getActivity());
-
+        SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+        editor1.putString("tenKhachHang",edtHoVaTen.getText().toString());
+        editor1.apply();
         SharedPreferences prefs = getActivity().getSharedPreferences("ShareData", Context.MODE_PRIVATE);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("tk_mk login", Context.MODE_PRIVATE);
         String tenDangNhap = sharedPreferences.getString("hovaten", "");
@@ -120,6 +123,7 @@ public class AboutFragment extends Fragment {
                             } finally {
                                 if (database != null && database.isOpen()) {
                                     database.close();
+
                                 }
                             }
                         }
@@ -195,6 +199,7 @@ public class AboutFragment extends Fragment {
 
         if (rowsAffected > 0) {
             Toast.makeText(getActivity(), "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+
         } else {
             Toast.makeText(getActivity(), "Không tìm thấy thông tin cần cập nhật", Toast.LENGTH_SHORT).show();
         }
