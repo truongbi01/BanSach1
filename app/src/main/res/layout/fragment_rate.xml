@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Rate the Service"
+            android:text="Hãy Đánh Giá App Của chúng tôi"
             android:textSize="20sp"
             android:textColor="#848484"
             android:textAlignment="center"

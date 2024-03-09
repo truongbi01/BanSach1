@@ -15,7 +15,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 12;
+    private final static int VERSION = 13;
 
 
     // Bảng Người dùng
@@ -31,6 +31,10 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String CL_DIA_CHI = "DiaChi";
     public static final String CL_SO_DIEN_THOAI = "SoDienThoai";
     public static final String CL_EMAIL = "email";
+    //bảng GioHang
+    public static final String TB_GIO_HANG = "GioHang";
+    public static final String CL_GIO_HANG_SAN_PHAM_ID ="maSanPham";
+    public static final String Cl_GIO_HANG_TEN_NGUOI_DUNG ="TenDangNhap";
 
     // Bảng DonHang
     private static final String TB_DON_HANG = "DonHang";
@@ -79,7 +83,14 @@ public class CreateDatabase extends SQLiteOpenHelper {
     //Tạo Bảng
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        //Tạo Bảng GioHang
+        String CREATE_TABLE_GIO_HANG = "CREATE TABLE " + TB_GIO_HANG + "("
+                + CL_GIO_HANG_SAN_PHAM_ID + " TEXT,"
+                + Cl_GIO_HANG_TEN_NGUOI_DUNG + " TEXT,"
+                + "FOREIGN KEY (" + CL_GIO_HANG_SAN_PHAM_ID + ") REFERENCES " + TB_SAN_PHAM + "(" + CL_SAN_PHAM_ID + "),"
+                + "FOREIGN KEY (" + Cl_GIO_HANG_TEN_NGUOI_DUNG + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_KHACH_HANG + ")"
+                + ")";
+            db.execSQL(CREATE_TABLE_GIO_HANG);
 
         // Tạo bảng DangNhapKhachHang với username là khóa chính
         String CREATE_TABLE_DANG_NHAP_KHACH_HANG = "CREATE TABLE " + TB_DANG_NHAP_KHACH_HANG + "("
@@ -431,7 +442,6 @@ public class CreateDatabase extends SQLiteOpenHelper {
         }
         // Đóng cursor và database
         cursor.close();
-        sqLiteDatabase.close();
 
         return idSanPham;
     }
