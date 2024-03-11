@@ -65,12 +65,12 @@ public class AboutFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    private TextView tvYourName, tvThongBao;
+    private TextView tvYourName, tvThongBao,tvXacThucSoDienThoai;
     private EditText edtHoVaTen, edtEmail, edtSoDienThoai, edtDiaChi, edtNgaySinh, edtCMND;
     private Button btnSave;
     private CreateDatabase databaseHelper;
     private SQLiteDatabase database;
-    private LinearLayout lnThongTinDangNhap, lnCapNhatThongTinKhachHang;
+
 
 
     @Override
@@ -162,6 +162,12 @@ public class AboutFragment extends Fragment {
                 }
             });
         }
+        tvXacThucSoDienThoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         return view;
     }
 
@@ -244,7 +250,7 @@ public class AboutFragment extends Fragment {
         edtCMND = view.findViewById(R.id.edtCMND);
         btnSave = view.findViewById(R.id.btnSave);
         databaseHelper = new CreateDatabase(getActivity());
-        lnCapNhatThongTinKhachHang = view.findViewById(R.id.lnCapNhatThongTinKhachHang);
+        tvXacThucSoDienThoai = view.findViewById(R.id.tvXacThucSoDienThoai);
     }
 
     public static boolean isValidEmail(String email) {
