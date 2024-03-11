@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_margin="20dp"
+    android:weightSum="100">
+    <ImageView
+        android:id="@+id/imgAnhVerify"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/icon_password_verify"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="20dp"/>
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+       <TextView
+           android:id="@+id/tvThongbao_Verify"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:text="Nhập OTP để xác thực số điện thoại"
+           android:textSize="20sp"
+           android:textStyle="bold"
+           android:layout_gravity="center"
+           android:gravity="center"/>
+       <EditText
+           android:id="@+id/edtNhapOTP_Verify"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="10dp"
+           android:hint="OTP"
+           android:inputType="number"
+           android:maxLength="6"
+           android:layout_margin="20dp"
+           android:elevation="10dp"/>
+
+   </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/btnXacNhan_Verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/customer_button_verify"
+            android:text="Tiếp tục mua sắm"
+            android:textColor="@color/white"
+            android:textSize="20sp"/>
+        <ProgressBar
+            android:id="@+id/progressbar_Verify"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/dolv9"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tvGuilaiOTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gửi lại mã OTP sau 30s"
+        android:textSize="15sp"
+        android:gravity="center"/>
+</LinearLayout>

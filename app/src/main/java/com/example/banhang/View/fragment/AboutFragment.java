@@ -3,10 +3,13 @@ package com.example.banhang.View.fragment;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,10 +24,12 @@ import android.widget.Toast;
 
 import com.example.banhang.R;
 import com.example.banhang.database.CreateDatabase;
-
+import com.example.banhang.View.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,12 +77,13 @@ public class AboutFragment extends Fragment {
     private SQLiteDatabase database;
 
 
-
+Context context;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         AnhXa(view);
+        context = getContext();
         databaseHelper = new CreateDatabase(getActivity());
         SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
@@ -92,7 +98,6 @@ public class AboutFragment extends Fragment {
         tvYourName.setText(tenDangNhap);
         edtNgaySinh.setText(ngaySinhP);
         edtCMND.setText(cmnd);
-
         String hoVaTendb = databaseHelper.GetCLHoVaTenKhachHang(cmnd);
         String emaildb = databaseHelper.GetCLEmailKhachHang(cmnd);
         String soDienThoaidb = databaseHelper.GetCLSDTKhachHang(cmnd);
@@ -117,6 +122,8 @@ public class AboutFragment extends Fragment {
                                 database = databaseHelper.getWritableDatabase();
                                 CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL,ngaysinhU,cmndU);
                                 tvThongBao.setText("");
+                                edtSoDienThoai.setTextColor(Color.RED);
+
 
                             } catch (Exception e) {
                                 Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -165,7 +172,11 @@ public class AboutFragment extends Fragment {
         tvXacThucSoDienThoai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                editor1.putString("soDienThoai",soDienThoaidb);
+                editor1.apply();
+                Intent i = new Intent(context,VerifyActivity.class);
+                startActivity(i);
+                Toast.makeText(getActivity(),"Hệ thống đang cập nhật chức năng này",Toast.LENGTH_SHORT).show();
             }
         });
         return view;

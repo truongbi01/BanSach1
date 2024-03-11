@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -136,6 +137,8 @@ public class Utils {
 
         return listProducts;
     }
-
+    public static void ThongBao(Context context, String thongBao){
+        Toast.makeText(context,thongBao,Toast.LENGTH_SHORT).show();
+    }
 
 }
