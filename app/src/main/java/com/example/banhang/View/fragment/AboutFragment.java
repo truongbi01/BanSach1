@@ -104,6 +104,7 @@ Context context;
         String diaChidb = databaseHelper.GetCLDiaChiKhachHang(cmnd);
         String ngaySinhdb = databaseHelper.GetCLNgaySinh(cmnd);
         String cmndDb = databaseHelper.GetCLCMND(cmnd);
+        String trangthai = null;
 
         if (hoVaTendb == null || emaildb == null || soDienThoaidb == null || diaChidb == null) {
             tvThongBao.setText("Thông Tin Cần Cập Nhật*");
@@ -122,7 +123,6 @@ Context context;
                                 database = databaseHelper.getWritableDatabase();
                                 CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL,ngaysinhU,cmndU);
                                 tvThongBao.setText("");
-                                edtSoDienThoai.setTextColor(Color.RED);
 
 
                             } catch (Exception e) {
@@ -168,6 +168,8 @@ Context context;
                     reloadFragment();
                 }
             });
+            edtSoDienThoai.setTextColor(Color.RED);
+
         }
         tvXacThucSoDienThoai.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,16 +226,16 @@ Context context;
 
     private boolean validateInput(String hoVaTen, String email, String soDienThoai, String diaChi) {
         if (!isValidName(hoVaTen)) {
-            Toast.makeText(getActivity(), "Các chữ cái đầu phải viết hoa để tôn trọng tên của bạn <3", Toast.LENGTH_SHORT).show();
+            edtHoVaTen.setError("Tên không được chứa ký tự đặc biệt hoặc số");
             return false;
         } else if (!isValidEmail(email)) {
-            Toast.makeText(getActivity(), "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
+            edtEmail.setError("Email không đúng định dạng");
             return false;
         } else if (!isValidPhone(soDienThoai)) {
-            Toast.makeText(getActivity(), "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+            edtSoDienThoai.setError("Số điện thoại không hợp lệ");
             return false;
         } else if (diaChi.equals("")) {
-            Toast.makeText(getActivity(), "Địa chỉ đang rỗng", Toast.LENGTH_SHORT).show();
+            edtDiaChi.setError("Địa chỉ đang rỗng");
             return false;
         }
         return true;
@@ -241,7 +243,7 @@ Context context;
 
     private boolean validateInput(String ngaysinh, String cmnd) {
         if (!isValidDateOfBirth(ngaysinh)) {
-            Toast.makeText(getActivity(), "NgaySin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Ngay sinh không đúng định dạng dd/mm/yyyy", Toast.LENGTH_SHORT).show();
             return false;
         } else if (!isValidCMND(cmnd)) {
             Toast.makeText(getActivity(), "CMND không đúng định dạng", Toast.LENGTH_SHORT).show();
@@ -265,14 +267,17 @@ Context context;
     }
 
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
         Pattern pattern = Pattern.compile(emailRegex);
+
         Matcher matcher = pattern.matcher(email);
+
         return matcher.matches();
     }
 
     public static boolean isValidDateOfBirth(String dateOfBirth) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);
 
         try {
@@ -295,11 +300,21 @@ Context context;
     }
 
     public static boolean isValidName(String name) {
-        String nameRegex = "^[A-Z][a-z]*( [A-Z][a-z]*)*$";
-        Pattern pattern = Pattern.compile(nameRegex);
-        Matcher matcher = pattern.matcher(name);
-        return matcher.matches();
+        // Kiểm tra xem tên có chứa chữ số không
+        if (name.matches(".*\\d.*")) {
+            return false;
+        }
+
+        // Kiểm tra xem tên có chứa ký tự đặc biệt không
+        if (name.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};\\\\|,.<>\\/?].*")) {
+            return false;
+        }
+
+        return true;
     }
+
+
+
 
     public static boolean isValidPhone(String phone) {
         String phoneRegex = "^[0-9]{10}$";
