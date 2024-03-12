@@ -3,10 +3,13 @@ package com.example.banhang.View.fragment;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.DrawableRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -21,10 +24,12 @@ import android.widget.Toast;
 
 import com.example.banhang.R;
 import com.example.banhang.database.CreateDatabase;
-
+import com.example.banhang.View.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,19 +70,20 @@ public class AboutFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    private TextView tvYourName, tvThongBao;
+    private TextView tvYourName, tvThongBao,tvXacThucSoDienThoai;
     private EditText edtHoVaTen, edtEmail, edtSoDienThoai, edtDiaChi, edtNgaySinh, edtCMND;
     private Button btnSave;
     private CreateDatabase databaseHelper;
     private SQLiteDatabase database;
-    private LinearLayout lnThongTinDangNhap, lnCapNhatThongTinKhachHang;
 
 
+Context context;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         AnhXa(view);
+        context = getContext();
         databaseHelper = new CreateDatabase(getActivity());
         SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
@@ -92,13 +98,13 @@ public class AboutFragment extends Fragment {
         tvYourName.setText(tenDangNhap);
         edtNgaySinh.setText(ngaySinhP);
         edtCMND.setText(cmnd);
-
         String hoVaTendb = databaseHelper.GetCLHoVaTenKhachHang(cmnd);
         String emaildb = databaseHelper.GetCLEmailKhachHang(cmnd);
         String soDienThoaidb = databaseHelper.GetCLSDTKhachHang(cmnd);
         String diaChidb = databaseHelper.GetCLDiaChiKhachHang(cmnd);
         String ngaySinhdb = databaseHelper.GetCLNgaySinh(cmnd);
         String cmndDb = databaseHelper.GetCLCMND(cmnd);
+        String trangthai = null;
 
         if (hoVaTendb == null || emaildb == null || soDienThoaidb == null || diaChidb == null) {
             tvThongBao.setText("Thông Tin Cần Cập Nhật*");
@@ -117,6 +123,7 @@ public class AboutFragment extends Fragment {
                                 database = databaseHelper.getWritableDatabase();
                                 CapNhatThongTinKhachHang(hoVaTenL, emailL, sodienThoaiL, diaChiL,ngaysinhU,cmndU);
                                 tvThongBao.setText("");
+
 
                             } catch (Exception e) {
                                 Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
@@ -161,7 +168,19 @@ public class AboutFragment extends Fragment {
                     reloadFragment();
                 }
             });
+            edtSoDienThoai.setTextColor(Color.RED);
+
         }
+        tvXacThucSoDienThoai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editor1.putString("soDienThoai",soDienThoaidb);
+                editor1.apply();
+                Intent i = new Intent(context,VerifyActivity.class);
+                startActivity(i);
+                Toast.makeText(getActivity(),"Hệ thống đang cập nhật chức năng này",Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 
@@ -207,16 +226,16 @@ public class AboutFragment extends Fragment {
 
     private boolean validateInput(String hoVaTen, String email, String soDienThoai, String diaChi) {
         if (!isValidName(hoVaTen)) {
-            Toast.makeText(getActivity(), "Các chữ cái đầu phải viết hoa để tôn trọng tên của bạn <3", Toast.LENGTH_SHORT).show();
+            edtHoVaTen.setError("Tên không được chứa ký tự đặc biệt hoặc số");
             return false;
         } else if (!isValidEmail(email)) {
-            Toast.makeText(getActivity(), "Email không đúng định dạng", Toast.LENGTH_SHORT).show();
+            edtEmail.setError("Email không đúng định dạng");
             return false;
         } else if (!isValidPhone(soDienThoai)) {
-            Toast.makeText(getActivity(), "Số điện thoại không hợp lệ", Toast.LENGTH_SHORT).show();
+            edtSoDienThoai.setError("Số điện thoại không hợp lệ");
             return false;
         } else if (diaChi.equals("")) {
-            Toast.makeText(getActivity(), "Địa chỉ đang rỗng", Toast.LENGTH_SHORT).show();
+            edtDiaChi.setError("Địa chỉ đang rỗng");
             return false;
         }
         return true;
@@ -224,7 +243,7 @@ public class AboutFragment extends Fragment {
 
     private boolean validateInput(String ngaysinh, String cmnd) {
         if (!isValidDateOfBirth(ngaysinh)) {
-            Toast.makeText(getActivity(), "NgaySin", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Ngay sinh không đúng định dạng dd/mm/yyyy", Toast.LENGTH_SHORT).show();
             return false;
         } else if (!isValidCMND(cmnd)) {
             Toast.makeText(getActivity(), "CMND không đúng định dạng", Toast.LENGTH_SHORT).show();
@@ -244,18 +263,21 @@ public class AboutFragment extends Fragment {
         edtCMND = view.findViewById(R.id.edtCMND);
         btnSave = view.findViewById(R.id.btnSave);
         databaseHelper = new CreateDatabase(getActivity());
-        lnCapNhatThongTinKhachHang = view.findViewById(R.id.lnCapNhatThongTinKhachHang);
+        tvXacThucSoDienThoai = view.findViewById(R.id.tvXacThucSoDienThoai);
     }
 
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        String emailRegex = "^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
         Pattern pattern = Pattern.compile(emailRegex);
+
         Matcher matcher = pattern.matcher(email);
+
         return matcher.matches();
     }
 
     public static boolean isValidDateOfBirth(String dateOfBirth) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false);
 
         try {
@@ -278,11 +300,21 @@ public class AboutFragment extends Fragment {
     }
 
     public static boolean isValidName(String name) {
-        String nameRegex = "^[A-Z][a-z]*( [A-Z][a-z]*)*$";
-        Pattern pattern = Pattern.compile(nameRegex);
-        Matcher matcher = pattern.matcher(name);
-        return matcher.matches();
+        // Kiểm tra xem tên có chứa chữ số không
+        if (name.matches(".*\\d.*")) {
+            return false;
+        }
+
+        // Kiểm tra xem tên có chứa ký tự đặc biệt không
+        if (name.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};\\\\|,.<>\\/?].*")) {
+            return false;
+        }
+
+        return true;
     }
+
+
+
 
     public static boolean isValidPhone(String phone) {
         String phoneRegex = "^[0-9]{10}$";

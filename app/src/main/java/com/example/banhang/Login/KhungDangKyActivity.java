@@ -1,5 +1,6 @@
 package com.example.banhang.Login;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +22,9 @@ import com.example.banhang.R;
 import com.example.banhang.database.CreateDatabase;
 import com.example.banhang.View.HeaderMenu.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,25 +64,24 @@ public class KhungDangKyActivity extends AppCompatActivity {
                         gioiTinh = "";
                     }
                     if(TenDangNhapDK.equals("")||TenDangNhapDK.length()  < 5){
-                        Toast toast = Toast.makeText(getApplicationContext(),"Ten Dang Nhap Dang Rong Va Phai Lon Hon 4 Ký Tự",Toast.LENGTH_SHORT);toast.show();
-
+                        edtTenDangNhap.setError("Ten Dang Nhap Dang Rong Va Phai Lon Hon 4 Ký Tự");
                     } else if (!isPasswordValid(MatKhauDK)) {
-                        Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu phải hơn 8 ký tự , có chữ hoa và số ",Toast.LENGTH_SHORT);toast.show();
+                        edtMatKhau.setError("Mật Khẩu phải hơn 8 ký tự , có chữ hoa và số ");
 
                     } else if (NhapLaiMatKhauDK.equals("")) {
-                        Toast toast = Toast.makeText(getApplicationContext(),"Bạn Chưa Nhập Lại Mật Khẩu",Toast.LENGTH_SHORT);toast.show();
+                        edtNhapLaiMatKhau.setError("Bạn Chưa Nhập Lại Mật Khẩu");
 
                     } else if (!NhapLaiMatKhauDK.equals(edtMatKhau.getText().toString())) {
-                        Toast toast = Toast.makeText(getApplicationContext(),"Mật Khẩu Bạn Nhập Không Trùng Khớp",Toast.LENGTH_SHORT);toast.show();
+                        edtNhapLaiMatKhau.setError("Mật Khẩu Bạn Nhập Không Trùng Khớp");
                     } else if (rdogrGioiTinh.getCheckedRadioButtonId() == -1) {
                         Toast toast = Toast.makeText(getApplicationContext(),"Hãy Chọn Giới Tính Của Bạn",Toast.LENGTH_SHORT);toast.show();
-                    } else if(NgaySinhDK.equals("")){
-                        Toast toast = Toast.makeText(getApplicationContext(),"bạn Chưa Nhập Ngày Sinh",Toast.LENGTH_SHORT);toast.show();
+                    } else if(!isValidDateOfBirth(NgaySinhDK)){
+                        edtNgaySinh.setError("bạn Chưa Nhập Ngày Sinh");
                     }else if(!isValidCMND(CMNDK) ){
                         Toast toast = Toast.makeText(getApplicationContext(),"CMND không hợp lệ",Toast.LENGTH_SHORT);toast.show();
                     }else {
                         try {
-                            DangKyNguoiDung(TenDangNhapDK,MatKhauDK,NgaySinhDK,CMNDK,gioiTinh);
+                            DangKyNguoiDung(TenDangNhapDK,MatKhauDK,NgaySinhDK,CMNDK,gioiTinh,edtCMND,edtTenDangNhap);
                             Intent intent = new Intent(KhungDangKyActivity.this, KhungDangNhapActivity.class);
                             // Lưu dữ liệu
                             SharedPreferences.Editor editor = getSharedPreferences("ShareData", MODE_PRIVATE).edit();
@@ -114,7 +117,7 @@ public class KhungDangKyActivity extends AppCompatActivity {
         rdogrGioiTinh = findViewById(R.id.rdogrGioiTinh);
     }
     //Method
-    private void DangKyNguoiDung(String tenDangNhap, String matKhau,String ngaysinh,String cmnd,String gioitinh) {
+    private void DangKyNguoiDung(String tenDangNhap, String matKhau,String ngaysinh,String cmnd,String gioitinh, EditText eErorrCmnd,EditText eErorrName) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         /*
@@ -148,6 +151,8 @@ public class KhungDangKyActivity extends AppCompatActivity {
             }
             else {
                 Toast toast = Toast.makeText(getApplicationContext(), "Tên Đăng Nhặp hoặc CMND đã tồn tại", Toast.LENGTH_SHORT);
+                eErorrName.setError("Tên Đăng Nhặp hoặc CMND đã tồn tại");
+                eErorrCmnd.setError("Tên Đăng Nhặp hoặc CMND đã tồn tại");
                 toast.show();
             }
 
@@ -200,5 +205,27 @@ public class KhungDangKyActivity extends AppCompatActivity {
         // Kiểm tra mật khẩu với biểu thức chính quy
         return password.matches(passwordRegex);
     }
+    public static boolean isValidDateOfBirth(String dateOfBirth) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        try {
+            Date parsedDate = sdf.parse(dateOfBirth);
+
+            if (!dateOfBirth.equals(sdf.format(parsedDate))) {
+                return false;
+            }
+
+            Date currentDate = new Date();
+            if (parsedDate.after(currentDate)) {
+                return false;
+            }
+
+        } catch (ParseException e) {
+            return false;
+        }
+
+        return true;
+    }
+
 
 }

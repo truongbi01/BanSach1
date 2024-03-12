@@ -134,6 +134,7 @@
                                     android:text="@string/Nam"
                                     android:textColor="@color/white"
                                     android:buttonTint="@color/white"
+                                    android:checked="true"
                                     />
 
                                 <RadioButton
@@ -150,7 +151,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/customer_edittext"
-                            android:hint="@string/NgaySinh"
+                            android:hint="DD/MM/YYYY"
                             android:textColorHint="@color/grey"
                             android:padding="@dimen/size10dp"
                             android:layout_margin="@dimen/size10dp"
