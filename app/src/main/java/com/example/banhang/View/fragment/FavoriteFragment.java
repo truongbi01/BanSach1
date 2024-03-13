@@ -1,6 +1,7 @@
 package com.example.banhang.View.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.banhang.R;
+import com.example.banhang.View.DetailActivity;
 import com.example.banhang.View.RecyclerViewProduct.Products;
 import com.example.banhang.View.RecyclerViewProduct.Utils;
 import com.example.banhang.View.RecyclerViewProductFavorite.ProductsFavoriteAdapter;
@@ -92,6 +94,8 @@ public class FavoriteFragment extends Fragment {
                     DeletedAllProductsFavorite();
             }
         });
+
+
         return  view;
     }
     void AnhXa(View view){

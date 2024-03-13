@@ -80,44 +80,11 @@
                     android:text="10000đ"
                     android:textStyle="bold"
                     android:textSize="18sp"
-                    android:layout_marginLeft="5dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_marginTop="@dimen/size15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Số lượng :"
-                    android:textSize="20sp"
-                    android:textColor="@color/dolv6" />
-
-                <EditText
-                    android:id="@+id/edtSoLuong_Detail"
-                    android:layout_marginTop="@dimen/size15dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="0"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
                     android:layout_marginLeft="5dp"
-                    android:inputType="number"/>
-                <Button
-                    android:id="@+id/btnPlus"
-                    android:layout_width="10dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="13dp"
-                    android:scaleX="0.5"
-
-                    android:background="@drawable/icon_plus"/>
+                    android:textColor="@color/dolv4"/>
             </LinearLayout>
+
+
 
         </LinearLayout>
     </LinearLayout>

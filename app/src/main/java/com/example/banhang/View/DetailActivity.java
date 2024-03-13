@@ -26,14 +26,14 @@ import com.example.banhang.R;
 import com.example.banhang.View.RecyclerViewProduct.*;
 import com.example.banhang.database.*;
 import com.example.banhang.View.fragment.*;
-
+import com.example.banhang.View.RecycleViewGioHang.*;
 public class DetailActivity extends AppCompatActivity {
     TextView tvGiaTien, tvNoiDungMoTa,tvTenSanPham;
-    EditText edtSoLuong;
-    Button btnThemSanPham,btnPlus,btnBack;
+    Button btnThemSanPham,btnBack;
     ImageView imgAnhSanPham;
     CreateDatabase createDatabase;
     FrameLayout mainFragment_Details;
+    CartAdapter cartAdapte;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,19 +58,7 @@ public class DetailActivity extends AppCompatActivity {
         tvTenSanPham.setText(tenSanPham);
         tvNoiDungMoTa.setText(moTa);
         tvGiaTien.setText(giaTien);
-        btnPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(soLuong[0] <= 0 ){
-                    soLuong[0] = 1;
-                }else{
-                    soLuong[0]++;
 
-                }
-                // Set the updated value to the EditText
-                edtSoLuong.setText(String.valueOf(soLuong[0]));
-            }
-        });
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,27 +72,35 @@ public class DetailActivity extends AppCompatActivity {
         SharedPreferences duLieuNguoiDung = getApplication().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
         String tenKhachHang =  duLieuNguoiDung.getString("tenKhachHang",null);
 
+
+
         btnThemSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edtSoLuong.getText().toString().equals("") || soLuong[0] < 0){
-                    Toast.makeText(getApplicationContext(),"Vui lòng chọn số lượng",Toast.LENGTH_SHORT).show();
-                }
-                else{
+                int soLuong = 0 ;
                     // Kiểm tra nếu người dùng đã nhập tên khách hàng
                     if(tenKhachHang == null){
+
+
                         Toast.makeText(getApplication(),"Bạn Cần Cập Nhật thông tin tài khoản đẻ được thêm vào giỏ hàng",Toast.LENGTH_SHORT).show();
                         Fragment fm ;
                         fm = new AboutFragment();
                         loadFragment(fm);
                     }
                     else {
-                        ThemSanPhamVaoGioHang(tenSanPham,tenDangNhap);
+                        try {
+                            HomeFragment homeFragment = new HomeFragment();
+                            homeFragment.reloadFragment();
+                        }
+                        finally {
+                            ThemSanPhamVaoGioHang(tenSanPham,tenDangNhap);
+                        }
+
                     }
 
                 }
 
-            }
+
         });
     }
     void loadFragment(Fragment fmNew){
@@ -119,11 +115,9 @@ public class DetailActivity extends AppCompatActivity {
     void AnhXa(){
         tvGiaTien = findViewById(R.id.tvGiaTien_Detail);
         tvNoiDungMoTa = findViewById(R.id.tvNoiDung_Detail);
-        edtSoLuong = findViewById(R.id.edtSoLuong_Detail);
         btnThemSanPham  = findViewById(R.id.btnThemSanPham_Detail);
         tvTenSanPham = findViewById(R.id.tvTenSanPham_Detail);
         imgAnhSanPham = findViewById(R.id.imgAnhSanPham_Detail);
-        btnPlus = findViewById(R.id.btnPlus);
         btnBack = findViewById(R.id.btnBack);
         mainFragment_Details = findViewById(R.id.mainFragment_Detail);
     }

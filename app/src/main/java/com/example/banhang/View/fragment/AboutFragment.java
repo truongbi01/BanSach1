@@ -77,20 +77,20 @@ public class AboutFragment extends Fragment {
     private SQLiteDatabase database;
 
 
-Context context;
+    Context context;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
+        context = getContext(); // 17405
         AnhXa(view);
-        context = getContext();
-        databaseHelper = new CreateDatabase(getActivity());
+        databaseHelper = new CreateDatabase(getContext());
         SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
         editor1.putString("tenKhachHang",edtHoVaTen.getText().toString());
         editor1.apply();
-        SharedPreferences prefs = getActivity().getSharedPreferences("ShareData", Context.MODE_PRIVATE);
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("tk_mk login", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getContext().getSharedPreferences("ShareData", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("tk_mk login", Context.MODE_PRIVATE);
         String tenDangNhap = sharedPreferences.getString("hovaten", "");
         String ngaySinhP = prefs.getString("ngaySinh", "");
         String cmnd = prefs.getString("cmnd", "");
@@ -104,7 +104,7 @@ Context context;
         String diaChidb = databaseHelper.GetCLDiaChiKhachHang(cmnd);
         String ngaySinhdb = databaseHelper.GetCLNgaySinh(cmnd);
         String cmndDb = databaseHelper.GetCLCMND(cmnd);
-        String trangthai = null;
+        // String trangthai = null;
 
         if (hoVaTendb == null || emaildb == null || soDienThoaidb == null || diaChidb == null) {
             tvThongBao.setText("Thông Tin Cần Cập Nhật*");
@@ -126,7 +126,7 @@ Context context;
 
 
                             } catch (Exception e) {
-                                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                             } finally {
                                 if (database != null && database.isOpen()) {
                                     database.close();
@@ -158,7 +158,7 @@ Context context;
                             tvThongBao.setText("");
 
                         } catch (Exception e) {
-                            Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), e.toString(), Toast.LENGTH_SHORT).show();
                         } finally {
                             if (database != null && database.isOpen()) {
                                 database.close();
@@ -171,15 +171,12 @@ Context context;
             edtSoDienThoai.setTextColor(Color.RED);
 
         }
-        tvXacThucSoDienThoai.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editor1.putString("soDienThoai",soDienThoaidb);
-                editor1.apply();
-                Intent i = new Intent(context,VerifyActivity.class);
-                startActivity(i);
-                Toast.makeText(getActivity(),"Hệ thống đang cập nhật chức năng này",Toast.LENGTH_SHORT).show();
-            }
+        tvXacThucSoDienThoai.setOnClickListener(v -> {
+            editor1.putString("soDienThoai", soDienThoaidb);
+            editor1.apply();
+            Intent i = new Intent(context, VerifyActivity.class);
+            startActivity(i);
+            Toast.makeText(context,"Hệ thống đang cập nhật chức năng này",Toast.LENGTH_SHORT).show();
         });
         return view;
     }
@@ -217,10 +214,10 @@ Context context;
         );
 
         if (rowsAffected > 0) {
-            Toast.makeText(getActivity(), "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
 
         } else {
-            Toast.makeText(getActivity(), "Không tìm thấy thông tin cần cập nhật", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Không tìm thấy thông tin cần cập nhật", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -243,10 +240,10 @@ Context context;
 
     private boolean validateInput(String ngaysinh, String cmnd) {
         if (!isValidDateOfBirth(ngaysinh)) {
-            Toast.makeText(getActivity(), "Ngay sinh không đúng định dạng dd/mm/yyyy", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Ngay sinh không đúng định dạng dd/mm/yyyy", Toast.LENGTH_SHORT).show();
             return false;
         } else if (!isValidCMND(cmnd)) {
-            Toast.makeText(getActivity(), "CMND không đúng định dạng", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "CMND không đúng định dạng", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -262,7 +259,7 @@ Context context;
         edtNgaySinh = view.findViewById(R.id.edtNgaySinh);
         edtCMND = view.findViewById(R.id.edtCMND);
         btnSave = view.findViewById(R.id.btnSave);
-        databaseHelper = new CreateDatabase(getActivity());
+        databaseHelper = new CreateDatabase(getContext());
         tvXacThucSoDienThoai = view.findViewById(R.id.tvXacThucSoDienThoai);
     }
 

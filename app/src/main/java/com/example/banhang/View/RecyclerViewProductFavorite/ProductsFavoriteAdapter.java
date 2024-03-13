@@ -2,6 +2,7 @@ package com.example.banhang.View.RecyclerViewProductFavorite;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,7 @@ import com.example.banhang.View.RecyclerViewProduct.ProductAdapterAdmin;
 import com.example.banhang.View.RecyclerViewProduct.Products;
 import com.example.banhang.View.RecyclerViewProduct.Utils;
 import com.example.banhang.database.CreateDatabase;
-
+import com.example.banhang.View.*;
 import java.util.ArrayList;
 
 public class ProductsFavoriteAdapter extends RecyclerView.Adapter<ProductsFavoriteAdapter.ProductsFavoriteViewHolder> {

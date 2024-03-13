@@ -24,8 +24,14 @@ public class Products {
     }
 
     String categoryId;
-
+    private boolean isChecked;
     String image;
+    public Products( Context context,String name, String price,String image) {
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.databaseHelper = new CreateDatabase(context);
+    }
     public Products( Context context,String name, String price,String description,String image,String categoryId) {
         this.name = name;
         this.price = price;
@@ -71,7 +77,13 @@ public class Products {
     }
 
 
+    public boolean isChecked() {
+        return isChecked;
+    }
 
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
     public void setDescription(String description) {
         this.description = description;
     }

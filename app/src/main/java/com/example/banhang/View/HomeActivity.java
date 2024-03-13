@@ -59,7 +59,8 @@ public class HomeActivity extends AppCompatActivity {
         //Load fragment
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {      Fragment fmNew;
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Fragment fmNew;
                 int menuID = item.getItemId();
                 if (menuID == R.id.miHome) {
                     getSupportActionBar().setTitle(item.getTitle());

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,9 +22,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
+import com.example.banhang.View.RecycleViewGioHang.*;
 import com.example.banhang.R;
 import com.example.banhang.View.RecyclerViewCategory.CategoryAdapter;
 import com.example.banhang.View.RecyclerViewCategory.ProductsCategory;
@@ -45,6 +48,8 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
     ArrayList<Products> listProducts;
      ProductAdapter productAdapter;
      ProductAdapterAdmin productAdapterAdmin;
+     ImageView imgCart;
+     TextView tvCartItemCount;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -90,6 +95,7 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
         }
     }
     ViewFlipper viewFlipper;
+    ArrayList<Products> lstProductCart = new ArrayList<>();
     private int currentImage = 0;
     private static final int FLIP_INTERVAL = 3000;
     @Override
@@ -99,6 +105,28 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
         AnhXa(view);
         flipHandler.sendEmptyMessageDelayed(0, FLIP_INTERVAL);
         databaseHelper = new CreateDatabase(getActivity());
+
+        // Lấy số lượng sản phẩm trong giỏ hàng từ SharedPreferences
+        SharedPreferences cartPreferences = getContext().getSharedPreferences("DuLieu", MODE_PRIVATE);
+        String cartItemCount = cartPreferences.getString("soLuong", null);
+        lstProductCart = Utils.LoadDaTaProductsCart(getContext());
+            // Tính tổng số lượng sản phẩm trong giỏ hàng
+        int totalQuantity = 0;
+        for (Products product : lstProductCart) {
+            // Kiểm tra sản phẩm đã được chọn trong giỏ hàng
+            if (product  != null ) {
+                // Tăng số lượng sản phẩm trong giỏ hàng
+                totalQuantity += 1; // Hoặc sử dụng một số thuộc tính khác để lấy số lượng, phụ thuộc vào cách bạn đã cài đặt nó trong lớp Products
+            }
+        }
+
+        // Tìm và cập nhật TextView
+        if (totalQuantity > 0) {
+            tvCartItemCount.setVisibility(View.VISIBLE);
+            tvCartItemCount.setText(String.valueOf(totalQuantity));
+        } else {
+            tvCartItemCount.setVisibility(View.GONE);
+        }
         String thongtinluu = "tk_mk login";
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(thongtinluu, MODE_PRIVATE);
         String tenDangNhap =  sharedPreferences.getString("Username","");
@@ -120,12 +148,27 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             rvListProduct.setLayoutManager(gridLayoutManager);
         }
+        imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),CartActivity.class);
+                startActivity(i);
+            }
+        });
         return view;
 
+
+    }
+    // Phương thức reload lại trang
+    public void reloadFragment() {
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
     void AnhXa(View view){
         rvListProduct = view.findViewById(R.id.rvListProduct);
         viewFlipper = view.findViewById(R.id.viewlipper);
+        imgCart = view.findViewById(R.id.imgCart);
+        tvCartItemCount = view.findViewById(R.id.tvCartItemCount);
     }
     void LoadDataProducts(Context context){
         listProducts = Utils.LoadDaTaProducts(context);
