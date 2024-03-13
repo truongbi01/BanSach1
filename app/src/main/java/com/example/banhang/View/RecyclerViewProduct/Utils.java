@@ -2,6 +2,7 @@ package com.example.banhang.View.RecyclerViewProduct;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -136,6 +137,50 @@ public class Utils {
         db.close();
 
         return listProducts;
+    }
+    public static ArrayList<Products> LoadProductsCartFromDatabase(Context context) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<Products> listProducts = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
+
+        String query = "SELECT " + CreateDatabase.CL_TEN_SAN_PHAM + ", " + CreateDatabase.CL_GIA_BAN + ", " + CreateDatabase.CL_ANH_SAN_PHAM +
+                " From " + CreateDatabase.TB_GIO_HANG +
+                " inner  join " + CreateDatabase.TB_SAN_PHAM +
+                " on " + CreateDatabase.TB_GIO_HANG + "." + CreateDatabase.CL_GIO_HANG_SAN_PHAM_ID +
+                " = " + CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_SAN_PHAM_ID;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String tenSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_SAN_PHAM));
+                @SuppressLint("Range") String giaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_GIA_BAN));
+                @SuppressLint("Range") String anhSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_ANH_SAN_PHAM));
+
+                Products newProducts1 = new Products(context, tenSanPham, giaSanPham, anhSanPham);
+                listProducts.add(newProducts1);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listProducts;
+    }
+
+    public static ArrayList<Products> LoadDaTaProductsCart(Context context) {
+        ArrayList<Products> lstProducts = new ArrayList<>();
+        ArrayList<Products> productsArrayList = Utils.LoadProductsCartFromDatabase(context);
+        int soLuong = 0 ;
+
+        for (Products products : productsArrayList) {
+            if (products != null) {
+                lstProducts.add(new Products(context, products.getName(), products.getPrice(), products.getDes(), products.getImage(), products.getCategoryId()));
+            }
+        }
+
+
+        return lstProducts;
     }
     public static void ThongBao(Context context, String thongBao){
         Toast.makeText(context,thongBao,Toast.LENGTH_SHORT).show();
