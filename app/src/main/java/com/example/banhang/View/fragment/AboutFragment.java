@@ -176,7 +176,6 @@ public class AboutFragment extends Fragment {
             editor1.apply();
             Intent i = new Intent(context, VerifyActivity.class);
             startActivity(i);
-            Toast.makeText(context,"Hệ thống đang cập nhật chức năng này",Toast.LENGTH_SHORT).show();
         });
         return view;
     }

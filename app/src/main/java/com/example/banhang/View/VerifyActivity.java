@@ -41,11 +41,9 @@ public class VerifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Khởi tạo Firebase
-        FirebaseApp.initializeApp(this);
 
-        mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_verify);
+        mAuth = FirebaseAuth.getInstance();
 
         AnhXa();
 
@@ -70,27 +68,8 @@ public class VerifyActivity extends AppCompatActivity {
                         .setPhoneNumber(soDienThoai)
                         .setTimeout(time, TimeUnit.SECONDS)
                         .setActivity(this)
-                        .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                            @Override
-                            public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                                verify(phoneAuthCredential);
-                            }
+                        .setCallbacks(callbacks);
 
-                            @Override
-                            public void onVerificationFailed(@NonNull FirebaseException e) {
-                                Utils.ThongBao(getApplicationContext(), "OTP Không Chính Xác");
-                                setInProgress(false);
-                            }
-
-                            @Override
-                            public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                super.onCodeSent(s, forceResendingToken);
-                                verificationCode = s;
-                                resendingToken = forceResendingToken;
-                                Utils.ThongBao(getApplicationContext(), "OTP Gửi lại thành công");
-                                setInProgress(false);
-                            }
-                        });
 
         if (isResend) {
             PhoneAuthProvider.verifyPhoneNumber(builder.setForceResendingToken(resendingToken).build());
@@ -98,7 +77,27 @@ public class VerifyActivity extends AppCompatActivity {
             PhoneAuthProvider.verifyPhoneNumber(builder.build());
         }
     }
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+            verify(phoneAuthCredential);
+        }
 
+        @Override
+        public void onVerificationFailed(@NonNull FirebaseException e) {
+            Utils.ThongBao(getApplicationContext(), "OTP Không Chính Xác");
+            setInProgress(false);
+        }
+
+        @Override
+        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            verificationCode = s;
+            resendingToken = forceResendingToken;
+            Utils.ThongBao(getApplicationContext(), "OTP Gửi lại thành công");
+            setInProgress(false);
+        }
+    };
     private void verify(PhoneAuthCredential phoneAuthCredential) {
         // Gửi thông báo và di chuyển đến trang khác
         trangThai = "ok";
