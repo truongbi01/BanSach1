@@ -68,6 +68,10 @@
         <activity android:name=".View.RecycleViewGioHang.CartActivity" android:exported="false">
 
         </activity>
+        <activity android:name=".View.OTPActivity"
+            android:exported="false">
+
+        </activity>
     </application>
 
 </manifest>
