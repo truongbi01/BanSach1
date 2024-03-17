@@ -17,6 +17,10 @@
             android:icon="@drawable/icon_heart"
             android:title="Favorite"
             />
+        <item
+            android:id="@+id/miDonHang_customer"
+            android:icon="@drawable/icon_product"
+            android:title="Đơn Hàng"/>
     </group>
     <item
         android:icon="@drawable/menu_black"

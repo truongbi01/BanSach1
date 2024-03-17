@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.content.ContentValues;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -23,7 +21,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.banhang.Login.*;
 import com.example.banhang.R;
-import com.example.banhang.View.HeaderMenu.*;
 import com.example.banhang.View.fragment.*;
 import com.google.android.material.navigation.NavigationView;
 import com.example.banhang.database.CreateDatabase;
@@ -83,6 +80,13 @@ public class HomeActivity extends AppCompatActivity {
                 }else if (menuID == R.id.mnLogout) {
                     Intent intent = new Intent(HomeActivity.this,KhungDangNhapActivity.class);
                     startActivity(intent);
+                    return true;
+
+                }
+                else if (menuID == R.id.miDonHang_customer) {
+                    getSupportActionBar().setTitle(item.getTitle());
+                    fmNew = new DonHangFragment();
+                    loadFragment(fmNew);
                     return true;
 
                 }

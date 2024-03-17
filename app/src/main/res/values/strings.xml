@@ -13,8 +13,8 @@
     <string name="Nam">Nam</string>
     <string name="TODO">TODO</string>
     <string name="HOME">Home</string>
-    <string name="action_profile">Profile</string>
-    <string name="action_home">Home</string>
+    <string name="action_profile">Thông Tin Cá Nhân</string>
+    <string name="action_home">Trang chủ</string>
     <string name="action_recommend">Contacts</string>
     <string name="saveAccount">Lưu Thông Tin Đăng Nhập</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -27,12 +27,12 @@
     <string name="Doan">doan\n</string>
     <string name="YourName">Your Name\n</string>
     <string name="profile">Profile</string>
-    <string name="about">About</string>
-    <string name="LogOut">LogOut\n</string>
+    <string name="about">Thông Tin</string>
+    <string name="LogOut">Đăng Xuất\n</string>
     <string name="Gallery">Gallery</string>
-    <string name="communication">Communication</string>
-    <string name="Share">Share</string>
-    <string name="Rate_us">Rate Us</string>
+    <string name="communication">Khác</string>
+    <string name="Share">Chia Sẽ</string>
+    <string name="Rate_us">Đánh Giá</string>
     <string name="Shopping">ShoppingDays\n</string>
 
     <string name="register">REGISTER</string>

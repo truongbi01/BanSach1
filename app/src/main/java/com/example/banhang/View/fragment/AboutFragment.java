@@ -174,7 +174,7 @@ public class AboutFragment extends Fragment {
         tvXacThucSoDienThoai.setOnClickListener(v -> {
             editor1.putString("soDienThoai", soDienThoaidb);
             editor1.apply();
-            Intent i = new Intent(context, VerifyActivity.class);
+            Intent i = new Intent(context, OTPActivity.class);
             startActivity(i);
         });
         return view;
