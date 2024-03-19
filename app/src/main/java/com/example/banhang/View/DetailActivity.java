@@ -62,6 +62,7 @@ public class DetailActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 finish();
             }
         });
@@ -88,14 +89,11 @@ public class DetailActivity extends AppCompatActivity {
                         loadFragment(fm);
                     }
                     else {
-                        try {
-                            HomeFragment homeFragment = new HomeFragment();
-                            homeFragment.reloadFragment();
+                        Fragment homeFragment = getSupportFragmentManager().findFragmentById(R.id.mainFragment_Detail);
+                        if (homeFragment instanceof HomeFragment) {
+                            ((HomeFragment) homeFragment).reloadFragment();
                         }
-                        finally {
-                            ThemSanPhamVaoGioHang(tenSanPham,tenDangNhap);
-                        }
-
+                        ThemSanPhamVaoGioHang(tenSanPham, tenDangNhap);
                     }
 
                 }

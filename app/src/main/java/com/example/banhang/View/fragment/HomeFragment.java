@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Message;
@@ -50,6 +51,7 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
      ProductAdapterAdmin productAdapterAdmin;
      ImageView imgCart;
      TextView tvCartItemCount;
+     SwipeRefreshLayout swipeRefreshLayout;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -103,6 +105,14 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         AnhXa(view);
+        // Xử lý sự kiện vuốt màn hình xuống để reload lại trang
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadFragment(); // Gọi phương thức reloadFragment() để tải lại trang
+                swipeRefreshLayout.setRefreshing(false); // Kết thúc quá trình làm mới
+            }
+        });
         flipHandler.sendEmptyMessageDelayed(0, FLIP_INTERVAL);
         databaseHelper = new CreateDatabase(getActivity());
 
@@ -161,14 +171,21 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
     }
     // Phương thức reload lại trang
     public void reloadFragment() {
-        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.detach(this).attach(this).commit();
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.mainFragment);
+        if (currentFragment instanceof HomeFragment) {
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
+            swipeRefreshLayout.setRefreshing(false); // Dừng hiệu ứng refresh
+        }
     }
     void AnhXa(View view){
         rvListProduct = view.findViewById(R.id.rvListProduct);
         viewFlipper = view.findViewById(R.id.viewlipper);
         imgCart = view.findViewById(R.id.imgCart);
         tvCartItemCount = view.findViewById(R.id.tvCartItemCount);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
     }
     void LoadDataProducts(Context context){
         listProducts = Utils.LoadDaTaProducts(context);

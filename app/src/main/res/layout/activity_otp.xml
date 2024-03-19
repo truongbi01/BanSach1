@@ -8,6 +8,15 @@
     android:gravity="center"
     android:layout_margin="20dp"
     android:weightSum="100">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chức Năng này đang được cập nhật"
+        android:textSize="23sp"
+        android:textStyle="bold"
+        android:textColor="@color/dolv10"
+        android:layout_gravity="center"
+        android:gravity="center"/>
     <ImageView
         android:id="@+id/imgAnhVerify"
         android:layout_width="300dp"

@@ -26,6 +26,7 @@ public class Products {
     String categoryId;
     private boolean isChecked;
     String image;
+    public Products(){};
     public Products( Context context,String name, String price,String image) {
         this.name = name;
         this.price = price;

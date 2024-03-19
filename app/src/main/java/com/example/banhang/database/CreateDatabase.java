@@ -15,7 +15,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 13;
+    private final static int VERSION = 14;
 
 
     // Bảng Người dùng
@@ -37,14 +37,16 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String Cl_GIO_HANG_TEN_NGUOI_DUNG ="TenDangNhap";
 
     // Bảng DonHang
-    private static final String TB_DON_HANG = "DonHang";
-    private static final String CL_DON_HANG_ID = "MaDonHang";
+    public static final String TB_DON_HANG = "DonHang";
+    public static final String CL_DON_HANG_ID = "MaDonHang";
 
-    private static final String CL_NGAY_DAT_HANG = "NgayDatHang";
-    private static final String CL_TEN_NGUOI_DUNG = "TenDangNhap";
+    public static final String CL_NGAY_DAT_HANG = "NgayDatHang";
+    public static final String CL_TEN_NGUOI_DUNG = "TenDangNhap";
 
-    private static final String CL_TOTAL = "TongTien";
-    private static final String CL_TRANG_THAI = "TrangThai";
+    public static final String CL_TOTAL = "TongTien";
+    public static final String CL_TRANG_THAI = "TrangThai";
+
+    public static final String CL_SAN_PHAM_ID_Donhang = "MaSanPham";
 
 
 
@@ -144,14 +146,17 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         // Tạo bảng DonHang
         String CREATE_TABLE_DON_HANG = "CREATE TABLE " + TB_DON_HANG + "("
-                + CL_DON_HANG_ID + " INTEGER PRIMARY KEY,"
+                + CL_DON_HANG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + CL_NGAY_DAT_HANG + " TEXT,"
                 + CL_TEN_NGUOI_DUNG + " TEXT," // Giả sử TenDangNhap là tên người dùng đặt hàng
                 + CL_TOTAL + " REAL,"
                 + CL_TRANG_THAI + " INTEGER,"
-                + "FOREIGN KEY(" + CL_TEN_NGUOI_DUNG + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP +")"
+                + CL_SAN_PHAM_ID_Donhang + " INTEGER," // Thêm cột ID sản phẩm
+                + "FOREIGN KEY(" + CL_TEN_NGUOI_DUNG + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP +"),"
+                + "FOREIGN KEY(" + CL_SAN_PHAM_ID + ") REFERENCES " + TB_SAN_PHAM + "(" + CL_SAN_PHAM_ID + ")"
                 + ")";
         db.execSQL(CREATE_TABLE_DON_HANG);
+
     }
 
     @Override

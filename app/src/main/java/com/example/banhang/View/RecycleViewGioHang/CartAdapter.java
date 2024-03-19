@@ -2,7 +2,6 @@ package com.example.banhang.View.RecycleViewGioHang;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.example.banhang.R;
 import com.example.banhang.View.RecyclerViewProduct.*;
 import java.util.ArrayList;
 
-import com.example.banhang.View.RecyclerViewProductFavorite.ProductsFavoriteAdapter;
 import  com.example.banhang.database.*;
 import  com.example.banhang.View.fragment.*;
 
@@ -62,8 +60,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.tvName.setText(item.getName());
         holder.tvGia.setText(item.getPrice()+"VND");
         holder.imgAnhSanPham.setImageBitmap(Utils.convertToBitmapFromAssets(context,item.getImage()));
-        //Lấy số lượng từ detail
-        SharedPreferences sharedPreferences = context.getSharedPreferences("DuLieu",Context.MODE_PRIVATE);
 
 
         //Tạo sự kiện
@@ -104,13 +100,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.btnXoa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.edtSoLuong.setText("");
+                holder.cbGioHang.setChecked(false);
 
-                try{
-                    HomeFragment homeFragment = new HomeFragment();
-                    homeFragment.reloadFragment();
-                }finally {
+
                     XoaSanPham(createDatabase.GetIdSanPham(item.getName()), context);
-                }
+
 
 
 
@@ -156,8 +151,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         private void XoaSanPham(String id,Context context) {
         SQLiteDatabase database = createDatabase.getWritableDatabase(); // Sử dụng createDatabase đã truyền vào constructor
         // Xác định bảng và điều kiện cho phép xóa dữ liệu
-        String tableName = CreateDatabase.TB_GIO_HANG; // Thay "YourTableName" bằng tên bảng của bạn
-        String condition = CreateDatabase.CL_GIO_HANG_SAN_PHAM_ID + "= ?"; // Điều kiện xóa, ở đây là xóa Sản phẩm theo tên
+        String tableName = CreateDatabase.TB_GIO_HANG;
+        String condition = CreateDatabase.CL_GIO_HANG_SAN_PHAM_ID + "= ?"; // Điều kiện xóa, ở đây là xóa Sản phẩm theo id
         String[] args = {String.valueOf(id)}; // Giá trị tham số cho điều kiện xóa
 
         // Thực thi lệnh xóa trong cơ sở dữ liệu
@@ -183,7 +178,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         this.lstProductCart = newList;
         notifyDataSetChanged();
     }
-    private double calculateTotalAmount() {
+    double calculateTotalAmount() {
         double totalAmount = 0.0;
 
         for (Products product : lstProductCart) {
@@ -228,11 +223,49 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     public interface TotalAmountListener {
         void onTotalAmountChanged(double totalAmount);
     }
-    private void calculateAndNotifyTotalAmount() {
+    public double calculateAndNotifyTotalAmount() {
         double totalAmount = calculateTotalAmount();
         totalAmountListener.onTotalAmountChanged(totalAmount);
+        return totalAmount;
     }
 
+    public ArrayList<Products> getSelectedProducts() {
+        ArrayList<Products> selectedProducts = new ArrayList<>();
+        for (Products product : lstProductCart) {
+            if (product.isChecked()) {
+                selectedProducts.add(product);
+            }
+        }
+        return selectedProducts;
+    }
+    void deleteSelectedProductsFromCart(String id,ArrayList<Products> selectedProducts, SQLiteDatabase database) {
+        String tableName = CreateDatabase.TB_GIO_HANG;
+        int deletedCount = 0;
+        for (Products product : selectedProducts) {
+            if(product.isChecked()){
+                String condition = CreateDatabase.CL_GIO_HANG_SAN_PHAM_ID + " = ?";
+                String[] args = {String.valueOf(id)}; // Sử dụng id của từng sản phẩm để xóa
+                int rowsAffected = database.delete(tableName, condition, args);
+                if (rowsAffected > 0) {
+                    deletedCount++;
+                }
+            }
+
+        }
+
+        if (deletedCount > 0) {
+            // Nếu có ít nhất một sản phẩm được xóa, thông báo xóa thành công
+            Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+        } else {
+            // Nếu không có sản phẩm nào được xóa, thông báo xóa không thành công
+            Toast.makeText(context, "Không có sản phẩm nào được xóa", Toast.LENGTH_SHORT).show();
+        }
+
+        // Cập nhật lại dữ liệu giỏ hàng sau khi xóa sản phẩm
+        LoadData(context);
+        setData(lstProductCart);
+
+    }
 }
 
 
