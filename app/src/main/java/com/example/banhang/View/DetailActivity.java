@@ -62,8 +62,7 @@ public class DetailActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomeFragment homeFragment = new HomeFragment();
-                homeFragment.reloadFragment();
+
                 finish();
             }
         });

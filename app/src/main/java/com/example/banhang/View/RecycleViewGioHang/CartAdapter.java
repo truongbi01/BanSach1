@@ -239,26 +239,32 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return selectedProducts;
     }
     void deleteSelectedProductsFromCart(String id,ArrayList<Products> selectedProducts, SQLiteDatabase database) {
+        String tableName = CreateDatabase.TB_GIO_HANG;
+        int deletedCount = 0;
         for (Products product : selectedProducts) {
-            // Xác định bảng và điều kiện cho phép xóa dữ liệu
-            String tableName = CreateDatabase.TB_GIO_HANG; // Thay "YourTableName" bằng tên bảng của bạn
-            String condition = CreateDatabase.CL_GIO_HANG_SAN_PHAM_ID + "= ?"; // Điều kiện xóa, ở đây là xóa Sản phẩm theo id
-            String[] args = {String.valueOf(id)}; // Giá trị tham số cho điều kiện xóa
-
-            // Thực thi lệnh xóa trong cơ sở dữ liệu
-            int rowsAffected = database.delete(tableName, condition, args);
-
-            if (rowsAffected > 0) {
-                // Nếu có ít nhất một hàng được xóa, thông báo xóa thành công
-                Toast.makeText(context,"Xoá Sản Phẩm thành công",Toast.LENGTH_SHORT).show();
-                // (cập nhật giao diện người dùng hoặc thông báo cho người dùng nếu cần thiết)
-                LoadData(context);
-                setData(lstProductCart);
-            } else {
-                // Nếu không có hàng nào được xóa, thông báo xóa không thành công hoặc không có sản phẩm tương ứng trong cơ sở dữ liệu
-                Toast.makeText(context,"Xoá Sản Phẩm Không thành công",Toast.LENGTH_SHORT).show();
+            if(product.isChecked()){
+                String condition = CreateDatabase.CL_GIO_HANG_SAN_PHAM_ID + " = ?";
+                String[] args = {String.valueOf(id)}; // Sử dụng id của từng sản phẩm để xóa
+                int rowsAffected = database.delete(tableName, condition, args);
+                if (rowsAffected > 0) {
+                    deletedCount++;
+                }
             }
+
         }
+
+        if (deletedCount > 0) {
+            // Nếu có ít nhất một sản phẩm được xóa, thông báo xóa thành công
+            Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+        } else {
+            // Nếu không có sản phẩm nào được xóa, thông báo xóa không thành công
+            Toast.makeText(context, "Không có sản phẩm nào được xóa", Toast.LENGTH_SHORT).show();
+        }
+
+        // Cập nhật lại dữ liệu giỏ hàng sau khi xóa sản phẩm
+        LoadData(context);
+        setData(lstProductCart);
+
     }
 }
 
