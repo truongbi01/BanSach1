@@ -10,7 +10,22 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            >
+            <TextView
+                android:id="@+id/tv_TenDangNhap_DonHang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Tên Đăng Nhập"
+                android:textSize="20sp"
+                android:textColor="@color/dolv9"
+                android:gravity="center"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +40,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/black"/>
             <TextView
-                android:id="@+id/tvNgayDat_DonHang"
+                android:id="@+id/tvNgayDat_DonHang_Admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -46,7 +61,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/black"/>
             <TextView
-                android:id="@+id/tvTongTien_DonHang"
+                android:id="@+id/tvTongTien_DonHang_Admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -65,13 +80,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="start">
                 <Button
-                    android:id="@+id/btn_XemChiTiet_DonHang"
+                    android:id="@+id/btn_XemChiTiet_DonHang_Admin"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="Xem chi Tiet"
                     android:textColor="@color/dolv5"
                     android:background="@drawable/customer_button_xemchitiet"
-                    android:layout_marginRight="100dp"
+                    android:layout_marginRight="86dp"
                     />
             </LinearLayout>
             <LinearLayout
@@ -80,7 +95,7 @@
                 android:gravity="end"
                >
                 <Button
-                    android:id="@+id/btnTrangThai_DonHang"
+                    android:id="@+id/btnTrangThai_DonHang_Admin"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="Chờ Xác Nhận"

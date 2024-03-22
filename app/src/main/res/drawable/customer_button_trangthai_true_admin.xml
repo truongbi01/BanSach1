@@ -8,13 +8,13 @@
 
 
 <gradient
-    android:startColor="@color/grey"
-    android:endColor="@color/vanglv1"
+    android:startColor="@color/vanglv10"
+    android:endColor="@color/vanglv7"
     />
 
     <stroke
-        android:color="#FFFFFF"
-        android:width="2dp"
+        android:color="@color/black"
+        android:width="0.67dp"
         />
 
     <size

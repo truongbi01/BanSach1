@@ -1,5 +1,6 @@
 package com.example.banhang.View.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -106,6 +107,6 @@ public class FavoriteFragment extends Fragment {
         listProducts = Utils.LoadProductsFavoriteFromDatabase(context);
     }
     void DeletedAllProductsFavorite(){
-        database.execSQL("DELETE FROM favorite_products");
+            database.delete(CreateDatabase.TB_YEU_THICH, null, null);
     }
 }
