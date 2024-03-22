@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import com.example.banhang.View.RecyclerViewCategory.*;
 import com.example.banhang.database.*;
+import com.example.banhang.View.RecycleViewDonHang.*;
 
 public class Utils {
 
@@ -66,7 +67,93 @@ public class Utils {
 
         return lstUser;
     }
+    @SuppressLint("Range")
+    public static ArrayList<DonHang> LoadOrderFromDatabase(Context context, String tennguoidung) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<DonHang> listDonHang = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
 
+        String query = "SELECT * FROM " + CreateDatabase.TB_DON_HANG +
+                " WHERE " + CreateDatabase.CL_TEN_NGUOI_DUNG + " = ?" +
+                " AND " + CreateDatabase.CL_DON_HANG_ID + " IN " +
+                " (SELECT " + CreateDatabase.CL_DON_HANG_ID + " FROM " + CreateDatabase.TB_DON_HANG +
+                " GROUP BY " + CreateDatabase.CL_NGAY_DAT_HANG + ")" +
+                " ORDER BY " + CreateDatabase.CL_NGAY_DAT_HANG + " DESC ";
+
+        String[] selectionArgs = {tennguoidung};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            do {
+                 String MaDonHang = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_DON_HANG_ID));
+                String NgayDatHang = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_NGAY_DAT_HANG));
+                 Double TongTien = Double.parseDouble(cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TOTAL)));
+                 int TrangThai = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TRANG_THAI)));
+                String MaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_SAN_PHAM_ID_Donhang));
+                DonHang newDonHang = new DonHang(MaDonHang, NgayDatHang, tennguoidung, TongTien, TrangThai, MaSanPham);
+                listDonHang.add(newDonHang);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listDonHang;
+    }
+    public static ArrayList<DonHang> LoadDataOrder(Context context , String tenNguoiDung) {
+        ArrayList<DonHang> listDonHang = new ArrayList<>();
+        ArrayList<DonHang> donHangArrayList = Utils.LoadOrderFromDatabase(context,tenNguoiDung);
+
+        for (DonHang donHang : donHangArrayList) {
+            if (donHang != null) {
+                listDonHang.add(new DonHang(context,donHang.getMaDonHang(),donHang.getNgayDatHang(),donHang.getTenNguoiDung(),donHang.getTongTien(),donHang.getTrangThai(),donHang.getIdSanPham()));
+            }
+        }
+
+        return listDonHang;
+    }
+    public static ArrayList<DonHang> LoadOrderFromDatabase(Context context) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<DonHang> listDonHang = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
+
+        String query = "SELECT * FROM " + CreateDatabase.TB_DON_HANG +
+                " WHERE " + CreateDatabase.CL_DON_HANG_ID + " IN " +
+                " (SELECT " + CreateDatabase.CL_DON_HANG_ID + " FROM " + CreateDatabase.TB_DON_HANG +
+                " GROUP BY " + CreateDatabase.CL_NGAY_DAT_HANG + ")" +
+                " ORDER BY " + CreateDatabase.CL_NGAY_DAT_HANG + " DESC ";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String MaDonHang = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_DON_HANG_ID));
+                @SuppressLint("Range") String NgayDatHang = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_NGAY_DAT_HANG));
+                @SuppressLint("Range") String TenDangNhap = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_NGUOI_DUNG));
+                @SuppressLint("Range") Double TongTien = Double.parseDouble(cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TOTAL)));
+                @SuppressLint("Range") int TrangThai = Integer.parseInt(cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TRANG_THAI)));
+                @SuppressLint("Range") String MaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_SAN_PHAM_ID_Donhang));
+                DonHang newDonHang = new DonHang(MaDonHang, NgayDatHang, TenDangNhap, TongTien, TrangThai, MaSanPham);
+                listDonHang.add(newDonHang);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listDonHang;
+    }
+    public static ArrayList<DonHang> LoadDataOrder(Context context) {
+        ArrayList<DonHang> listDonHang = new ArrayList<>();
+        ArrayList<DonHang> donHangArrayList = Utils.LoadOrderFromDatabase(context);
+
+        for (DonHang donHang : donHangArrayList) {
+            if (donHang != null) {
+                listDonHang.add(new DonHang(context,donHang.getMaDonHang(),donHang.getNgayDatHang(),donHang.getTenNguoiDung(),donHang.getTongTien(),donHang.getTrangThai(),donHang.getIdSanPham()));
+            }
+        }
+
+        return listDonHang;
+    }
     public static ArrayList<Products> LoadProductsFromDatabase(Context context) {
         CreateDatabase createDatabase = new CreateDatabase(context);
         ArrayList<Products> listProducts = new ArrayList<>();
@@ -184,6 +271,57 @@ public class Utils {
     }
     public static void ThongBao(Context context, String thongBao){
         Toast.makeText(context,thongBao,Toast.LENGTH_SHORT).show();
+    }
+    public static ArrayList<Products> LoadDetailFromDatabase(Context context, String ngayDatHang, String tongTien) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<Products> listProducts = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
+
+        String query = "SELECT " +
+                CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_TEN_SAN_PHAM + ", " +
+                CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_GIA_BAN + ", " +
+                CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_ANH_SAN_PHAM + ", " +
+                CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_MO_TA + ", " +
+                CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_SO_LUONG +
+                " FROM " + CreateDatabase.TB_DON_HANG +
+                " INNER JOIN " + CreateDatabase.TB_SAN_PHAM +
+                " ON " + CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_SAN_PHAM_ID_Donhang +
+                " = " + CreateDatabase.TB_SAN_PHAM + "." + CreateDatabase.CL_SAN_PHAM_ID +
+                " WHERE " + CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_NGAY_DAT_HANG + " = '" + ngayDatHang + "'" +
+                " AND " + CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_TOTAL + " = " + tongTien;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String tenSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_SAN_PHAM));
+                @SuppressLint("Range") String giaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_GIA_BAN));
+                @SuppressLint("Range") String moTaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_MO_TA));
+                @SuppressLint("Range") String anhSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_ANH_SAN_PHAM));
+                @SuppressLint("Range") int soLuong = cursor.getInt(cursor.getColumnIndex(CreateDatabase.CL_SO_LUONG));
+
+                Products newProduct = new Products(context, tenSanPham, giaSanPham, moTaSanPham, anhSanPham, soLuong);
+                listProducts.add(newProduct);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listProducts;
+    }
+    public static ArrayList<Products> LoadDataOrderDetails(Context context,String ngayDatHang, String tongTien) {
+        ArrayList<Products> lstProducts = new ArrayList<>();
+        ArrayList<Products> productsArrayList = Utils.LoadDetailFromDatabase(context,ngayDatHang,tongTien);
+
+        for (Products products : productsArrayList) {
+            if (products != null) {
+                lstProducts.add(new Products(context, products.getName(), products.getPrice(), products.getDes(), products.getImage(),products.getSoLuong()));
+            }
+        }
+
+
+        return lstProducts;
     }
 
 }

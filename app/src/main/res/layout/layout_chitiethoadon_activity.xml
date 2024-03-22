@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Chi Tiết Hoá Đơn"
+        android:background="@color/mauxamlv4"
+        android:textColor="@color/dolv10"
+        android:padding="10dp"
+        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.6"
+        android:text="Tên Khách hàng :"
+        android:textColor="@color/black"
+        android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/tvThongTinTenKhachHang_DonHang_ChiTiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Thông tin"
+            android:textSize="17sp"
+            android:textColor="@color/darklcam"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="Số Điện Thoại :"
+            android:textColor="@color/black"
+            android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/tvThongTinSoDienThoai_DonHang_ChiTiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Thông tin Số Điện thoại"
+            android:textSize="17sp"
+            android:textColor="@color/darklcam"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="Địa Chỉ Đặt Hàng :"
+            android:textColor="@color/black"
+            android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/tvThongTinDiaChi_DonHang_ChiTiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Thông tin Địa Chỉ"
+            android:textSize="17sp"
+            android:textColor="@color/darklcam"/>
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sản Phẩm"
+        android:layout_marginTop="20dp"
+        android:textSize="25sp"
+        android:textColor="@color/black"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:id="@+id/rcvDonHang_ChiTiet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="Tổng Tiền :"
+            android:textColor="@color/black"
+            android:textSize="17sp"/>
+        <TextView
+            android:id="@+id/tvTongTien_DonHang_ChiTiet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="Thông tin Tổng tiền"
+            android:textSize="17sp"
+            android:textColor="@color/darklcam"/>
+    </LinearLayout>
+</LinearLayout>

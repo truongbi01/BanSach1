@@ -2,6 +2,7 @@ package com.example.banhang.View.RecycleViewGioHang;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         holder.tvGia.setText(item.getPrice()+"VND");
         holder.imgAnhSanPham.setImageBitmap(Utils.convertToBitmapFromAssets(context,item.getImage()));
 
-
         //Tạo sự kiện
         holder.btnTru.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,15 +69,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 int currentQuantity = Integer.parseInt(holder.edtSoLuong.getText().toString());
                 if (currentQuantity > 1) { // Giảm số lượng nếu lớn hơn 1
                     holder.edtSoLuong.setText(String.valueOf(currentQuantity - 1));
-                        calculateTotalAmount();
+                    calculateTotalAmount();
                     if (holder.cbGioHang.isChecked()) { // Kiểm tra xem checkbox được chọn
                         calculateAndNotifyTotalAmount();
                     }
                 } else {
                     Toast.makeText(context, "Sản phẩm ít nhất là 1", Toast.LENGTH_SHORT).show();
                 }
+                // Cập nhật số lượng hiện tại vào SharedPreferences
+                updateCurrentQuantity(item.getName(), currentQuantity);
             }
         });
+
         holder.btnCong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,9 +90,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 if (holder.cbGioHang.isChecked()) { // Kiểm tra xem checkbox được chọn
                     calculateAndNotifyTotalAmount();
                 }
+                // Cập nhật số lượng hiện tại vào SharedPreferences
+                updateCurrentQuantity(item.getName(), currentQuantity);
             }
         });
-
         for (Products product : lstProductCart) {
             // Kiểm tra sản phẩm đã được chọn trong giỏ hàng
             if (product  != null ) {
@@ -265,6 +269,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         LoadData(context);
         setData(lstProductCart);
 
+    }
+    // Phương thức để lưu số lượng sản phẩm vào SharedPreferences
+
+    private void updateCurrentQuantity(String name, int quantity) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("CartQuantities", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(name, quantity);
+        editor.apply();
     }
 }
 

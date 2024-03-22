@@ -65,7 +65,12 @@ public class HomeAdminActivity extends AppCompatActivity {
                   fmNew = new FavoriteFragment();
                   loadFragment(fmNew);
                     return true;
-                } else if (menuID == R.id.mnAbout) {
+                } else if (menuID == R.id.miDonHang_admin) {
+                    getSupportActionBar().setTitle(item.getTitle());
+                    fmNew = new DonHangAdminFragment();
+                    loadFragment(fmNew);
+                    return true;
+                }else if (menuID == R.id.mnAbout) {
                     getSupportActionBar().setTitle(item.getTitle());
                     fmNew = new AboutFragment();
                     loadFragment(fmNew);

@@ -15,6 +15,10 @@ public class Products {
     String price;
     String description;
 
+
+
+    int soLuong;
+
     public String getCategoryId() {
         return categoryId;
     }
@@ -33,6 +37,14 @@ public class Products {
         this.image = image;
         this.databaseHelper = new CreateDatabase(context);
     }
+    public Products( Context context,String name, String price,String moTa,String image,int soLuong) {
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.description = moTa;
+        this.soLuong = soLuong;
+        this.databaseHelper = new CreateDatabase(context);
+    }
     public Products( Context context,String name, String price,String description,String image,String categoryId) {
         this.name = name;
         this.price = price;
@@ -49,6 +61,13 @@ public class Products {
         this.image = image;
         this.databaseHelper = new CreateDatabase(context);
         this.categoryId = categoryId;
+    }
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
     public  String getId(){
         return id;

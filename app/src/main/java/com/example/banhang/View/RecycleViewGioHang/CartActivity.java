@@ -51,6 +51,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Total
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_cart);
         AnhXa();
+        Context context = getBaseContext();
         LoadDataProducts(CartActivity.this);
         databaseHelper = new CreateDatabase(CartActivity.this);
         database  = databaseHelper.getWritableDatabase();
@@ -74,6 +75,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Total
             }
         });
         btnMuaHang.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 // Tính tổng tiền một lần duy nhất
@@ -89,25 +91,26 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Total
 
                         // Thêm mã sản phẩm vào danh sách
                         productIds.add(productId);
+
+                        // Lấy số lượng hiện tại từ SharedPreferences
+                        SharedPreferences sharedPreferences = context.getSharedPreferences("CartQuantities", Context.MODE_PRIVATE);
+                        int currentQuantity = sharedPreferences.getInt(productName, 1);
+
+                        // Sử dụng số lượng hiện tại và ID sản phẩm để tạo đơn hàng
+                        DonHang newOrder = createNewOrder(totalAmount, productId, currentQuantity);
+
+                        // Thêm đơn hàng vào cơ sở dữ liệu
+                        addToOrderTable(newOrder);
+
+                        // Xóa sản phẩm đã chọn từ giỏ hàng
+                        cartAdapter.deleteSelectedProductsFromCart(productId, lstProductsCart, database);
                     }
-                }
-                // 2. Sử dụng danh sách mã sản phẩm để tạo đơn hàng
-                for (String productId : productIds) {
-                    // Tạo một đơn hàng mới cho mỗi mã sản phẩm
-                    DonHang newOrder = createNewOrder(totalAmount,productId);
-
-                    // Thêm đơn hàng vào cơ sở dữ liệu
-                    addToOrderTable(newOrder);
-
-                    // Xóa sản phẩm đã chọn từ giỏ hàng
-                    cartAdapter.deleteSelectedProductsFromCart(productId, lstProductsCart, database);
                 }
                 // Cập nhật lại danh sách sản phẩm trong Adapter
                 cartAdapter.setData(Utils.LoadDaTaProductsCart(CartActivity.this));
 
                 // Cập nhật hiển thị tổng tiền
                 tvTongTien.setText("Tổng Tiền: " + 0  + " VND");
-
             }
         });
 
@@ -129,8 +132,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Total
         tvTongTien.setText("Tổng Tiền: " + totalAmount + " VND");
     }
     // Phương thức để thêm đơn hàng vào cơ sở dữ liệu
-    // Phương thức để tạo một đơn hàng mới
-    private DonHang createNewOrder(double totalAmount,String id) {
+    private DonHang createNewOrder(double totalAmount, String id, int currentQuantity) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());
 
@@ -139,7 +141,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.Total
         String tenDangNhap = sharedPreferences.getString("hovaten","");
 
         // Tạo một đơn hàng mới
-        DonHang newOrder = new DonHang(currentDateAndTime, tenDangNhap, totalAmount, 0, id);
+        DonHang newOrder = new DonHang(currentDateAndTime, tenDangNhap, totalAmount, 0, id, currentQuantity);
         return newOrder;
     }
     // Phương thức để thêm đơn hàng vào cơ sở dữ liệu

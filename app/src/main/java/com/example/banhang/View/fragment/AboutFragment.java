@@ -87,8 +87,6 @@ public class AboutFragment extends Fragment {
         databaseHelper = new CreateDatabase(getContext());
         SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sharedPreferences1.edit();
-        editor1.putString("tenKhachHang",edtHoVaTen.getText().toString());
-        editor1.apply();
         SharedPreferences prefs = getContext().getSharedPreferences("ShareData", Context.MODE_PRIVATE);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("tk_mk login", Context.MODE_PRIVATE);
         String tenDangNhap = sharedPreferences.getString("hovaten", "");
@@ -172,11 +170,11 @@ public class AboutFragment extends Fragment {
 
         }
         tvXacThucSoDienThoai.setOnClickListener(v -> {
-            editor1.putString("soDienThoai", soDienThoaidb);
-            editor1.apply();
             Intent i = new Intent(context, OTPActivity.class);
             startActivity(i);
         });
+        editor1.apply();
+
         return view;
     }
 
@@ -213,6 +211,14 @@ public class AboutFragment extends Fragment {
         );
 
         if (rowsAffected > 0) {
+
+            SharedPreferences sharedPreferences1 = getContext().getSharedPreferences("ThongTinNguoiDung",Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+            editor1.putString("tenKhachHang",hoVaTen);
+            editor1.putString("diaChi",diaChi);
+            editor1.putString("soDienThoai", soDienThoai);
+            editor1.apply();
+
             Toast.makeText(getContext(), "Cập Nhật Thành Công", Toast.LENGTH_SHORT).show();
 
         } else {

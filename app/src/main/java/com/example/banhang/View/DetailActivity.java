@@ -78,27 +78,21 @@ public class DetailActivity extends AppCompatActivity {
         btnThemSanPham.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int soLuong = 0 ;
                     // Kiểm tra nếu người dùng đã nhập tên khách hàng
-                    if(tenKhachHang == null){
-
-
+                if(tenKhachHang.equals("")){
                         Toast.makeText(getApplication(),"Bạn Cần Cập Nhật thông tin tài khoản đẻ được thêm vào giỏ hàng",Toast.LENGTH_SHORT).show();
                         Fragment fm ;
                         fm = new AboutFragment();
                         loadFragment(fm);
                     }
                     else {
-                        Fragment homeFragment = getSupportFragmentManager().findFragmentById(R.id.mainFragment_Detail);
-                        if (homeFragment instanceof HomeFragment) {
-                            ((HomeFragment) homeFragment).reloadFragment();
-                        }
-                        ThemSanPhamVaoGioHang(tenSanPham, tenDangNhap);
+                    Fragment homeFragment = getSupportFragmentManager().findFragmentById(R.id.mainFragment_Detail);
+                    if (homeFragment instanceof HomeFragment) {
+                        ((HomeFragment) homeFragment).reloadFragment();
                     }
-
+                    ThemSanPhamVaoGioHang(tenSanPham, tenDangNhap);
                 }
-
-
+            }
         });
     }
     void loadFragment(Fragment fmNew){

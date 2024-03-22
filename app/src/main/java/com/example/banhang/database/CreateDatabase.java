@@ -15,7 +15,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 14;
+    private final static int VERSION = 16;
 
 
     // Bảng Người dùng
@@ -45,6 +45,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
     public static final String CL_TOTAL = "TongTien";
     public static final String CL_TRANG_THAI = "TrangThai";
+    public static final String CL_SO_LUONG = "SoLuong";
 
     public static final String CL_SAN_PHAM_ID_Donhang = "MaSanPham";
 
@@ -150,6 +151,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
                 + CL_NGAY_DAT_HANG + " TEXT,"
                 + CL_TEN_NGUOI_DUNG + " TEXT," // Giả sử TenDangNhap là tên người dùng đặt hàng
                 + CL_TOTAL + " REAL,"
+                + CL_SO_LUONG + " INTEGER,"
                 + CL_TRANG_THAI + " INTEGER,"
                 + CL_SAN_PHAM_ID_Donhang + " INTEGER," // Thêm cột ID sản phẩm
                 + "FOREIGN KEY(" + CL_TEN_NGUOI_DUNG + ") REFERENCES " + TB_DANG_NHAP_KHACH_HANG + "(" + CL_TEN_DANGNHAP +"),"
@@ -168,6 +170,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TB_DANH_GIA_KHACH_HANG);
         db.execSQL("DROP TABLE IF EXISTS " + TB_LOAI_SAN_PHAM);
         db.execSQL("DROP TABLE IF EXISTS " + TB_YEU_THICH);
+        db.execSQL("DROP TABLE IF EXISTS " + TB_GIO_HANG);
         // Tạo lại bảng mới
         onCreate(db);
     }
@@ -275,22 +278,6 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return vaiTro;
     }
-    //Cập nhật ảnh
-    public void updateAnhSanPham(int maSanPham, String duongDanAnh) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(CL_ANH_SAN_PHAM, duongDanAnh);
-
-        db.update(
-                TB_SAN_PHAM,
-                values,
-                CL_SAN_PHAM_ID + " = ?",
-                new String[]{String.valueOf(maSanPham)}
-        );
-
-        db.close();
-    }
 
     //getCL
     @SuppressLint("Range")
@@ -360,18 +347,18 @@ public class CreateDatabase extends SQLiteOpenHelper {
     }
     //Get Column Dia Ch
     @SuppressLint("Range")
-    public String GetCLDiaChiKhachHang(String cmnd){
+    public String GetCLDiaChiKhachHang(String cmnd) {
         String diaChi = null;
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Query để lấy Dịa Chỉ Từ bảng Khách Hàng
-        String query = "SELECT " + CreateDatabase. CL_DIA_CHI  + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+        String query = "SELECT " + CreateDatabase.CL_DIA_CHI + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
                 " WHERE " + CreateDatabase.CL_CMND + " = ?";
         Cursor cursor = db.rawQuery(query, new String[]{cmnd});
 
         // Kiểm tra xem có dữ liệu hay không
         if (cursor.moveToFirst()) {
-            diaChi = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_DIA_CHI ));
+            diaChi = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_DIA_CHI));
         }
 
         // Đóng cursor và database
@@ -427,6 +414,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
 
         return birthDay;
     }
+    //Get Anh San Pham
+
     //Get id Sản Phẩm
 
     @SuppressLint("Range")
@@ -472,6 +461,54 @@ public class CreateDatabase extends SQLiteOpenHelper {
         }
 
         return isFavorite;
+    }
+    @SuppressLint("Range")
+    public static String getTenDangNhapFromDonHang(Context context, String ngayDatHang, double tongTien) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
+
+        String query = "SELECT " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG + "." + CreateDatabase.CL_TEN_NGUOI_DUNG +
+                " FROM " + CreateDatabase.TB_DON_HANG +
+                " INNER JOIN " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " ON " + CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_TEN_NGUOI_DUNG +
+                " = " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG + "." + CreateDatabase.CL_TEN_NGUOI_DUNG +
+                " WHERE " + CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_NGAY_DAT_HANG + " = ?" +
+                " AND " + CreateDatabase.TB_DON_HANG + "." + CreateDatabase.CL_TOTAL + " = ?";
+
+        String[] selectionArgs = {ngayDatHang, String.valueOf(tongTien)};
+
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        String tenDangNhap = null;
+        if (cursor != null && cursor.moveToFirst()) {
+            tenDangNhap = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_NGUOI_DUNG));
+            cursor.close();
+        }
+
+        db.close();
+
+        return tenDangNhap;
+    }
+    @SuppressLint("Range")
+    public String GetCLValueFromTenDangNhap(String tenDangNhap, String columnName) {
+        String value = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Query để lấy giá trị từ bảng Khách Hàng
+        String query = "SELECT " + columnName + " FROM " + CreateDatabase.TB_DANG_NHAP_KHACH_HANG +
+                " WHERE " + CreateDatabase.CL_TEN_DANGNHAP + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{tenDangNhap});
+
+        // Kiểm tra xem có dữ liệu hay không
+        if (cursor.moveToFirst()) {
+            value = cursor.getString(cursor.getColumnIndex(columnName));
+        }
+
+        // Đóng cursor và database
+        cursor.close();
+        db.close();
+
+        return value;
     }
 
 }
