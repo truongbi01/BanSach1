@@ -15,7 +15,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "ShoppingSouvenir";
 
     //Version
-    private final static int VERSION = 16;
+    private final static int VERSION = 17;
 
 
     // Bảng Người dùng

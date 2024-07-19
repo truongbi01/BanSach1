@@ -1,8 +1,6 @@
 package com.example.banhang.View.fragment;
 
-
 import static android.content.Context.MODE_PRIVATE;
-
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.annotation.SuppressLint;
@@ -23,7 +21,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -36,44 +37,24 @@ import com.example.banhang.database.CreateDatabase;
 import com.example.banhang.View.RecyclerViewProduct.*;
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
-
-public class HomeFragment extends Fragment implements ProductAdapter.UserCallBack{
+public class HomeFragment extends Fragment implements ProductAdapter.UserCallBack {
     CreateDatabase databaseHelper;
     RecyclerView rvListProduct;
     ArrayList<Products> listProducts;
-     ProductAdapter productAdapter;
-     ProductAdapterAdmin productAdapterAdmin;
-     ImageView imgCart;
-     TextView tvCartItemCount;
-     SwipeRefreshLayout swipeRefreshLayout;
+    ProductAdapter productAdapter;
+    ProductAdapterAdmin productAdapterAdmin;
+    ImageView imgCart;
+    TextView tvCartItemCount;
+    SwipeRefreshLayout swipeRefreshLayout;
+    Spinner spinnerCategory;
+    ArrayList<ProductsCategory> categoryList;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -85,7 +66,6 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
 
     public HomeFragment() {
         // Required empty public constructor
-
     }
 
     @Override
@@ -96,80 +76,104 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     ViewFlipper viewFlipper;
     ArrayList<Products> lstProductCart = new ArrayList<>();
     private int currentImage = 0;
     private static final int FLIP_INTERVAL = 3000;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         AnhXa(view);
-        // Xử lý sự kiện vuốt màn hình xuống để reload lại trang
+        tvCartItemCount = view.findViewById(R.id.tvCartItemCount);
+        updateCartItemCount();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reloadFragment(); // Gọi phương thức reloadFragment() để tải lại trang
-                swipeRefreshLayout.setRefreshing(false); // Kết thúc quá trình làm mới
+                reloadFragment();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
+
         flipHandler.sendEmptyMessageDelayed(0, FLIP_INTERVAL);
         databaseHelper = new CreateDatabase(getActivity());
 
-        // Lấy số lượng sản phẩm trong giỏ hàng từ SharedPreferences
         SharedPreferences cartPreferences = getContext().getSharedPreferences("DuLieu", MODE_PRIVATE);
         String cartItemCount = cartPreferences.getString("soLuong", null);
         lstProductCart = Utils.LoadDaTaProductsCart(getContext());
-            // Tính tổng số lượng sản phẩm trong giỏ hàng
+
         int totalQuantity = 0;
         for (Products product : lstProductCart) {
-            // Kiểm tra sản phẩm đã được chọn trong giỏ hàng
-            if (product  != null ) {
-                // Tăng số lượng sản phẩm trong giỏ hàng
-                totalQuantity += 1; // Hoặc sử dụng một số thuộc tính khác để lấy số lượng, phụ thuộc vào cách bạn đã cài đặt nó trong lớp Products
+            if (product != null) {
+                totalQuantity += 1;
             }
         }
 
-        // Tìm và cập nhật TextView
         if (totalQuantity > 0) {
             tvCartItemCount.setVisibility(View.VISIBLE);
             tvCartItemCount.setText(String.valueOf(totalQuantity));
         } else {
             tvCartItemCount.setVisibility(View.GONE);
         }
+
         String thongtinluu = "tk_mk login";
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences(thongtinluu, MODE_PRIVATE);
-        String tenDangNhap =  sharedPreferences.getString("Username","");
+        String tenDangNhap = sharedPreferences.getString("Username", "");
 
-        String role  = databaseHelper.GetCLVaitro(tenDangNhap);
-        if(role.equals("admin")){
-            Toast.makeText(getContext(),"Product Admin",Toast.LENGTH_SHORT).show();
-
+        String role = databaseHelper.GetCLVaitro(tenDangNhap);
+        if (role.equals("admin")) {
+            Toast.makeText(getContext(), "Product Admin", Toast.LENGTH_SHORT).show();
             LoadDataProducts(getActivity());
-            productAdapterAdmin = new ProductAdapterAdmin(listProducts,databaseHelper);
+            productAdapterAdmin = new ProductAdapterAdmin(listProducts, databaseHelper);
             rvListProduct.setAdapter(productAdapterAdmin);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             rvListProduct.setLayoutManager(gridLayoutManager);
-        }
-        else {
+        } else {
             LoadDataProducts(getActivity());
-            productAdapter = new ProductAdapter(listProducts,databaseHelper, this);
+            productAdapter = new ProductAdapter(listProducts, databaseHelper, this);
             rvListProduct.setAdapter(productAdapter);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
             rvListProduct.setLayoutManager(gridLayoutManager);
         }
+
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(),CartActivity.class);
+                Intent i = new Intent(getActivity(), CartActivity.class);
                 startActivity(i);
             }
         });
+
+        loadCategories();
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ProductsCategory selectedCategory = (ProductsCategory) parent.getSelectedItem();
+                loadProductsByCategory(selectedCategory.getID());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+
         return view;
-
-
     }
-    // Phương thức reload lại trang
+    private void updateCartItemCount() {
+        // Giả sử bạn có một phương thức để lấy số lượng sản phẩm trong giỏ hàng
+        int cartItemCount = getCartItemCount();
+        tvCartItemCount.setText(String.valueOf(cartItemCount));
+    }
+
+    private int getCartItemCount() {
+        // Thay thế bằng logic thực tế để lấy số lượng sản phẩm trong giỏ hàng
+        return 5; // Ví dụ: trả về 5 sản phẩm
+    }
+
     public void reloadFragment() {
         Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.mainFragment);
         if (currentFragment instanceof HomeFragment) {
@@ -177,19 +181,65 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
             fragmentTransaction.detach(currentFragment);
             fragmentTransaction.attach(currentFragment);
             fragmentTransaction.commit();
-            swipeRefreshLayout.setRefreshing(false); // Dừng hiệu ứng refresh
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
-    void AnhXa(View view){
+
+    void AnhXa(View view) {
         rvListProduct = view.findViewById(R.id.rvListProduct);
         viewFlipper = view.findViewById(R.id.viewlipper);
         imgCart = view.findViewById(R.id.imgCart);
         tvCartItemCount = view.findViewById(R.id.tvCartItemCount);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        spinnerCategory = view.findViewById(R.id.spinnerCategory);
     }
-    void LoadDataProducts(Context context){
+
+    void LoadDataProducts(Context context) {
         listProducts = Utils.LoadDaTaProducts(context);
     }
+
+    void loadCategories() {
+        categoryList = Utils.loadCategoriesFromDatabase(getContext());
+        // Thêm mục "Tất cả" vào danh sách thể loại
+        categoryList.add(0, new ProductsCategory("all", "Tất cả"));
+
+        ArrayAdapter<ProductsCategory> adapter = new ArrayAdapter<ProductsCategory>(getContext(), android.R.layout.simple_spinner_item, categoryList) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setText(categoryList.get(position).getName());
+                return view;
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View view = super.getDropDownView(position, convertView, parent);
+                TextView textView = view.findViewById(android.R.id.text1);
+                textView.setText(categoryList.get(position).getName());
+                return view;
+            }
+        };
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategory.setAdapter(adapter);
+    }
+
+    void loadProductsByCategory(String categoryId) {
+        if (categoryId.equals("all")) {
+            // Hiển thị tất cả sản phẩm
+            listProducts = Utils.LoadDaTaProducts(getContext());
+        } else {
+            // Hiển thị sản phẩm theo thể loại
+            listProducts = Utils.LoadProductsByCategory(getContext(), categoryId);
+        }
+
+        if (productAdapter != null) {
+            productAdapter.setData(listProducts);
+        } else if (productAdapterAdmin != null) {
+            productAdapterAdmin.setData(listProducts);
+        }
+    }
+
     @SuppressLint("HandlerLeak")
     private final Handler flipHandler = new Handler() {
         @Override

@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".View.HomeActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:exported="false">
 
             <!-- Các thuộc tính khác -->
         </activity>

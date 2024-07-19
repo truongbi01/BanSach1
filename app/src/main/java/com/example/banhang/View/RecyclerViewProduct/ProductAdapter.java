@@ -39,6 +39,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.databaseHelper = database;
         this.userCallBack = userCallBack;
     }
+    public void setData(ArrayList<Products> listProducts) {
+        this.listProducts = listProducts;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

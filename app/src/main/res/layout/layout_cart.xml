@@ -12,16 +12,16 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/icon_back"
-            android:background="@color/dolv1"/>
+            android:background="#FCF45D"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#FCF45D"
+            android:gravity="center"
             android:text="Giỏ Hàng"
             android:textColor="@color/black"
-            android:gravity="center"
-            android:textSize="30sp"
-            android:background="@color/dolv1"
-            />
+            android:textSize="30sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,6 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Mua hàng"
-            android:background="@color/dolv2"/>
+            android:background="#FCBC5D"/>
     </LinearLayout>
 </LinearLayout>

@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:text="@string/themtheloai"
         android:layout_gravity="center"
-        android:background="@color/dolv3"/>
+        android:background="#FCF45D"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvList"
         android:layout_width="match_parent"

@@ -135,7 +135,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/lnLoaiSanPham"
-        android:background="@color/colorPrimary"
+        android:background="#EAE258"
         android:text="Thêm Sản phẩm"
         android:textColor="@android:color/white"
         android:padding="16dp" />

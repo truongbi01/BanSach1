@@ -323,5 +323,30 @@ public class Utils {
 
         return lstProducts;
     }
+    public static ArrayList<Products> LoadProductsByCategory(Context context, String categoryId) {
+        CreateDatabase createDatabase = new CreateDatabase(context);
+        ArrayList<Products> listProducts = new ArrayList<>();
+        SQLiteDatabase db = createDatabase.getReadableDatabase();
 
+        String query = "SELECT * FROM " + CreateDatabase.TB_SAN_PHAM + " WHERE " + CreateDatabase.CL_LOAI_SAN_PHAM_ID + "=?";
+        Cursor cursor = db.rawQuery(query, new String[]{categoryId});
+
+        if (cursor.moveToFirst()) {
+            do {
+                @SuppressLint("Range") String tenSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_TEN_SAN_PHAM));
+                @SuppressLint("Range") String giaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_GIA_BAN));
+                @SuppressLint("Range") String moTaSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_MO_TA));
+                @SuppressLint("Range") String anhSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_ANH_SAN_PHAM));
+                @SuppressLint("Range") String idTheLoaiSanPham = cursor.getString(cursor.getColumnIndex(CreateDatabase.CL_LOAI_SAN_PHAM_ID));
+
+                Products newProducts1 = new Products(context, tenSanPham, giaSanPham, moTaSanPham, anhSanPham, idTheLoaiSanPham);
+                listProducts.add(newProducts1);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return listProducts;
+    }
 }

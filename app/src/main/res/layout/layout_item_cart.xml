@@ -62,7 +62,7 @@
                     <Button
                         android:id="@+id/btnXoa_Cart"
                         android:layout_width="50dp"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
 
                         android:background="@drawable/icon_remove"
                         />

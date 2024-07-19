@@ -9,7 +9,7 @@
     app:cardElevation="6dp"
     app:cardUseCompatPadding="true"
     app:cardPreventCornerOverlap="false"
-    app:cardBackgroundColor="@color/vanglv1">
+    app:cardBackgroundColor="#E1E1D7">
 
 <LinearLayout
 android:layout_width="match_parent"

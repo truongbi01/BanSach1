@@ -23,5 +23,4 @@ public class HeaderFragment extends Fragment {
         Log.e(TAG, "tim thay rootview");
         return rootView;
     }
-
 }
