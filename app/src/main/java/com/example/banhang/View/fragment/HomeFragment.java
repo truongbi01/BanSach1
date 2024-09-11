@@ -17,12 +17,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -48,7 +51,9 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
     SwipeRefreshLayout swipeRefreshLayout;
     Spinner spinnerCategory;
     ArrayList<ProductsCategory> categoryList;
-
+    EditText searchBar;
+    TextView tvNoProducts;
+    ProductsCategory selectedCategory;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -151,7 +156,7 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ProductsCategory selectedCategory = (ProductsCategory) parent.getSelectedItem();
+                selectedCategory = (ProductsCategory) parent.getSelectedItem(); // Lưu thể loại đã chọn
                 loadProductsByCategory(selectedCategory.getID());
             }
 
@@ -161,6 +166,23 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
             }
         });
 
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Do nothing
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString();
+                LoadProductsByCategoryAndSearch(query, selectedCategory.getID()); // Thay đổi phương thức gọi
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Do nothing
+            }
+        });
         return view;
     }
     private void updateCartItemCount() {
@@ -192,6 +214,8 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
         tvCartItemCount = view.findViewById(R.id.tvCartItemCount);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
+        searchBar = view.findViewById(R.id.search_bar);
+        tvNoProducts = view.findViewById(R.id.tvNoProducts);
     }
 
     void LoadDataProducts(Context context) {
@@ -264,5 +288,21 @@ public class HomeFragment extends Fragment implements ProductAdapter.UserCallBac
         i.putExtra("mota", moTa);
         i.putExtra("srcAnh", srcAnh);
         startActivity(i);
+    }
+    void LoadProductsByCategoryAndSearch(String query, String categoryId) {
+        listProducts = Utils.LoadProductsByCategoryAndSearch(getContext(), query, categoryId);
+
+        if (listProducts.isEmpty()) {
+            tvNoProducts.setVisibility(View.VISIBLE);
+            rvListProduct.setVisibility(View.GONE);
+        } else {
+            tvNoProducts.setVisibility(View.GONE);
+            rvListProduct.setVisibility(View.VISIBLE);
+            if (productAdapter != null) {
+                productAdapter.setData(listProducts);
+            } else if (productAdapterAdmin != null) {
+                productAdapterAdmin.setData(listProducts);
+            }
+        }
     }
 }

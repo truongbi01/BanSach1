@@ -29,7 +29,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize">
 
-                        <Button
+                        <EditText
                             android:id="@+id/search_bar"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
@@ -38,7 +38,7 @@
                             android:drawableEnd="@drawable/baseline_search_24"
                             android:paddingLeft="10dp"
                             android:paddingRight="10dp"
-                            android:text="Search..."
+                            android:hint="Search..."
                             android:textAlignment="viewStart"
                             android:textAllCaps="false"
                             android:textColor="@color/white" />
@@ -113,6 +113,15 @@
                             android:padding="8dp"
                             android:spinnerMode="dropdown"/>
                     </LinearLayout>
+                    <TextView
+                        android:id="@+id/tvNoProducts"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Không có sản phẩm"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:textSize="18sp"
+                        android:textColor="@color/black" />
 
                     <!-- RecyclerView -->
                     <androidx.recyclerview.widget.RecyclerView
